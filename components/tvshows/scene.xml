@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="TVShows" extends="Scene">
   <children>
-    <TVShowRow
-      id="TVShowSelect"
-      visible="true"
-      />
+    <ItemGrid id="picker" visible="true" itemsPerRow="10" />
     <Overhang
       id="overhang"
       title="TV Shows"

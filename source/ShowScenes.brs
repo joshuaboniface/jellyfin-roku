@@ -384,26 +384,25 @@ sub ShowTVShowOptions(library)
 
   themeScene(scene)
 
-  options = scene.findNode("TVShowSelect")
-  options.library = library
+  item_grid = scene.findNode("picker")
 
   page_num = 1
-  page_size = 30
+  page_size = 50
 
   sort_order = get_user_setting("series_sort_order", "Ascending")
   sort_field = get_user_setting("series_sort_field", "SortName")
 
-  options_list = ItemList(library.id, {"limit": page_size,
+  item_list = ItemList(library.id, {"limit": page_size,
     "page": page_num,
     "SortBy": sort_field,
     "SortOrder": sort_order })
-  options.TVShowData = options_list
+  item_grid.objects = item_list
 
-  options.observeField("itemSelected", port)
+  item_grid.observeField("itemSelected", port)
 
   pager = scene.findNode("pager")
   pager.currentPage = page_num
-  pager.maxPages = options_list.TotalRecordCount / page_size
+  pager.maxPages = item_list.TotalRecordCount / page_size
   if pager.maxPages = 0 then pager.maxPages = 1
 
   pager.observeField("escape", port)
@@ -446,22 +445,19 @@ sub ShowTVShowOptions(library)
   while true
     msg = wait(0, port)
     if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
-      options.setFocus(true)
-    ' TODO - rename
-    ' Obnoxiously here, "options" getNode is the "options panel"
-    ' and options.setFocus is the "options of tv shows"
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
-      options.setFocus(true)
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "pageSelected") and pager.pageSelected <> invalid
       pager.pageSelected = invalid
       page_num = int(val(msg.getData().id))
       pager.currentPage = page_num
-      options_list = ItemList(library.id, {"limit": page_size,
+      item_list = ItemList(library.id, {"limit": page_size,
         "StartIndex": page_size * (page_num - 1),
         "SortBy": sort_field,
         "SortOrder": sort_order })
-      options.TVShowData = options_list
-      options.setFocus(true)
+      item_grid.objects = item_list
+      item_grid.setFocus(true)
     else if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       return
     else if nodeEventQ(msg, "itemSelected")
@@ -562,26 +558,25 @@ sub ShowCollections(library)
 
   themeScene(scene)
 
-  options = scene.findNode("CollectionSelect")
-  options.library = library
+  item_grid = scene.findNode("picker")
 
   page_num = 1
-  page_size = 30
+  page_size = 50
 
   sort_order = get_user_setting("collection_sort_order", "Ascending")
   sort_field = get_user_setting("collection_sort_field", "SortName")
 
-  options_list = ItemList(library.id, {"limit": page_size,
+  item_list = ItemList(library.id, {"limit": page_size,
     "StartIndex": page_size * (page_num - 1),
     "SortBy": sort_field,
     "SortOrder": sort_order })
-  options.itemData = options_list
+  item_grid.objects = item_list
 
-  options.observeField("itemSelected", port)
+  item_grid.observeField("itemSelected", port)
 
   pager = scene.findNode("pager")
   pager.currentPage = page_num
-  pager.maxPages = options_list.TotalRecordCount / page_size
+  pager.maxPages = item_list.TotalRecordCount / page_size
   if pager.maxPages = 0 then pager.maxPages = 1
 
   pager.observeField("escape", port)
@@ -626,19 +621,19 @@ sub ShowCollections(library)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       return
     else if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
-      options.setFocus(true)
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
-      options.setFocus(true)
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "pageSelected") and pager.pageSelected <> invalid
       pager.pageSelected = invalid
       page_num = int(val(msg.getData().id))
       pager.currentPage = page_num
-      options_list = ItemList(library.id, {"limit": page_size,
+      item_list = ItemList(library.id, {"limit": page_size,
         "StartIndex": page_size * (page_num - 1),
         "SortBy": sort_field,
         "SortOrder": sort_order })
-      options.itemData = options_list
-      options.setFocus(true)
+      item_grid.itemData = item_list
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "itemSelected")
       target = getMsgRowTarget(msg)
       ShowMovieOptions(target)

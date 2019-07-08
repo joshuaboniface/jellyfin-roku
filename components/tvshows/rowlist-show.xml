@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="TVShowRow" extends="RowList">
-  <interface>
-    <field id="rowSize" type="int" />
-    <field id="TVShowData" type="associativearray" onChange="setData" />
-  </interface>
-  <script type="text/brightscript" uri="rowlist-show.brs" />
-</component>

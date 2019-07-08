@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="CollectionData" extends="ContentNode">
   <interface>
-    <field id="id" type="string" />
     <field id="title" type="string" />
     <field id="image" type="node" onChange="setPoster" />
     <field id="posterUrl" type="string" />
