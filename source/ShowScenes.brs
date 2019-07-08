@@ -42,7 +42,7 @@ sub ShowServerSelect()
           print "Server not found, is it online? New values / Retry"
           scene.findNode("alert").text = "Server not found, is it online?"
           SignOut()
-        else 
+        else
           return
         endif
       end if
@@ -221,28 +221,28 @@ sub ShowMovieOptions(library)
 
   themeScene(scene)
 
-  options = scene.findNode("MovieSelect")
-  options.library = library
+  item_grid = scene.findNode("picker")
 
   page_num = 1
-  page_size = 30
+  page_size = 50  ' Make this customizable somehow
 
   sort_order = get_user_setting("movie_sort_order", "Ascending")
   sort_field = get_user_setting("movie_sort_field", "SortName")
 
-  options_list = ItemList(library.id, {"limit": page_size,
+  item_list = ItemList(library.id, {"limit": page_size,
     "StartIndex": page_size * (page_num - 1),
     "SortBy": sort_field,
     "SortOrder": sort_order,
     "IncludeItemTypes": "Movie"
   })
-  options.movieData = options_list
+  item_grid.objects = item_list
 
-  options.observeField("itemSelected", port)
+  item_grid.observeField("escapeButton", port)
+  item_grid.observeField("itemSelected", port)
 
   pager = scene.findNode("pager")
   pager.currentPage = page_num
-  pager.maxPages = options_list.TotalRecordCount / page_size
+  pager.maxPages = item_list.TotalRecordCount / page_size
   if pager.maxPages = 0 then pager.maxPages = 1
 
   pager.observeField("escape", port)
@@ -286,22 +286,31 @@ sub ShowMovieOptions(library)
     msg = wait(0, port)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       return
+    else if nodeEventQ(msg, "escapeButton")
+      node = msg.getRoSGNode()
+      if node.escapeButton = "down"
+        pager.setFocus(true)
+        pager.getChild(0).setFocus(true)
+      else if node.escapeButton = "options"
+        sidepanel.visible = true
+        sidepanel.findNode("panelList").setFocus(true)
+      end if
     else if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
-      options.setFocus(true)
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
-      options.setFocus(true)
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "pageSelected") and pager.pageSelected <> invalid
       pager.pageSelected = invalid
       page_num = int(val(msg.getData().id))
       pager.currentPage = page_num
-      options_list = ItemList(library.id, {"limit": page_size,
+      item_list = ItemList(library.id, {"limit": page_size,
         "StartIndex": page_size * (page_num - 1),
         "SortBy": sort_field,
         "SortOrder": sort_order,
         "IncludeItemTypes": "Movie"
       })
-      options.movieData = options_list
-      options.setFocus(true)
+      item_grid.objects = item_list
+      item_grid.setFocus(true)
     else if nodeEventQ(msg, "itemSelected")
       target = getMsgRowTarget(msg)
       ShowMovieDetails(target)

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ItemGrid" extends="RowList">
+  <interface>
+    <field id="itemsPerRow" type="int" />
+    <field id="objects" type="associativearray" onChange="setupRows" />
+    <field id="escapeButton" type="string" alwaysNotify="true" />
+  </interface>
+  <script type="text/brightscript" uri="ItemGrid.brs" />
+</component>

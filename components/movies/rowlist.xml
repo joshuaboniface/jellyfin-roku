@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<component name="MovieRow" extends="RowList">
-  <interface>
-    <field id="rowSize" type="int" />
-    <field id="movieData" type="associativearray" onChange="setData" />
-    <field id="library" type="associativearray" />
-  </interface>
-  <script type="text/brightscript" uri="rowlist.brs" />
-</component>
