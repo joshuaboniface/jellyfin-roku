@@ -243,7 +243,7 @@ sub ShowMovieOptions(library)
   pager = scene.findNode("pager")
   pager.currentPage = page_num
   pager.maxPages = item_list.TotalRecordCount / page_size
-  if pager.maxPages = 0 then pager.maxPages = 1
+  if item_list.TotalRecordCount mod page_size > 0 then pager.maxPages += 1
 
   pager.observeField("escape", port)
   pager.observeField("pageSelected", port)
@@ -403,7 +403,7 @@ sub ShowTVShowOptions(library)
   pager = scene.findNode("pager")
   pager.currentPage = page_num
   pager.maxPages = item_list.TotalRecordCount / page_size
-  if pager.maxPages = 0 then pager.maxPages = 1
+  if item_list.TotalRecordCount mod page_size > 0 then pager.maxPages += 1
 
   pager.observeField("escape", port)
   pager.observeField("pageSelected", port)
@@ -577,7 +577,7 @@ sub ShowCollections(library)
   pager = scene.findNode("pager")
   pager.currentPage = page_num
   pager.maxPages = item_list.TotalRecordCount / page_size
-  if pager.maxPages = 0 then pager.maxPages = 1
+  if item_list.TotalRecordCount mod page_size > 0 then pager.maxPages += 1
 
   pager.observeField("escape", port)
   pager.observeField("pageSelected", port)
