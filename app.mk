@@ -15,20 +15,20 @@
 # to exclude using more than one pattern use additional '-x <pattern>' arguments
 # ZIP_EXCLUDE= -x \*.pkg -x storeassets\*
 #
-# Important Notes: 
+# Important Notes:
 # To use the "install" and "remove" targets to install your
 # application directly from the shell, you must do the following:
 #
 # 1) Make sure that you have the curl command line executable in your path
-# 2) Set the variable ROKU_DEV_TARGET in your environment to the IP 
+# 2) Set the variable ROKU_DEV_TARGET in your environment to the IP
 #    address of your Roku box. (e.g. export ROKU_DEV_TARGET=192.168.1.1.
 #    Set in your this variable in your shell startup (e.g. .bashrc)
 # 3) Set the variable ROKU_DEV_PASSWORD in your environment for the password
 #    associated with the rokudev account.
-##########################################################################  
-DISTREL = ./out
-COMMONREL ?= ./common
-SOURCEREL = .
+##########################################################################
+DISTREL = $(shell pwd)/out
+COMMONREL ?= $(shell pwd)/common
+SOURCEREL = $(shell pwd)
 
 ZIPREL = $(DISTREL)/apps
 STAGINGREL = $(DISTREL)/staging
@@ -56,7 +56,7 @@ HTTPSTATUS = $(shell curl --silent --write-out "\n%{http_code}\n" $(ROKU_DEV_TAR
 ifeq "$(HTTPSTATUS)" " 401"
 	CURLCMD = curl -S --connect-timeout 2 --max-time 30 --retry 5
 else
-	CURLCMD = curl -S --connect-timeout 2 --max-time 30 --retry 5 --user $(USERPASS) --digest 
+	CURLCMD = curl -S --connect-timeout 2 --max-time 30 --retry 5 --user $(USERPASS) --digest
 endif
 
 home:
@@ -72,7 +72,7 @@ prep_staging:
 		rm  $(ZIPREL)/$(APPNAME).zip; \
 	fi
 
-	@echo "  >> creating destination directory $(ZIPREL)"	
+	@echo "  >> creating destination directory $(ZIPREL)"
 	@if [ ! -d $(ZIPREL) ]; \
 	then \
 		mkdir -p $(ZIPREL); \
@@ -84,7 +84,7 @@ prep_staging:
 		chmod 755 $(ZIPREL); \
 	fi
 
-	@echo "  >> creating destination directory $(STAGINGREL)"	
+	@echo "  >> creating destination directory $(STAGINGREL)"
 	@if [ -d $(STAGINGREL) ]; \
 	then \
 		find $(STAGINGREL) -delete; \
@@ -92,13 +92,13 @@ prep_staging:
 	mkdir -p $(STAGINGREL); \
 	chmod -R 755 $(STAGINGREL); \
 
-	@echo "  >> moving application to $(STAGINGREL)"
-	@cp -r $(SOURCEREL)/source/ $(STAGINGREL)
-	@cp -r $(SOURCEREL)/components/ $(STAGINGREL)
-	@cp -r $(SOURCEREL)/images/ $(STAGINGREL)
-	@cp $(SOURCEREL)/manifest $(STAGINGREL)/manifest
+	echo "  >> moving application to $(STAGINGREL)"
+	cp -r $(SOURCEREL)/source $(STAGINGREL)
+	cp -r $(SOURCEREL)/components $(STAGINGREL)
+	cp -r $(SOURCEREL)/images $(STAGINGREL)
+	cp $(SOURCEREL)/manifest $(STAGINGREL)/manifest
 
-package:
+package: prep_staging
 	@echo "*** Creating $(APPNAME).zip ***"
 	@echo "  >> copying imports"
 	@if [ "$(IMPORTFILES)" ]; \
@@ -108,12 +108,13 @@ package:
 	fi \
 
 	@echo "  >> generating build info file"
+	mkdir -p $(STAGINGREL)/$(APPSOURCEDIR)
 	@if [ -e "$(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs" ]; \
 	then \
 		rm  $(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs; \
 	fi
 	echo "  >> generating build info file";\
-	echo "Function BuildDate()" >> $(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs 
+	echo "Function BuildDate()" >> $(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs
 	echo "  return \"${BUILDDATE}\"" >> $(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs
 	echo "End Function" >> $(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs
 	echo "Function BuildCommit()" >> $(STAGINGREL)/$(APPSOURCEDIR)/buildinfo.brs
@@ -122,7 +123,7 @@ package:
 
 	# zip .png files without compression
 	# do not zip up any files ending with '~'
-	@echo "  >> creating application zip $(STAGINGREL)/../apps/$(APPNAME).zip"	
+	@echo "  >> creating application zip $(STAGINGREL)/../apps/$(APPNAME).zip"
 	@if [ -d $(STAGINGREL) ]; \
 	then \
 		cd $(STAGINGREL); \
@@ -147,7 +148,7 @@ prep_tests:
 	cp -r $(SOURCEREL)/tests/components/* $(STAGINGREL)/components/tests/;\
 	cp -r $(SOURCEREL)/tests/source/* $(STAGINGREL)/source/tests/;\
 	rooibosC -c tests/.rooibosrc.json
-	
+
 install: prep_staging package home
 	@echo "Installing $(APPNAME) to host $(ROKU_DEV_TARGET)"
 	@$(CURLCMD) --user $(USERPASS) --digest -F "mysubmit=Install" -F "archive=@$(ZIPREL)/$(APPNAME).zip" -F "passwd=" http://$(ROKU_DEV_TARGET)/plugin_install | grep "<font color" | sed "s/<font color=\"red\">//" | sed "s[</font>[["
