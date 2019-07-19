@@ -10,7 +10,7 @@ end sub
 
 sub updateSize()
     m.top.numRows = 1
-    m.top.rowSize = 5
+    m.top.rowSize = 3
 
     dimensions = m.top.getScene().currentDesignResolution
 
@@ -19,7 +19,7 @@ sub updateSize()
 
     textHeight = 80
     itemWidth = (dimensions["width"] - border*2) / m.top.rowSize
-    itemHeight = itemWidth * 1.5 + textHeight
+    itemHeight = itemWidth * dimensions["height"]/ dimensions["width"] + textHeight
 
     m.top.visible = true
 
@@ -58,6 +58,7 @@ function getData()
     rowsize = m.top.rowSize
     data = CreateObject("roSGNode", "ContentNode")
     row = data.CreateChild("ContentNode")
+    row.title = "Episodes"
     for each item in episodeData.items
         row.appendChild(item)
     end for

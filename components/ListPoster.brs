@@ -64,8 +64,10 @@ function itemContentChanged() as void
     m.title = m.top.findNode("title")
     m.poster = m.top.findNode("poster")
     itemData = m.top.itemContent
-
     m.title.text = itemData.title
+    if itemData.json.lookup("Type") = "Episode"
+        m.title.text = StrI(itemData.json.IndexNumber) + ". " + m.title.text
+    end if
     m.poster.uri = itemData.posterUrl
 
     updateSize()

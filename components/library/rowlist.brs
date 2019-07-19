@@ -22,7 +22,7 @@ sub updateSize()
     m.top.translation = [border, border + 115]
 
     itemWidth = (dimensions["width"] - border*2) / m.top.rowSize
-    itemHeight = 75
+    itemHeight = dimensions["height"] / 2
 
     m.top.visible = true
 
