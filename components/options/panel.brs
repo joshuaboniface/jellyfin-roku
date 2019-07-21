@@ -33,7 +33,7 @@ end sub
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
 
-    if key = "options"
+    if key = "options" or key = "back"
         m.top.visible = false
         m.top.escape = true
         return true
