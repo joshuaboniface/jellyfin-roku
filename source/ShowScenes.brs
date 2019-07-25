@@ -14,10 +14,16 @@ sub ShowServerSelect()
   server_field.label = "Server"
   server_field.field = "server"
   server_field.type = "string"
+  if get_setting("server") <> invalid
+    server_field.value = get_setting("server")
+  end if
   port_field = CreateObject("roSGNode", "ConfigData")
   port_field.label = "Port"
   port_field.field = "port"
   port_field.type = "string"
+  if get_setting("port") <> invalid
+    port_field.value = get_setting("port")
+  end if
   items = [ server_field, port_field ]
   config.configItems = items
 

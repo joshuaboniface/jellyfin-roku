@@ -28,7 +28,7 @@ end sub
 sub LoginFlow()
   'Collect Jellyfin server and user information
   start_login:
-  if get_setting("server") = invalid then
+  if get_setting("server") = invalid or ServerInfo() = invalid then
     print "Get server details"
     ShowServerSelect()
   end if
