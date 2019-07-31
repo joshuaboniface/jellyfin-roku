@@ -454,7 +454,6 @@ sub ShowTVShowOptions(library)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       return
     else if nodeEventQ(msg, "escapeButton")
-      print msg
       node = msg.getRoSGNode()
       if node.escapeButton = "down"
         pager.setFocus(true)
@@ -641,7 +640,6 @@ sub ShowCollections(library)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       return
     else if nodeEventQ(msg, "escapeButton")
-      print msg
       node = msg.getRoSGNode()
       if node.escapeButton = "down"
         pager.setFocus(true)
