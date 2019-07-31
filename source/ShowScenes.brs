@@ -404,6 +404,7 @@ sub ShowTVShowOptions(library)
     "SortOrder": sort_order })
   item_grid.objects = item_list
 
+  item_grid.observeField("escapeButton", port)
   item_grid.observeField("itemSelected", port)
 
   pager = scene.findNode("pager")
@@ -450,7 +451,19 @@ sub ShowTVShowOptions(library)
 
   while true
     msg = wait(0, port)
-    if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
+    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
+      return
+    else if nodeEventQ(msg, "escapeButton")
+      print msg
+      node = msg.getRoSGNode()
+      if node.escapeButton = "down"
+        pager.setFocus(true)
+        pager.getChild(0).setFocus(true)
+      else if node.escapeButton = "options"
+        sidepanel.visible = true
+        sidepanel.findNode("panelList").setFocus(true)
+      end if
+    else if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
       item_grid.setFocus(true)
     else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
       item_grid.setFocus(true)
@@ -578,6 +591,7 @@ sub ShowCollections(library)
     "SortOrder": sort_order })
   item_grid.objects = item_list
 
+  item_grid.observeField("escapeButton", port)
   item_grid.observeField("itemSelected", port)
 
   pager = scene.findNode("pager")
@@ -626,6 +640,16 @@ sub ShowCollections(library)
     msg = wait(0, port)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       return
+    else if nodeEventQ(msg, "escapeButton")
+      print msg
+      node = msg.getRoSGNode()
+      if node.escapeButton = "down"
+        pager.setFocus(true)
+        pager.getChild(0).setFocus(true)
+      else if node.escapeButton = "options"
+        sidepanel.visible = true
+        sidepanel.findNode("panelList").setFocus(true)
+      end if
     else if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
       item_grid.setFocus(true)
     else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
