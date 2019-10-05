@@ -16,7 +16,7 @@ splash_screen_sd=pkg:/images/splash-screen_sd.jpg
 
 splash_min_time=1500
 
-ui_resolutions=hd,fhd
+ui_resolutions=fhd
 
 screensaver_private=0
 screensaver_title=Jellyfin
