@@ -20,7 +20,7 @@ ZIP_EXCLUDE= -x rooibos/**\* -x xml/* -x artwork/* -x \*.pkg -x storeassets\* -x
 
 include app.mk
 
-test: get_images prep_staging prep_tests remove install
+test: prep_staging prep_tests remove install
 	echo "Running tests"
 
-deploy: get_images prep_staging remove install
+deploy: prep_staging remove install

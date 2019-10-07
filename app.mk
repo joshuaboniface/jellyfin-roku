@@ -154,7 +154,7 @@ prep_tests:
 	cp -r $(SOURCEREL)/tests/source/* $(STAGINGREL)/source/tests/;\
 	./node_modules/.bin/rooibos-cli i tests/.rooibosrc.json
 
-install: get_images prep_staging package home
+install: prep_staging package home
 	@echo "Installing $(APPNAME) to host $(ROKU_DEV_TARGET)"
 	@$(CURLCMD) --user $(USERPASS) --digest -F "mysubmit=Install" -F "archive=@$(ZIPREL)/$(APPNAME).zip" -F "passwd=" http://$(ROKU_DEV_TARGET)/plugin_install | grep "<font color" | sed "s/<font color=\"red\">//" | sed "s[</font>[["
 
@@ -174,15 +174,12 @@ get_images:
 		echo "Creating images folder"; \
 	fi
 
-	@if [ -e $(ICON_SOURCE) ]; \
-	then \
-		echo "Images are already downloaded"; \
-	else \
-		echo "Downloading images from $(BRANDING_ROOT)"; \
-		wget $(BRANDING_ROOT)/$(ICON_SOURCE) > /dev/null ; \
-		wget $(BRANDING_ROOT)/$(BANNER_SOURCE) > /dev/null ; \
-		echo "Finished downloading images"; \
-	fi
+	echo "Downloading SVG source files from $(BRANDING_ROOT)"
+	@wget $(BRANDING_ROOT)/$(ICON_SOURCE) > /dev/null
+	@wget $(BRANDING_ROOT)/$(BANNER_SOURCE) > /dev/null
+	echo "Finished downloading SVG files"
+
+	echo "Creating image files"
 	@convert -background "#000b25" -gravity center -scale 535x400 -extent 540x405 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_fhd.png
 	@convert -background "#000b25" -gravity center -scale 275x205 -extent 280x210 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_hd.png
 	@convert -background "#000b25" -gravity center -scale 182x135 -extent 187x140 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_sd.png
@@ -192,7 +189,8 @@ get_images:
 	@convert -background "#000b25" -gravity center -scale 540x540 -extent 1920x1080 $(BANNER_SOURCE) $(OUTPUT_DIR)/splash-screen_fhd.jpg
 	@convert -background "#000b25" -gravity center -scale 360x360 -extent 1280x720 $(BANNER_SOURCE) $(OUTPUT_DIR)/splash-screen_hd.jpg
 	@convert -background "#000b25" -gravity center -scale 240x240 -extent 720x480 $(BANNER_SOURCE) $(OUTPUT_DIR)/splash-screen_sd.jpg
-	
+	echo "Finished creating image files"
+
 screenshot:
 	SCREENSHOT_TIME=`date "+%s"`; \
 	curl -m 1 -o screenshot.jpg --user $(USERPASS) --digest "http://$(ROKU_DEV_TARGET)/pkgs/dev.jpg?time=$$SCREENSHOT_TIME" -H 'Accept: image/png,image/*;q=0.8,*/*;q=0.5' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate'
