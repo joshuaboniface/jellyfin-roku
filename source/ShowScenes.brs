@@ -1,3 +1,5 @@
+
+
 sub ShowServerSelect()
   ' Get and Save Jellyfin Server Information
   port = CreateObject("roMessagePort")
@@ -104,29 +106,20 @@ sub ShowSignInSelect()
   end while
 end sub
 
-sub ShowLibrarySelect()
+function CreateLibraryScene()
   ' Main screen after logging in. Shows the user's libraries
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
-  scene = screen.CreateScene("Library")
-
-  screen.show()
-
-  themeScene(scene)
+  libscene = CreateObject("roSGNode", "Library")
 
   libs = LibraryList()
 
-  scene.libraries = libs
-  scene.observeField("librarySelected", port)
+  libscene.libraries = libs
+  libscene.observeField("librarySelected", m.port)
 
-  library = scene.findNode("LibrarySelect")
+  library = libscene.findNode("LibrarySelect")
 
-  search = scene.findNode("search")
-  search.observeField("escape", port)
-  search.observeField("search_value", port)
+  search = libscene.findNode("search")
 
-  sidepanel = scene.findNode("options")
+  sidepanel = libscene.findNode("options")
   new_options = []
   options_buttons = [
     {"title": "Change server", "id": "change_server"},
@@ -138,7 +131,6 @@ sub ShowLibrarySelect()
     o.title = opt.title
     o.id = opt.id
     new_options.push(o)
-    o.observeField("escape", port)
   end for
 
   ' And a profile button
@@ -154,86 +146,21 @@ sub ShowLibrarySelect()
   user_node.value = get_setting("active_user")
   new_options.push(user_node)
 
-
   sidepanel.options = new_options
-  sidepanel.observeField("escape", port)
 
-  while(true)
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "search"
-      library.setFocus(true)
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
-      if user_node.value <> get_setting("active_user")
-        PickUser(user_node.value)
-        setGlobal("user_change", true)
-        return
-      end if
-      library.setFocus(true)
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "change_server"
-      unset_setting("server")
-      unset_setting("port")
-      SignOut()
-      return
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "sign_out"
-      SignOut()
-      return
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "add_user"
-      ' We don't want to SignOut the current user
-      unset_setting("active_user")
-      unset_setting("server")
-      unset_setting("port")
-      return
-    else if nodeEventQ(msg, "search_value")
-      query = msg.getRoSGNode().search_value
-      if query <> invalid or query <> ""
-        ShowSearchOptions(query)
-      end if
-      search.search_value = ""
-    else if nodeEventQ(msg, "librarySelected")
-      target = getMsgRowTarget(msg, "LibrarySelect")
-      if target.type = "movies"
-        ShowMovieOptions(target)
-      else if target.type = "tvshows"
-        ShowTVShowOptions(target)
-      else if target.type = "boxsets"
-        ShowCollections(target)
-      else
-        scene.dialog = make_dialog("This library type is not yet implemented: " + target.type)
-        scene.dialog.observeField("buttonSelected", port)
-      end if
-    else if nodeEventQ(msg, "buttonSelected")
-      if msg.getNode() = "popup"
-        msg.getRoSGNode().close = true
-      end if
-    else
-      print msg
-    end if
-  end while
-end sub
+  return libscene
+end function
 
-sub ShowMovieOptions(library)
-  ' Movie list page
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
-  scene = screen.CreateScene("Movies")
+function CreateMovieScene(library)
+  group = CreateObject("roSGNode", "Movies")
 
-  screen.show()
-
-  overhang = scene.findNode("overhang")
-  overhang.title = library.name
-
-  themeScene(scene)
-
-  item_grid = scene.findNode("picker")
+  group.observeField("backPressed", m.port)
+  group.observeField("movieSelected", m.port)
 
   page_num = 1
-  page_size = 50  ' Make this customizable somehow
-
-  sort_order = get_user_setting("movie_sort_order", "Ascending")
-  sort_field = get_user_setting("movie_sort_field", "SortName")
+  page_size = 20
+  sort_order = "Ascending"
+  sort_field = "SortName"
 
   item_list = ItemList(library.id, {"limit": page_size,
     "StartIndex": page_size * (page_num - 1),
@@ -241,101 +168,32 @@ sub ShowMovieOptions(library)
     "SortOrder": sort_order,
     "IncludeItemTypes": "Movie"
   })
-  item_grid.objects = item_list
+  group.objects = item_list
 
-  item_grid.observeField("escapeButton", port)
-  item_grid.observeField("itemSelected", port)
+  return group
+end function
 
-  pager = scene.findNode("pager")
-  pager.currentPage = page_num
-  pager.maxPages = item_list.TotalRecordCount / page_size
-  if item_list.TotalRecordCount mod page_size > 0 then pager.maxPages += 1
+function CreateMovieDetails(movie)
+  group = CreateObject("roSGNode", "MovieDetails")
 
-  pager.observeField("escape", port)
-  pager.observeField("pageSelected", port)
+  group.observeField("backPressed", m.port)
 
-  sidepanel = scene.findNode("options")
-  movie_options = [
-    {"title": "Sort Field",
-     "base_title": "Sort Field",
-     "key": "movie_sort_field",
-     "default": "DateCreated",
-     "values": [
-       {display: "Date Added", value: "DateCreated"},
-       {display: "Release Date", value: "PremiereDate"},
-       {display: "Name", value: "SortName"}
-     ]},
-    {"title": "Sort Order",
-     "base_title": "Sort Order",
-     "key": "movie_sort_order",
-     "default": "Ascending",
-     "values": [
-       {display: "Descending", value: "Descending"},
-       {display: "Ascending", value: "Ascending"}
-     ]}
-  ]
-  new_options = []
-  for each opt in movie_options
-    o = CreateObject("roSGNode", "OptionsData")
-    o.title = opt.title
-    o.choices = opt.values
-    o.base_title = opt.base_title
-    o.config_key = opt.key
-    o.value = get_user_setting(opt.key, opt.default)
-    new_options.append([o])
+  movie = ItemMetaData(movie.id)
+  group.itemContent = movie
+
+  buttons = group.findNode("buttons")
+  for each b in buttons.getChildren(-1, 0)
+    b.observeField("buttonSelected", m.port)
   end for
 
-  sidepanel.options = new_options
-  sidepanel.observeField("escape", port)
-
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "escapeButton")
-      node = msg.getRoSGNode()
-      if node.escapeButton = "down"
-        pager.setFocus(true)
-        pager.getChild(0).setFocus(true)
-      else if node.escapeButton = "options"
-        sidepanel.visible = true
-        sidepanel.findNode("panelList").setFocus(true)
-      end if
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
-      item_grid.setFocus(true)
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
-      item_grid.setFocus(true)
-    else if nodeEventQ(msg, "pageSelected") and pager.pageSelected <> invalid
-      pager.pageSelected = invalid
-      page_num = int(val(msg.getData().id))
-      pager.currentPage = page_num
-      item_list = ItemList(library.id, {"limit": page_size,
-        "StartIndex": page_size * (page_num - 1),
-        "SortBy": sort_field,
-        "SortOrder": sort_order,
-        "IncludeItemTypes": "Movie"
-      })
-      item_grid.objects = item_list
-      item_grid.setFocus(true)
-    else if nodeEventQ(msg, "itemSelected")
-      target = getMsgRowTarget(msg)
-      ShowMovieDetails(target)
-    else
-      print msg
-      print msg.getField()
-      print msg.getData()
-    end if
-  end while
-end sub
+  return group
+end function
 
 sub ShowMovieDetails(movie)
   ' Movie detail page
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("MovieItemDetailScene")
-
-  screen.show()
 
   themeScene(scene)
 
@@ -378,12 +236,9 @@ end sub
 
 sub ShowTVShowOptions(library)
   ' TV Show List Page
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("TVShows")
-
-  screen.show()
 
   overhang = scene.findNode("overhang")
   overhang.title = library.name
@@ -487,12 +342,9 @@ end sub
 
 sub ShowTVShowDetails(series)
   ' TV Show Detail Page
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("TVShowItemDetailScene")
-
-  screen.show()
 
   themeScene(scene)
 
@@ -530,12 +382,9 @@ end sub
 
 sub ShowTVSeasonEpisodes(series, season)
   ' TV Show Season Episdoe List
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("TVEpisodes")
-
-  screen.show()
 
   themeScene(scene)
 
@@ -564,12 +413,9 @@ end sub
 
 sub ShowCollections(library)
   ' Load Movie Collection Items
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("Collections")
-
-  screen.show()
 
   overhang = scene.findNode("overhang")
   overhang.title = library.name
@@ -675,12 +521,9 @@ end sub
 
 sub ShowSearchOptions(query)
   ' Search Results Page
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("SearchResults")
-
-  screen.show()
 
   themeScene(scene)
 
@@ -714,12 +557,9 @@ end sub
 
 sub showVideoPlayer(video_id)
   ' Video is Playing
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
+  port = m.port
+  screen = m.screen
   scene = screen.CreateScene("Scene")
-
-  screen.show()
 
   themeScene(scene)
 

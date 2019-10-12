@@ -62,22 +62,5 @@ end function
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
 
-    ' When hitting down, if unhandled then we are trying to escape downwards
-    if key = "down" and (m.top.itemFocused + 1) = m.top.content.getChildCount()
-        search = m.top.getScene().findNode("search")
-        search.setFocus(true)
-        search.findNode("search-input").setFocus(true)
-        search.findNode("search-input").active = true
-        return true
-    else if key = "options"
-        options = m.top.getScene().findNode("options")
-        list = options.findNode("panelList")
-
-        options.visible = true
-        list.setFocus(true)
-
-        return true
-    end if
-
     return false
 end function

@@ -2,7 +2,7 @@ sub init()
   main = m.top.findNode("main_group")
   dimensions = m.top.getScene().currentDesignResolution
 
-  main.translation=[50, 50]
+  main.translation=[50, 175]
 
   overview = m.top.findNode("overview")
   overview.width = dimensions.width - 100 - 400
@@ -18,7 +18,6 @@ sub itemContentChanged()
   m.top.findNode("moviePoster").uri = m.top.itemContent.posterURL
 
   ' Handle all "As Is" fields
-  setFieldText("title", itemData.name)
   setFieldText("releaseYear", itemData.productionYear)
   setFieldText("officialRating", itemData.officialRating)
   setFieldText("communityRating", str(itemData.communityRating))
@@ -133,3 +132,13 @@ function round(f as float) as integer
   end if
 end function
 
+function onKeyEvent(key as string, press as boolean) as boolean
+  if not press then return false
+
+  if key = "back"
+    m.top.backPressed = true
+    return true
+  end if
+
+  return false
+end function

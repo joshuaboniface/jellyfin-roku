@@ -4,25 +4,76 @@ sub Main()
   if (type(Rooibos__Init) = "Function") then Rooibos__Init()
 
   ' The main function that runs when the application is launched.
-  keepalive = CreateObject("roSGScreen")
-  keepalive.show()
+  m.screen = CreateObject("roSGScreen")
+  m.port = CreateObject("roMessagePort")
+  m.screen.setMessagePort(m.port)
+  m.scene = m.screen.CreateScene("Scene")
+
+  m.screen.show()
+  m.overhang = CreateObject("roSGNode", "JFOverhang")
+
+  themeScene()
 
   app_start:
   ' First thing to do is validate the ability to use the API
   LoginFlow()
 
-  ' Confirm the configured server and user work
-  ShowLibrarySelect()
 
-  ' Have a catch for exiting the library on sign-out
-  if get_setting("active_user") = invalid
-    goto app_start
-  end if
-  if getGlobal("user_change") = true
-    ' Signal caught, reset
-    setGlobal("user_change", false)
-    goto app_start
-  end if
+  ' Confirm the configured server and user work
+  group = CreateLibraryScene()
+  m.scene.appendChild(group)
+  m.overhang.title = "My Media"
+
+  while(true)
+    msg = wait(0, m.port)
+    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
+      print "CLOSING SCREEN"
+      return
+    else if isNodeEvent(msg, "backPressed")
+      ' Pop a group off the stack and expose what's below
+      n = m.scene.getChildCount() - 1
+      if n = 0
+        return
+      end if
+      m.scene.removeChildIndex(n)
+      group = m.scene.getChild(n - 1)
+      if group.lastFocus <> invalid
+        group.lastFocus.setFocus(true)
+      else
+        group.setFocus(true)
+      end if
+      group.visible = true
+    else if isNodeEvent(msg, "librarySelected")
+      ' If you select a library from ANYWHERE, follow this flow
+      node = getMsgSubnode(msg, "LibrarySelect")
+      if node.type = "movies"
+        group.lastFocus = group.focusedChild
+        group.setFocus(false)
+        group.visible = false
+
+        group = CreateMovieScene(node)
+        m.overhang.title = "Movies"
+        m.scene.appendChild(group)
+      else
+        print node.type
+      end if
+    else if isNodeEvent(msg, "movieSelected")
+      ' If you select a movie from ANYWHERE, follow this flow
+      node = getMsgSubnode(msg, "picker")
+
+      group.lastFocus = group.focusedChild
+      group.setFocus(false)
+      group.visible = false
+
+      group = CreateMovieDetails(node)
+      m.overhang.title = node.title
+      m.scene.appendChild(group)
+    else
+      print type(msg)
+      print msg
+    end if
+  end while
+
 end sub
 
 sub LoginFlow()
