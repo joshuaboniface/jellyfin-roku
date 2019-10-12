@@ -32,7 +32,8 @@ sub Main()
     else if isNodeEvent(msg, "backPressed")
       ' Pop a group off the stack and expose what's below
       n = m.scene.getChildCount() - 1
-      if n = 0
+      if n = 1
+        ' Overhang + last scene... this is the end
         return
       end if
       m.scene.removeChildIndex(n)

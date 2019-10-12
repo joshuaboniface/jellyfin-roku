@@ -106,18 +106,19 @@ end sub
 
 function CreateLibraryScene()
   ' Main screen after logging in. Shows the user's libraries
-  libscene = CreateObject("roSGNode", "Library")
+  group = CreateObject("roSGNode", "Library")
 
   libs = LibraryList()
 
-  libscene.libraries = libs
-  libscene.observeField("librarySelected", m.port)
+  group.libraries = libs
+  group.observeField("librarySelected", m.port)
+  group.observeField("backPressed", m.port)
 
-  library = libscene.findNode("LibrarySelect")
+  library = group.findNode("LibrarySelect")
 
-  search = libscene.findNode("search")
+  search = group.findNode("search")
 
-  sidepanel = libscene.findNode("options")
+  sidepanel = group.findNode("options")
   new_options = []
   options_buttons = [
     {"title": "Change server", "id": "change_server"},
@@ -146,7 +147,7 @@ function CreateLibraryScene()
 
   sidepanel.options = new_options
 
-  return libscene
+  return group
 end function
 
 function CreateMovieScene(library)
