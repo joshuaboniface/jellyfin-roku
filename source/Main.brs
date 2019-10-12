@@ -21,8 +21,8 @@ sub Main()
 
   ' Confirm the configured server and user work
   group = CreateLibraryScene()
+  m.overhang.title = group.overhangTitle
   m.scene.appendChild(group)
-  m.overhang.title = "My Media"
 
   while(true)
     msg = wait(0, m.port)
@@ -37,6 +37,8 @@ sub Main()
       end if
       m.scene.removeChildIndex(n)
       group = m.scene.getChild(n - 1)
+      m.overhang.title = group.overhangTitle
+      m.overhang.visible = true
       if group.lastFocus <> invalid
         group.lastFocus.setFocus(true)
       else
@@ -45,29 +47,45 @@ sub Main()
       group.visible = true
     else if isNodeEvent(msg, "librarySelected")
       ' If you select a library from ANYWHERE, follow this flow
-      node = getMsgSubnode(msg, "LibrarySelect")
+      node = getMsgPicker(msg, "LibrarySelect")
       if node.type = "movies"
         group.lastFocus = group.focusedChild
         group.setFocus(false)
         group.visible = false
 
         group = CreateMovieScene(node)
-        m.overhang.title = "Movies"
+        m.overhang.title = group.overhangTitle
         m.scene.appendChild(group)
       else
         print node.type
       end if
     else if isNodeEvent(msg, "movieSelected")
       ' If you select a movie from ANYWHERE, follow this flow
-      node = getMsgSubnode(msg, "picker")
+      node = getMsgPicker(msg, "picker")
 
       group.lastFocus = group.focusedChild
       group.setFocus(false)
       group.visible = false
 
       group = CreateMovieDetails(node)
-      m.overhang.title = node.title
       m.scene.appendChild(group)
+      m.overhang.title = group.overhangTitle
+    else if isNodeEvent(msg, "buttonSelected")
+      ' If a button is selected, we have some determining to do
+      btn = getButton(msg)
+      if btn.id = "play-button"
+        ' TODO - Do a better job of picking the focusedChild
+        group.lastFocus = group.focusedChild
+        group.setFocus(false)
+        group.visible = false
+        video_id = group.id
+
+        group = CreateVideoPlayer(video_id)
+        m.scene.appendChild(group)
+        group.setFocus(true)
+        group.control = "play"
+        m.overhang.visible = false
+      end if
     else
       print type(msg)
       print msg

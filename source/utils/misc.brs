@@ -2,7 +2,7 @@ function isNodeEvent(msg, field as string) as boolean
   return type(msg) = "roSGNodeEvent" and msg.getField() = field
 end function
 
-function getMsgSubnode(msg, subnode="" as string) as object
+function getMsgPicker(msg, subnode="" as string) as object
   node = msg.getRoSGNode()
   ' Subnode allows for handling alias messages
   if subnode <> ""
@@ -11,6 +11,13 @@ function getMsgSubnode(msg, subnode="" as string) as object
   coords = node.rowItemSelected
   target = node.content.getChild(coords[0]).getChild(coords[1])
   return target
+end function
+
+function getButton(msg, subnode="buttons" as string) as object
+  buttons = msg.getRoSGNode().findNode(subnode)
+  active_button = buttons.focusedChild
+
+  return active_button
 end function
 
 sub themeScene()

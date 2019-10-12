@@ -1,5 +1,3 @@
-
-
 sub ShowServerSelect()
   ' Get and Save Jellyfin Server Information
   port = CreateObject("roMessagePort")
@@ -188,51 +186,6 @@ function CreateMovieDetails(movie)
 
   return group
 end function
-
-sub ShowMovieDetails(movie)
-  ' Movie detail page
-  port = m.port
-  screen = m.screen
-  scene = screen.CreateScene("MovieItemDetailScene")
-
-  themeScene(scene)
-
-  movie = ItemMetaData(movie.id)
-  scene.itemContent = movie
-
-  buttons = scene.findNode("buttons")
-  for each b in buttons.getChildren(-1, 0)
-    b.observeField("buttonSelected", port)
-  end for
-
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "buttonSelected")
-      if msg.getNode() = "play-button"
-        showVideoPlayer(movie.id)
-      else if msg.getNode() = "watched-button"
-        if movie.watched
-          UnmarkItemWatched(movie.id)
-        else
-          MarkItemWatched(movie.id)
-        end if
-        movie.watched = not movie.watched
-      else if msg.getNode() = "favorite-button"
-        if movie.favorite
-          UnmarkItemFavorite(movie.id)
-        else
-          MarkItemFavorite(movie.id)
-        end if
-        movie.favorite = not movie.favorite
-      end if
-    else
-      print msg
-      print type(msg)
-    end if
-  end while
-end sub
 
 sub ShowTVShowOptions(library)
   ' TV Show List Page
@@ -555,60 +508,12 @@ sub ShowSearchOptions(query)
   end while
 end sub
 
-sub showVideoPlayer(video_id)
+function CreateVideoPlayer(video_id)
   ' Video is Playing
-  port = m.port
-  screen = m.screen
-  scene = screen.CreateScene("Scene")
-
-  themeScene(scene)
-
   video = VideoPlayer(video_id)
-  scene.appendChild(video)
 
-  video.setFocus(true)
+  video.observeField("backPressed", m.port)
+  video.observeField("state", m.port)
 
-  video.observeField("state", port)
-
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      PlaystateStop(video_id)
-      return
-
-      ' Video is already gone by this point
-      ' TODO - add an event listener higher up that watches for closing
-      ' so we can handle end of video a bit better
-      if video = invalid then return
-
-      progress = int( video.position / video.duration * 100)
-      if progress > 95  ' TODO - max resume percentage
-        MarkItemWatched(video_id)
-      end if
-      ticks = video.position * 10000000
-      PlaystateStop(video_id, {"PositionTicks": ticks})
-      return
-    else if nodeEventQ(msg, "state")
-      state = msg.getData()
-      if state = "stopped" or state = "finished"
-        print "Stopping Video!"
-        ticks = video.position * 10000000
-        PlaystateStop(video_id, {"PositionTicks": ticks})
-        screen.close()
-      else if state = "paused"
-        ticks = video.position * 10000000
-        PlaystateUpdate(video_id, {
-          "PositionTicks": ticks,
-          "IsPaused": true
-        })
-      else if state = "playing"
-        ticks = video.position * 10000000
-        PlaystateStart(video_id, {
-          "PositionTicks": ticks,
-          "IsPaused": false
-        })
-      end if
-    end if
-  end while
-
-end sub
+  return video
+end function

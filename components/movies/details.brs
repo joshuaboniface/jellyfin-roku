@@ -1,4 +1,5 @@
 sub init()
+  m.top.overhangTitle = "Movie"
   main = m.top.findNode("main_group")
   dimensions = m.top.getScene().currentDesignResolution
 
@@ -14,10 +15,12 @@ sub itemContentChanged()
   ' Updates video metadata
   item = m.top.itemContent
   itemData = item.json
+  m.top.id = itemData.id
 
   m.top.findNode("moviePoster").uri = m.top.itemContent.posterURL
 
   ' Handle all "As Is" fields
+  m.top.overhangTitle = itemData.name
   setFieldText("releaseYear", itemData.productionYear)
   setFieldText("officialRating", itemData.officialRating)
   setFieldText("communityRating", str(itemData.communityRating))

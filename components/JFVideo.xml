@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="JFVideo" extends="Video">
+  <interface>
+    <field id="backPressed" type="boolean" alwaysNotify="true" />
+  </interface>
+  <script type="text/brightscript" uri="JFVideo.brs" />
+</component>

@@ -3,6 +3,7 @@
   <interface>
     <field id="backPressed" type="boolean" alwaysNotify="true" />
     <field id="lastFocus" type="node" />
+    <field id="overhangTitle" value="Jellyfin" type="string" />
   </interface>
   <script type="text/brightscript" uri="JFGroup.brs" />
 </component>

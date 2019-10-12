@@ -1,5 +1,4 @@
 sub init()
-  m.top.overhangTitle = "Movies"
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean

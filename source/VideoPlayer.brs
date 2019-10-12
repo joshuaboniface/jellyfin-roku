@@ -1,12 +1,7 @@
 function VideoPlayer(id)
   ' Get video controls and UI
-  video = CreateObject("roSGNode", "Video")
-  content = VideoContent(id)
-
-  video.setFocus(true)
-
-  video.content = content
-  video.control = "play"
+  video = CreateObject("roSGNode", "JFVideo")
+  video.content = VideoContent(id)
 
   jellyfin_blue = "#00a4dcFF"
 
