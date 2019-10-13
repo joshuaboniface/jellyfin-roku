@@ -3,6 +3,8 @@
   <children>
     <SearchBox id="SearchBox" visible="true" translation="[960, 145]" />
     <SearchRow id="SearchSelect" visible="false" />
+
+    <OptionsSlider id="options" />
   </children>
   <interface>
     <field id="query" type="string" alwaysNotify="true" />
