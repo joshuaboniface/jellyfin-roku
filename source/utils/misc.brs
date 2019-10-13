@@ -35,12 +35,19 @@ function leftPad(base as string, fill as string, length as integer) as string
   return base
 end function
 
-function make_dialog(message="" as string)
+function message_dialog(message="" as string)
   ' Takes a string and returns an object for dialog popup
-  dialog = createObject("roSGNode", "Dialog")
+  dialog = createObject("roSGNode", "JFMessageDialog")
   dialog.id = "popup"
   dialog.buttons = ["OK"]
   dialog.message = message
 
-  return dialog
+  m.scene.dialog = dialog
+  m.scene.dialog.observeField("buttonSelected", handle_dialog)
+  m.scene.dialog.setFocus(true)
+end function
+
+function handle_dialog(msg)
+  print("THERE")
+  m.scene.dialog.close = true
 end function

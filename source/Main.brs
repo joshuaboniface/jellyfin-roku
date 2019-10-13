@@ -7,7 +7,7 @@ sub Main()
   m.screen = CreateObject("roSGScreen")
   m.port = CreateObject("roMessagePort")
   m.screen.setMessagePort(m.port)
-  m.scene = m.screen.CreateScene("Scene")
+  m.scene = m.screen.CreateScene("JFScene")
 
   m.screen.show()
   m.overhang = CreateObject("roSGNode", "JFOverhang")
@@ -20,10 +20,17 @@ sub Main()
 
 
   ' Confirm the configured server and user work
-  group = CreateLibraryScene()
+  group = CreateLibraryGroup()
   m.overhang.title = group.overhangTitle
   m.scene.appendChild(group)
 
+  m.scene.observeField("backPressed", m.port)
+  m.scene.observeField("optionsPressed", m.port)
+
+  ' This is the core logic loop. Mostly for transitioning between scenes
+  ' This now only references m. fields so could be placed anywhere, in theory
+  ' "group" is always "whats on the screen"
+  ' m.scene's children is the "previous view" stack
   while(true)
     msg = wait(0, m.port)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
@@ -46,6 +53,17 @@ sub Main()
         group.setFocus(true)
       end if
       group.visible = true
+    else if isNodeEvent(msg, "optionsPressed")
+      group.lastFocus = group.focusedChild
+      panel = group.findNode("options")
+      panel.visible = true
+      panel.findNode("panelList").setFocus(true)
+    else if isNodeEvent(msg, "closeSidePanel")
+      if group.lastFocus <> invalid
+        group.lastFocus.setFocus(true)
+      else
+        group.setFocus(true)
+      end if
     else if isNodeEvent(msg, "librarySelected")
       ' If you select a library from ANYWHERE, follow this flow
       node = getMsgPicker(msg, "LibrarySelect")
@@ -54,11 +72,12 @@ sub Main()
         group.setFocus(false)
         group.visible = false
 
-        group = CreateMovieScene(node)
+        group = CreateMovieListGroup(node)
         m.overhang.title = group.overhangTitle
         m.scene.appendChild(group)
       else
-        print node.type
+        ' TODO - switch on more node types
+        message_dialog("This library type is not yet implemented: " + node.type)
       end if
     else if isNodeEvent(msg, "movieSelected")
       ' If you select a movie from ANYWHERE, follow this flow
@@ -68,24 +87,45 @@ sub Main()
       group.setFocus(false)
       group.visible = false
 
-      group = CreateMovieDetails(node)
+      group = CreateMovieDetailsGroup(node)
       m.scene.appendChild(group)
       m.overhang.title = group.overhangTitle
     else if isNodeEvent(msg, "buttonSelected")
       ' If a button is selected, we have some determining to do
       btn = getButton(msg)
       if btn.id = "play-button"
-        ' TODO - Do a better job of picking the focusedChild
+        ' TODO - Do a better job of picking the last focus
         group.lastFocus = group.focusedChild
         group.setFocus(false)
         group.visible = false
         video_id = group.id
 
-        group = CreateVideoPlayer(video_id)
+        group = CreateVideoPlayerGroup(video_id)
         m.scene.appendChild(group)
         group.setFocus(true)
         group.control = "play"
         m.overhang.visible = false
+      end if
+    else if isNodeEvent(msg, "optionSelected")
+      button = msg.getRoSGNode()
+      if button.id = "goto_search"
+        print "Search goes here"
+      else if button.id = "change_server"
+        unset_setting("server")
+        unset_setting("port")
+        SignOut()
+        wipe_groups()
+        goto app_start
+      else if button.id = "sign_out"
+        SignOut()
+        wipe_groups()
+        goto app_start
+      else if button.id = "add_user"
+        unset_setting("active_user")
+        unset_setting("server")
+        unset_setting("port")
+        wipe_groups()
+        goto app_start
       end if
     else
       print type(msg)
@@ -100,12 +140,12 @@ sub LoginFlow()
   start_login:
   if get_setting("server") = invalid or ServerInfo() = invalid then
     print "Get server details"
-    ShowServerSelect()
+    CreateServerGroup()
   end if
 
   if get_setting("active_user") = invalid then
     print "Get user login"
-    ShowSigninSelect()
+    CreateSigninGroup()
   end if
 
   m.user = AboutMe()
@@ -114,6 +154,8 @@ sub LoginFlow()
     unset_setting("active_user")
     goto start_login
   end if
+
+  wipe_groups()
 end sub
 
 sub RunScreenSaver()
@@ -135,4 +177,11 @@ sub RunScreenSaver()
     end if
   end while
 
+end sub
+
+sub wipe_groups()
+  ' The 1 remaining child should be the overhang
+  while(m.scene.getChildCount() > 1)
+    m.scene.removeChildIndex(1)
+  end while
 end sub

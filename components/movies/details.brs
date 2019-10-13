@@ -134,14 +134,3 @@ function round(f as float) as integer
     return n
   end if
 end function
-
-function onKeyEvent(key as string, press as boolean) as boolean
-  if not press then return false
-
-  if key = "back"
-    m.top.backPressed = true
-    return true
-  end if
-
-  return false
-end function

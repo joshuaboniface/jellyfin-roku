@@ -2,6 +2,7 @@
 <component name="Movies" extends="JFGroup">
   <children>
     <ItemGrid id="picker" visible="true" itemsPerRow="10" />
+    <OptionsSlider id="options" />
   </children>
   <interface>
     <field id="movieSelected" alias="picker.itemSelected" />

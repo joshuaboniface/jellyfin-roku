@@ -11,13 +11,6 @@ sub init()
     list = m.top.findNode("panelList")
 
     panel.list = list
-
-    bd = m.top.findNode("backdrop")
-    bd.color = "#101010DD"
-    bd.translation = [0, 0]
-    dimensions = m.top.getScene().currentDesignResolution
-    bd.width = 575
-    bd.height = dimensions.height
 end sub
 
 sub setFields()
@@ -35,12 +28,12 @@ function onKeyEvent(key as string, press as boolean) as boolean
 
     if key = "options" or key = "back"
         m.top.visible = false
-        m.top.escape = true
+        m.top.closeSidePanel = true
         return true
     else if key = "OK"
         list = m.top.findNode("panelList")
         data = list.content.getChild(list.itemFocused)
-        data.callFunc("press")
+        data.optionSelected = true
         return true
     end if
 

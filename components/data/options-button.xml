@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="OptionsButton" extends="ContentNode">
   <interface>
-    <field id="escape" type="boolean" alwaysNotify="true" />
-    <function name="press" />
+    <field id="optionSelected" type="boolean" alwaysNotify="true" />
   </interface>
   <script type="text/brightscript" uri="pkg:/source/utils/config.brs" />
   <script type="text/brightscript" uri="options-button.brs" />

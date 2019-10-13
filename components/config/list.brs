@@ -23,6 +23,7 @@ function setData()
 end function
 
 function onItemSelected()
+  print "HI"
   i = m.top.itemSelected
   itemField =  m.top.content.getchild(i)
 
@@ -59,7 +60,7 @@ sub show_dialog(configField)
     dialog.text = configField.value
   end if
 
-  m.top.getparent().dialog = dialog
+  m.top.getscene().dialog = dialog
   m.dialog = dialog
 
   dialog.observeField("buttonSelected", "onDialogButton")

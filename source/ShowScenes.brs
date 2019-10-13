@@ -1,15 +1,12 @@
-sub ShowServerSelect()
+sub CreateServerGroup()
   ' Get and Save Jellyfin Server Information
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
-  scene = screen.CreateScene("ConfigScene")
-  screen.show()
+  group = CreateObject("roSGNode", "ConfigScene")
+  m.scene.appendChild(group)
 
-  themeScene(scene)
-  scene.findNode("prompt").text = "Connect to Server"
+  group.findNode("prompt").text = "Connect to Server"
 
-  config = scene.findNode("configOptions")
+
+  config = group.findNode("configOptions")
   server_field = CreateObject("roSGNode", "ConfigData")
   server_field.label = "Server"
   server_field.field = "server"
@@ -27,14 +24,14 @@ sub ShowServerSelect()
   items = [ server_field, port_field ]
   config.configItems = items
 
-  button = scene.findNode("submit")
-  button.observeField("buttonSelected", port)
+  button = group.findNode("submit")
+  button.observeField("buttonSelected", m.port)
 
   server_hostname = config.content.getChild(0)
   server_port = config.content.getChild(1)
 
   while(true)
-    msg = wait(0, port)
+    msg = wait(0, m.port)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed()
       return
     else if type(msg) = "roSGNodeEvent"
@@ -46,28 +43,28 @@ sub ShowServerSelect()
           ' Maybe don't unset setting, but offer as a prompt
           ' Server not found, is it online? New values / Retry
           print "Server not found, is it online? New values / Retry"
-          scene.findNode("alert").text = "Server not found, is it online?"
+          group.findNode("alert").text = "Server not found, is it online?"
           SignOut()
         else
+          group.visible = false
           return
         endif
       end if
     end if
   end while
+
+  ' Just hide it when done, in case we need to come back
+  group.visible = false
 end sub
 
-sub ShowSignInSelect()
+sub CreateSigninGroup()
   ' Get and Save Jellyfin user login credentials
-  port = CreateObject("roMessagePort")
-  screen = CreateObject("roSGScreen")
-  screen.setMessagePort(port)
-  scene = screen.CreateScene("ConfigScene")
-  screen.show()
+  group = CreateObject("roSGNode", "ConfigScene")
+  m.scene.appendChild(group)
 
-  themeScene(scene)
-  scene.findNode("prompt").text = "Sign In"
+  group.findNode("prompt").text = "Sign In"
 
-  config = scene.findNode("configOptions")
+  config = group.findNode("configOptions")
   username_field = CreateObject("roSGNode", "ConfigData")
   username_field.label = "Username"
   username_field.field = "username"
@@ -79,17 +76,18 @@ sub ShowSignInSelect()
   items = [ username_field, password_field ]
   config.configItems = items
 
-  button = scene.findNode("submit")
-  button.observeField("buttonSelected", port)
+  button = group.findNode("submit")
+  button.observeField("buttonSelected", m.port)
 
-  config = scene.findNode("configOptions")
+  config = group.findNode("configOptions")
 
   username = config.content.getChild(0)
   password = config.content.getChild(1)
 
   while(true)
-    msg = wait(0, port)
+    msg = wait(0, m.port)
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed()
+      group.visible = false
       return
     else if type(msg) = "roSGNodeEvent"
       node = msg.getNode()
@@ -98,13 +96,16 @@ sub ShowSignInSelect()
         get_token(username.value, password.value)
         if get_setting("active_user") <> invalid then return
         print "Login attempt failed..."
-        scene.findNode("alert").text = "Login attempt failed."
+        group.findNode("alert").text = "Login attempt failed."
       end if
     end if
   end while
+
+  ' Just hide it when done, in case we need to come back
+  group.visible = false
 end sub
 
-function CreateLibraryScene()
+function CreateLibraryGroup()
   ' Main screen after logging in. Shows the user's libraries
   group = CreateObject("roSGNode", "Library")
 
@@ -112,15 +113,14 @@ function CreateLibraryScene()
 
   group.libraries = libs
   group.observeField("librarySelected", m.port)
-  group.observeField("backPressed", m.port)
 
   library = group.findNode("LibrarySelect")
 
-  search = group.findNode("search")
-
   sidepanel = group.findNode("options")
+  sidepanel.observeField("closeSidePanel", m.port)
   new_options = []
   options_buttons = [
+    {"title": "Search", "id": "goto_search"},
     {"title": "Change server", "id": "change_server"},
     {"title": "Sign out", "id": "sign_out"},
     {"title": "Add User", "id": "add_user"}
@@ -129,6 +129,7 @@ function CreateLibraryScene()
     o = CreateObject("roSGNode", "OptionsButton")
     o.title = opt.title
     o.id = opt.id
+    o.observeField("optionSelected", m.port)
     new_options.push(o)
   end for
 
@@ -150,16 +151,49 @@ function CreateLibraryScene()
   return group
 end function
 
-function CreateMovieScene(library)
+function CreateMovieListGroup(library)
   group = CreateObject("roSGNode", "Movies")
 
-  group.observeField("backPressed", m.port)
   group.observeField("movieSelected", m.port)
+
+  sidepanel = group.findNode("options")
+  movie_options = [
+    {"title": "Sort Field",
+     "base_title": "Sort Field",
+     "key": "movie_sort_field",
+     "default": "DateCreated",
+     "values": [
+       {display: "Date Added", value: "DateCreated"},
+       {display: "Release Date", value: "PremiereDate"},
+       {display: "Name", value: "SortName"}
+     ]},
+    {"title": "Sort Order",
+     "base_title": "Sort Order",
+     "key": "movie_sort_order",
+     "default": "Ascending",
+     "values": [
+       {display: "Descending", value: "Descending"},
+       {display: "Ascending", value: "Ascending"}
+     ]}
+  ]
+  new_options = []
+  for each opt in movie_options
+    o = CreateObject("roSGNode", "OptionsData")
+    o.title = opt.title
+    o.choices = opt.values
+    o.base_title = opt.base_title
+    o.config_key = opt.key
+    o.value = get_user_setting(opt.key, opt.default)
+    new_options.append([o])
+  end for
+
+  sidepanel.options = new_options
+  sidepanel.observeField("closeSidePanel", m.port)
 
   page_num = 1
   page_size = 20
-  sort_order = "Ascending"
-  sort_field = "SortName"
+  sort_order = get_user_setting("movie_sort_order", "Ascending")
+  sort_field = get_user_setting("movie_sort_field", "SortName")
 
   item_list = ItemList(library.id, {"limit": page_size,
     "StartIndex": page_size * (page_num - 1),
@@ -172,10 +206,9 @@ function CreateMovieScene(library)
   return group
 end function
 
-function CreateMovieDetails(movie)
+function CreateMovieDetailsGroup(movie)
   group = CreateObject("roSGNode", "MovieDetails")
 
-  group.observeField("backPressed", m.port)
 
   movie = ItemMetaData(movie.id)
   group.itemContent = movie
@@ -509,7 +542,14 @@ sub ShowSearchOptions(query)
   end while
 end sub
 
-function CreateVideoPlayer(video_id)
+function CreateSidePanel(buttons, options)
+  group = CreateObject("roSGNode", "OptionsSlider")
+  group.buttons = buttons
+  group.options = options
+
+end function
+
+function CreateVideoPlayerGroup(video_id)
   ' Video is Playing
   video = VideoPlayer(video_id)
 

@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<component name="ConfigScene" extends="Scene">
+<component name="ConfigScene" extends="JFGroup">
   <children>
-    <Overhang
-      id="overhang"
-      title="Configure"
-      />
     <label text="Enter Configuration"
       id="prompt"
       font="font:LargeBoldSystemFont"

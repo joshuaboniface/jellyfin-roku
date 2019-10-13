@@ -3,7 +3,6 @@
   <children>
     <LibraryRow id="LibrarySelect" />
     <Rectangle id="footerBackdrop" height="200" />
-    <SearchBox id="search" />
 
     <OptionsSlider id="options" />
   </children>

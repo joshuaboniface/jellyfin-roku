@@ -2,7 +2,11 @@
 <component name="OptionsSlider" extends="PanelSet">
   <children>
     <ListPanel id="panel">
-      <Rectangle id="backdrop" />
+      <Rectangle id="backdrop"
+        translation="[0, 0]"
+        color="#101010DD"
+        width="575"
+        height="1080" />
       <LabelList id="panelList">
         <ContentNode id="fieldList" role="content" />
       </LabelList>
@@ -11,7 +15,7 @@
   <interface>
     <field id="buttons" type="nodearray" onChange="setFields" />
     <field id="options" type="nodearray" onChange="setFields" />
-    <field id="escape" type="boolean" alwaysNotify="true" />
+    <field id="closeSidePanel" type="boolean" alwaysNotify="true" />
   </interface>
   <script type="text/brightscript" uri="panel.brs" />
 </component>

@@ -87,9 +87,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
   if key = "down" and (m.top.itemFocused + 1) = m.top.content.getChildCount()
     m.top.escapeButton = "down"
     return true
-  else if key = "options"
-    m.top.escapeButton = "options"
-    return true
   end if
 
   return false
