@@ -90,6 +90,29 @@ sub Main()
       group = CreateMovieDetailsGroup(node)
       m.scene.appendChild(group)
       m.overhang.title = group.overhangTitle
+    else if isNodeEvent(msg, "search_value")
+      query = msg.getRoSGNode().search_value
+      group.findNode("SearchBox").visible = false
+      options = group.findNode("SearchSelect")
+      options.visible = true
+      options.setFocus(true)
+
+      results = SearchMedia(query)
+      options.itemData = results
+      options.query = query
+    else if isNodeEvent(msg, "itemSelected")
+      ' Search item selected
+      node = getMsgPicker(msg)
+      group.lastFocus = group.focusedChild
+      group.setFocus(false)
+      group.visible = false
+
+      ' TODO - swap this based on target.mediatype
+      ' types: [ Episode, Movie, Audio, Person, Studio, MusicArtist ]
+      group = CreateMovieDetailsGroup(node)
+      m.scene.appendChild(group)
+      m.overhang.title = group.overhangTitle
+
     else if isNodeEvent(msg, "buttonSelected")
       ' If a button is selected, we have some determining to do
       btn = getButton(msg)
@@ -109,7 +132,22 @@ sub Main()
     else if isNodeEvent(msg, "optionSelected")
       button = msg.getRoSGNode()
       if button.id = "goto_search"
-        print "Search goes here"
+        ' Exit out of the side panel
+        panel.visible = false
+        if group.lastFocus <> invalid
+          group.lastFocus.setFocus(true)
+        else
+          group.setFocus(true)
+        end if
+        group.lastFocus = group.focusedChild
+        group.setFocus(false)
+        group.visible = false
+
+        group = CreateSearchPage()
+        m.scene.appendChild(group)
+        m.overhang.title = group.overhangTitle
+        group.findNode("SearchBox").findNode("search-input").setFocus(true)
+        group.findNode("SearchBox").findNode("search-input").active = true
       else if button.id = "change_server"
         unset_setting("server")
         unset_setting("port")

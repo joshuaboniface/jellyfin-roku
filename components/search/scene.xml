@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<component name="SearchResults" extends="Scene">
+<component name="SearchResults" extends="JFGroup">
   <children>
-    <SearchRow id="SearchSelect" visible="true" />
-    <Overhang id="overhang" title="Search" />
+    <SearchBox id="SearchBox" visible="true" translation="[960, 145]" />
+    <SearchRow id="SearchSelect" visible="false" />
   </children>
+  <interface>
+    <field id="query" type="string" alwaysNotify="true" />
+  </interface>
   <script type="text/brightscript" uri="scene.brs" />
 </component>

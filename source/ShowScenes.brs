@@ -506,41 +506,18 @@ sub ShowCollections(library)
   end while
 end sub
 
-sub ShowSearchOptions(query)
-  ' Search Results Page
-  port = m.port
-  screen = m.screen
-  scene = screen.CreateScene("SearchResults")
+function CreateSearchPage()
+  ' Search + Results Page
+  group = CreateObject("roSGNode", "SearchResults")
 
-  themeScene(scene)
+  search = group.findNode("SearchBox")
+  search.observeField("search_value", m.port)
 
-  options = scene.findNode("SearchSelect")
+  options = group.findNode("SearchSelect")
+  options.observeField("itemSelected", m.port)
 
-  sort_order = get_user_setting("search_sort_order", "Ascending")
-  sort_field = get_user_setting("search_sort_field", "SortName")
-
-  results = SearchMedia(query)
-  options.itemData = results
-  options.query = query
-
-  options.observeField("itemSelected", port)
-
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "itemSelected")
-      target = getMsgRowTarget(msg)
-      ' TODO - swap this based on target.mediatype
-      ' types: [ Episode, Movie, Audio, Person, Studio, MusicArtist ]
-      ShowMovieDetails(target)
-    else
-      print msg
-      print msg.getField()
-      print msg.getData()
-    end if
-  end while
-end sub
+  return group
+end function
 
 function CreateSidePanel(buttons, options)
   group = CreateObject("roSGNode", "OptionsSlider")

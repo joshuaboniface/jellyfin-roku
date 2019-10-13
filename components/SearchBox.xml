@@ -5,7 +5,6 @@
     <TextEditBox id="search-input" width="800" maxTextLength="75" />
   </children>
   <interface>
-    <field id="escape" type="boolean" alwaysNotify="true" />
     <field id="search_value" type="string" alwaysNotify="true" />
   </interface>
   <script type="text/brightscript" uri="SearchBox.brs" />

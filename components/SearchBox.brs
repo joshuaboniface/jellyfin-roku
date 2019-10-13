@@ -1,9 +1,10 @@
 sub init()
     m.top.layoutDirection = "vert"
-    dimensions = m.top.getScene().currentDesignResolution
-    m.top.translation = [dimensions.width / 2, 880]
     m.top.horizAlignment = "center"
     m.top.vertAlignment = "top"
+    m.top.visible = false
+
+    show_dialog()
 end sub
 
 function onKeyEvent(key as string, press as boolean) as boolean
@@ -12,10 +13,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
     if key = "OK"
         ' Make a Keyboard Dialog here
         show_dialog()
-        return true
-    else if key = "up"
-        m.top.findNode("search-input").active = false
-        m.top.escape = true
         return true
     end if
 
@@ -50,5 +47,4 @@ end sub
 
 sub dismiss_dialog()
     m.top.getScene().dialog.close = true
-
 end sub
