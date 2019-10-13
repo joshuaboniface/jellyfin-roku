@@ -153,6 +153,7 @@ end function
 
 function CreateMovieListGroup(library)
   group = CreateObject("roSGNode", "Movies")
+  group.id = library.id
 
   group.observeField("movieSelected", m.port)
 
@@ -190,18 +191,13 @@ function CreateMovieListGroup(library)
   sidepanel.options = new_options
   sidepanel.observeField("closeSidePanel", m.port)
 
-  page_num = 1
-  page_size = 20
-  sort_order = get_user_setting("movie_sort_order", "Ascending")
-  sort_field = get_user_setting("movie_sort_field", "SortName")
+  p = CreatePaginator()
+  group.appendChild(p)
 
-  item_list = ItemList(library.id, {"limit": page_size,
-    "StartIndex": page_size * (page_num - 1),
-    "SortBy": sort_field,
-    "SortOrder": sort_order,
-    "IncludeItemTypes": "Movie"
-  })
-  group.objects = item_list
+  group.pageNumber = 1
+  p.currentPage = group.pageNumber
+
+  MovieLister(group, 20)
 
   return group
 end function
@@ -526,6 +522,15 @@ function CreateSidePanel(buttons, options)
 
 end function
 
+function CreatePaginator()
+  group = CreateObject("roSGNode", "Pager")
+  group.id = "paginator"
+
+  group.observeField("pageSelected", m.port)
+
+  return group
+end function
+
 function CreateVideoPlayerGroup(video_id)
   ' Video is Playing
   video = VideoPlayer(video_id)
@@ -534,4 +539,21 @@ function CreateVideoPlayerGroup(video_id)
   video.observeField("state", m.port)
 
   return video
+end function
+
+function MovieLister(group, page_size)
+  sort_order = get_user_setting("movie_sort_order", "Ascending")
+  sort_field = get_user_setting("movie_sort_field", "SortName")
+
+  item_list = ItemList(group.id, {"limit": page_size,
+    "StartIndex": page_size * (group.pageNumber - 1),
+    "SortBy": sort_field,
+    "SortOrder": sort_order,
+    "IncludeItemTypes": "Movie"
+  })
+  group.objects = item_list
+
+
+  p = group.findNode("paginator")
+  p.maxPages = group.objects.TotalRecordCount
 end function

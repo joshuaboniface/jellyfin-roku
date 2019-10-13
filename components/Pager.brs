@@ -77,7 +77,11 @@ function onKeyEvent(key as string, press as boolean) as boolean
         focusNext()
         return true
     else if key = "up"
-        m.top.escape = true
+        if m.top.getParent().lastFocus <> invalid
+          m.top.getParent().lastFocus.setFocus(true)
+        else
+          m.top.getParent().setFocus(true)
+        end if
         return true
     end if
 

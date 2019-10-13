@@ -100,6 +100,11 @@ sub Main()
       results = SearchMedia(query)
       options.itemData = results
       options.query = query
+    else if isNodeEvent(msg, "pageSelected")
+      group.pageNumber = msg.getRoSGNode().pageSelected.id
+      ' TODO - assume its a movie for now
+      MovieLister(group, 20)
+      group.lastFocus.setFocus(true)
     else if isNodeEvent(msg, "itemSelected")
       ' Search item selected
       node = getMsgPicker(msg)
