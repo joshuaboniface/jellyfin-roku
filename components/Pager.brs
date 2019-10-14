@@ -86,7 +86,9 @@ function onKeyEvent(key as string, press as boolean) as boolean
         focusNext()
         return true
     else if key = "up"
-        if m.top.getParent().lastFocus <> invalid
+        if m.top.getParent().findNode("picker") <> invalid
+          m.top.getParent().findNode("picker").setFocus(true)
+        else if m.top.getParent().lastFocus <> invalid
           m.top.getParent().lastFocus.setFocus(true)
         else
           m.top.getParent().setFocus(true)
