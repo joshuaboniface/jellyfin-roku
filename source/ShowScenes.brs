@@ -197,7 +197,7 @@ function CreateMovieListGroup(library)
   group.pageNumber = 1
   p.currentPage = group.pageNumber
 
-  MovieLister(group, 20)
+  MovieLister(group, 50)
 
   return group
 end function

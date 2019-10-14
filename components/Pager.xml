@@ -4,7 +4,7 @@
     <field id="currentPage" type="integer" onChange="recountPages" />
     <field id="maxPages" type="integer" onChange="recountPages" />
     <field id="pageFocused" type="node" />
-    <field id="pageSelected" type="node" />
+    <field id="pageSelected" type="string" />
     <field id="escape" type="boolean" alwaysNotify="true" />
   </interface>
   <script type="text/brightscript" uri="Pager.brs" />
