@@ -124,7 +124,8 @@ sub Main()
       btn = getButton(msg)
       if btn.id = "play-button"
         ' TODO - Do a better job of picking the last focus
-        group.lastFocus = group.focusedChild
+        ' This is currently page layout Group, button Group, then button
+        group.lastFocus = group.focusedChild.focusedChild.focusedChild
         group.setFocus(false)
         group.visible = false
         video_id = group.id
