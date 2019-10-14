@@ -68,7 +68,16 @@ function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
 
     if key = "OK"
-        m.top.pageSelected = m.top.focusedChild.id
+        p = m.top.focusedChild.id
+        if p = ">"
+          m.top.pageSelected = m.top.currentPage + 1
+        else if p = "<"
+          m.top.pageSelected = m.top.currentPage - 1
+        else
+          m.top.pageSelected = m.top.focusedChild.id
+        end if
+        m.top.currentPage = m.top.pageSelected
+        recountPages()
         return true
     else if key = "left"
         focusPrev()

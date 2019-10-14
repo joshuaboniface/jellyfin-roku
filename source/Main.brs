@@ -104,7 +104,8 @@ sub Main()
       group.pageNumber = msg.getRoSGNode().pageSelected
       ' TODO - assume its a movie for now
       MovieLister(group, 50)
-      group.lastFocus.setFocus(true)
+      ' TODO - abstract away the "picker" node
+      group.findNode("picker").setFocus(true)
     else if isNodeEvent(msg, "itemSelected")
       ' Search item selected
       node = getMsgPicker(msg)
