@@ -43,11 +43,5 @@ function message_dialog(message="" as string)
   dialog.message = message
 
   m.scene.dialog = dialog
-  m.scene.dialog.observeField("buttonSelected", handle_dialog)
   m.scene.dialog.setFocus(true)
-end function
-
-function handle_dialog(msg)
-  print("THERE")
-  m.scene.dialog.close = true
 end function
