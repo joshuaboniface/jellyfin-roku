@@ -135,6 +135,22 @@ sub Main()
         group.setFocus(true)
         group.control = "play"
         m.overhang.visible = false
+      else if btn.id = "watched-button"
+        movie = group.itemContent
+        if movie.watched
+          UnmarkItemWatched(movie.id)
+        else
+          MarkItemWatched(movie.id)
+        end if
+        movie.watched = not movie.watched
+      else if btn.id = "favorite-button"
+        movie = group.itemContent
+        if movie.favorite
+          UnmarkItemFavorite(movie.id)
+        else
+          MarkItemFavorite(movie.id)
+        end if
+        movie.favorite = not movie.favorite
       end if
     else if isNodeEvent(msg, "optionSelected")
       button = msg.getRoSGNode()
