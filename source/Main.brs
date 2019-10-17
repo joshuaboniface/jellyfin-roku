@@ -12,6 +12,8 @@ sub Main()
   m.screen.show()
   m.overhang = CreateObject("roSGNode", "JFOverhang")
 
+  m.page_size = 50
+
   themeScene()
 
   app_start:
@@ -75,10 +77,28 @@ sub Main()
         group = CreateMovieListGroup(node)
         m.overhang.title = group.overhangTitle
         m.scene.appendChild(group)
+      else if node.type = "boxsets"
+        group.lastFocus = group.focusedChild
+        group.setFocus(false)
+        group.visible = false
+
+        group = CreateCollectionsList(node)
+        m.overhang.title = group.overhangTitle
+        m.scene.appendChild(group)
       else
         ' TODO - switch on more node types
         message_dialog("This library type is not yet implemented: " + node.type)
       end if
+    else if isNodeEvent(msg, "collectionSelected")
+      node = getMsgPicker(msg, "picker")
+
+      group.lastFocus = group.focusedChild
+      group.setFocus(false)
+      group.visible = false
+
+      group = CreateMovieListGroup(node)
+      m.overhang.title = group.overhangTitle
+      m.scene.appendChild(group)
     else if isNodeEvent(msg, "movieSelected")
       ' If you select a movie from ANYWHERE, follow this flow
       node = getMsgPicker(msg, "picker")
@@ -102,8 +122,13 @@ sub Main()
       options.query = query
     else if isNodeEvent(msg, "pageSelected")
       group.pageNumber = msg.getRoSGNode().pageSelected
-      ' TODO - assume its a movie for now
-      MovieLister(group, 50)
+      if group.library = invalid
+        ' Cover this case first to avoid "invalid.type" calls
+      else if group.library.type = "movies"
+        MovieLister(group, m.page_size)
+      else if group.library.type = "boxsets"
+        CollectionLister(group, m.page_size)
+      end if
       ' TODO - abstract away the "picker" node
       group.findNode("picker").setFocus(true)
     else if isNodeEvent(msg, "itemSelected")

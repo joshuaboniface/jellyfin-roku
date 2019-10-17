@@ -15,7 +15,7 @@ sub itemContentChanged()
   m.top.findNode("poster").uri = m.top.itemContent.posterURL
 
   ' Handle all "As Is" fields
-  setFieldText("title", itemData.name)
+  m.top.overhangTitle = itemData.name
   setFieldText("releaseYear", itemData.productionYear)
   setFieldText("officialRating", itemData.officialRating)
   setFieldText("communityRating", str(itemData.communityRating))

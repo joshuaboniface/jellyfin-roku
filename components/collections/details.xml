@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<component name="CollectionDetailScene" extends="Scene">
+<component name="CollectionDetail" extends="JFGroup">
   <children>
     <LayoutGroup id="main_group" layoutDirection="horiz" >
       <Poster id="poster"
-        translation="[150,150]"
+        translation="[250,150]"
         width="400" height="600" />
       <LayoutGroup layoutDirection="vert" translation="[355, 150]" itemSpacings="[25]">
-        <Label id="title" font="font:LargeBoldSystemFont" />
         <LayoutGroup layoutDirection="horiz" itemSpacings="[150]">
           <Label id="releaseYear" />
           <Label id="runtime" />

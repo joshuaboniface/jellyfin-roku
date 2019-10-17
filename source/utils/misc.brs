@@ -36,6 +36,14 @@ function leftPad(base as string, fill as string, length as integer) as string
   return base
 end function
 
+function div_ceiling(a as integer, b as integer) as integer
+  if a < b then return 1
+  if int(a/b) = a/b then
+    return a/b
+  end if
+  return a/b + 1
+
+end function
 
 function message_dialog(message = "" as string)
   ' Takes a string and returns an object for dialog popup

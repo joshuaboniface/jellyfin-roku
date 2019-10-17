@@ -9,6 +9,7 @@
     <field id="movieSelected" alias="picker.itemSelected" />
     <field id="objects" alias="picker.objects" />
     <field id="pageNumber" type="integer" />
+    <field id="library" type="node" />
   </interface>
   <script type="text/brightscript" uri="scene.brs" />
 </component>

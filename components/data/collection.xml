@@ -8,6 +8,7 @@
     <field id="description" type="string" />
     <field id="favorite" type="boolean" />
     <field id="watched" type="boolean" />
+    <field id="type" type="string" value="boxsets" />
     <field id="json" type="associativearray" onChange="setFields" />
   </interface>
   <script type="text/brightscript" uri="collection.brs" />
