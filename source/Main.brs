@@ -97,7 +97,7 @@ sub Main()
       group.visible = false
 
       group = CreateMovieListGroup(node)
-      m.overhang.title = group.overhangTitle
+      m.overhang.title = node.title
       m.scene.appendChild(group)
     else if isNodeEvent(msg, "movieSelected")
       ' If you select a movie from ANYWHERE, follow this flow
