@@ -102,7 +102,7 @@ end function
 sub setFavoriteColor()
   fave = m.top.itemContent.favorite
   fave_button = m.top.findNode("favorite-button")
-  if fave
+  if fave <> invalid And fave
     fave_button.textColor = "#00ff00ff"
     fave_button.focusedTextColor = "#269926ff"
   else

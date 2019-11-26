@@ -5,7 +5,7 @@
     <field id="image" type="node" onChange="setPoster" />
     <field id="posterUrl" type="string" />
     <field id="movieID" type="string" />
-    <field id="description" type="string" />
+    <field id="overview" type="string" />
     <field id="favorite" type="boolean" />
     <field id="watched" type="boolean" />
     <field id="seasons" type="associativearray" />
