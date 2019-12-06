@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<component name="TVEpisodes" extends="Scene">
+<component name="TVEpisodes" extends="JFGroup">
   <children>
-    <TVEpisodeRow
-      id="TVEpisodeSelect"
-      visible="true"
-      />
-    <Overhang
-      id="overhang"
-      title="TV Shows"
-      />
-    <Rectangle id="footerBackdrop" />
-    <Pager id="pager" />
+    <ItemGrid id="picker" visible="true" itemsPerRow="10" />
   </children>
   <interface>
-    <field id="showData" type="node" />
-    <field id="seasonData" type="node" />
-    <field id="episodeData" type="node" alias="TVEpisodeSelect.TVEpisodeData" />
+    <field id="episodeSelected" alias="picker.itemSelected" />
+    <field id="seasonData" type="node" onChange="setSeason" />
+    <field id="objects" alias="picker.objects" />
   </interface>
   <script type="text/brightscript" uri="episode.brs" />
 </component>

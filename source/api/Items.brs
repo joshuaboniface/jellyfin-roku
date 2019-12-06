@@ -189,7 +189,9 @@ function TVEpisodes(show_id as string, season_id as string)
   for each item in data.Items
     tmp = CreateObject("roSGNode", "TVEpisodeData")
     tmp.image = PosterImage(item.id)
-    tmp.image.posterDisplayMode = "scaleToFit"
+    if tmp.image <> invalid
+      tmp.image.posterDisplayMode = "scaleToFit"
+    end if
     tmp.json = item
     results.push(tmp)
   end for

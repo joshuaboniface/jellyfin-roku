@@ -7,7 +7,7 @@
     <field id="posterURL" type="string" />
     <field id="showID" type="string" />
     <field id="seasonID" type="string" />
-    <field id="description" type="string" />
+    <field id="overview" type="string" />
     <field id="json" type="associativearray" onChange="setFields" />
     <function name="loadSeasons" />
   </interface>

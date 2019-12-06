@@ -218,182 +218,45 @@ function CreateMovieDetailsGroup(movie)
   return group
 end function
 
-sub ShowTVShowOptions(library)
-  ' TV Show List Page
-  port = m.port
-  screen = m.screen
-  scene = screen.CreateScene("TVShows")
+function CreateSeriesListGroup(library)
+  group = CreateObject("roSGNode", "TVShows")
+  group.id = library.id
+  group.library = library
 
-  overhang = scene.findNode("overhang")
-  overhang.title = library.name
+  group.observeField("seriesSelected", m.port)
 
-  themeScene(scene)
+  sidepanel = group.findNode("options")
 
-  item_grid = scene.findNode("picker")
+  p = CreatePaginator()
+  group.appendChild(p)
 
-  page_num = 1
-  page_size = 50
+  group.pageNumber = 1
+  SeriesLister(group, m.page_size)
 
-  sort_order = get_user_setting("series_sort_order", "Ascending")
-  sort_field = get_user_setting("series_sort_field", "SortName")
+  return group
+end function
 
-  item_list = ItemList(library.id, {"limit": page_size,
-    "page": page_num,
-    "SortBy": sort_field,
-    "SortOrder": sort_order })
-  item_grid.objects = item_list
+function CreateSeriesDetailsGroup(series)
+  group = CreateObject("roSGNode", "TVShowDetails")
 
-  item_grid.observeField("escapeButton", port)
-  item_grid.observeField("itemSelected", port)
+  group.itemContent = ItemMetaData(series.id)
+  group.seasonData = TVSeasons(series.id)
 
-  pager = scene.findNode("pager")
-  pager.currentPage = page_num
-  pager.maxPages = item_list.TotalRecordCount / page_size
-  if item_list.TotalRecordCount mod page_size > 0 then pager.maxPages += 1
+  group.observeField("seasonSelected", m.port)
 
-  pager.observeField("escape", port)
-  pager.observeField("pageSelected", port)
+  return group
+end function
 
-  sidepanel = scene.findNode("options")
-  panel_options = [
-    {"title": "Sort Field",
-     "base_title": "Sort Field",
-     "key": "series_sort_field",
-     "default": "SortName",
-     "values": [
-       {display: "Date Added", value: "DateCreated"},
-       {display: "Release Date", value: "PremiereDate"},
-       {display: "Name", value: "SortName"}
-     ]},
-    {"title": "Sort Order",
-     "base_title": "Sort Order",
-     "key": "series_sort_order",
-     "default": "Ascending",
-     "values": [
-       {display: "Descending", value: "Descending"},
-       {display: "Ascending", value: "Ascending"}
-     ]}
-  ]
-  new_options = []
-  for each opt in panel_options
-    o = CreateObject("roSGNode", "OptionsData")
-    o.title = opt.title
-    o.choices = opt.values
-    o.base_title = opt.base_title
-    o.config_key = opt.key
-    o.value = get_user_setting(opt.key, opt.default)
-    new_options.append([o])
-  end for
+function CreateSeasonDetailsGroup(series, season)
+  group = CreateObject("roSGNode", "TVEpisodes")
 
-  sidepanel.options = new_options
-  sidepanel.observeField("escape", port)
+  group.seasonData = TVSeasons(series.id)
+  group.objects = TVEpisodes(series.id, season.id)
 
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "escapeButton")
-      node = msg.getRoSGNode()
-      if node.escapeButton = "down"
-        pager.setFocus(true)
-        pager.getChild(0).setFocus(true)
-      else if node.escapeButton = "options"
-        sidepanel.visible = true
-        sidepanel.findNode("panelList").setFocus(true)
-      end if
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "pager"
-      item_grid.setFocus(true)
-    else if nodeEventQ(msg, "escape") and msg.getNode() = "options"
-      item_grid.setFocus(true)
-    else if nodeEventQ(msg, "pageSelected") and pager.pageSelected <> invalid
-      pager.pageSelected = invalid
-      page_num = int(val(msg.getData().id))
-      pager.currentPage = page_num
-      item_list = ItemList(library.id, {"limit": page_size,
-        "StartIndex": page_size * (page_num - 1),
-        "SortBy": sort_field,
-        "SortOrder": sort_order })
-      item_grid.objects = item_list
-      item_grid.setFocus(true)
-    else if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "itemSelected")
-      target = getMsgPicker(msg)
-      ShowTVShowDetails(target)
-    end if
-  end while
-end sub
+  group.observeField("episodeSelected", m.port)
 
-sub ShowTVShowDetails(series)
-  ' TV Show Detail Page
-  port = m.port
-  screen = m.screen
-  scene = screen.CreateScene("TVShowItemDetailScene")
-
-  themeScene(scene)
-
-  series = ItemMetaData(series.id)
-  scene.itemData = series
-  scene.findNode("description").findNode("buttons").setFocus(true)
-  scene.seasonData = TVSeasons(series.id)
-
-  scene.findNode("description").findNode("buttons").setFocus(true)
-
-  'buttons = scene.findNode("buttons")
-  'buttons.observeField("buttonSelected", port)
-
-  scene.findNode("seasons").observeField("rowItemSelected", port)
-
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "buttonSelected")
-      ' What button could we even be watching yet
-    else if nodeEventQ(msg, "rowItemSelected")
-      ' Assume for now it's a season being selected
-      season_list = msg.getRoSGNode()
-      item = msg.getData()
-      season = season_list.content.getChild(item[0]).getChild(item[1])
-
-      ShowTVSeasonEpisodes(series, season)
-    else
-      print msg
-      print type(msg)
-    end if
-  end while
-end sub
-
-sub ShowTVSeasonEpisodes(series, season)
-  ' TV Show Season Episdoe List
-  port = m.port
-  screen = m.screen
-  scene = screen.CreateScene("TVEpisodes")
-
-  themeScene(scene)
-
-  scene.showData = ItemMetaData(series.id)
-  scene.seasonData = TVSeasons(series.id)
-  scene.episodeData = TVEpisodes(series.id, season.id)
-
-  scene.findNode("TVEpisodeSelect").observeField("rowItemSelected", port)
-
-  while true
-    msg = wait(0, port)
-    if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
-      return
-    else if nodeEventQ(msg, "rowItemSelected")
-      episode_list = msg.getRoSGNode()
-      item = msg.getData()
-      episode = episode_list.content.getChild(item[0]).getChild(item[1])
-
-      ShowVideoPlayer(episode.id)
-    else
-      print msg
-      print type(msg)
-    end if
-  end while
-end sub
+  return group
+end function
 
 function CreateCollectionsList(library)
   ' Load Movie Collection Items
@@ -504,6 +367,22 @@ function MovieLister(group, page_size)
   p.maxPages = div_ceiling(group.objects.TotalRecordCount, page_size)
 end function
 
+function SeriesLister(group, page_size)
+  sort_order = get_user_setting("series_sort_order", "Ascending")
+  sort_field = get_user_setting("series_sort_field", "SortName")
+
+  item_list = ItemList(group.id, {"limit": page_size,
+    "StartIndex": page_size * (group.pageNumber - 1),
+    "SortBy": sort_field,
+    "SortOrder": sort_order,
+    "IncludeItemTypes": "Series"
+  })
+  group.objects = item_list
+
+  p = group.findNode("paginator")
+  p.maxPages = div_ceiling(group.objects.TotalRecordCount, page_size)
+end function
+
 function CollectionLister(group, page_size)
   sort_order = get_user_setting("boxsets_sort_order", "Ascending")
   sort_field = get_user_setting("boxsets_sort_field", "SortName")
@@ -518,3 +397,5 @@ function CollectionLister(group, page_size)
   p = group.findNode("paginator")
   p.maxPages = div_ceiling(group.objects.TotalRecordCount, page_size)
 end function
+
+

@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<component name="TVShowItemDetailScene" extends="Scene">
+<component name="TVShowDetails" extends="JFGroup">
   <children>
-    <PanelSet id="panelset">
-      <Panel id="panel-desc">
-        <TVShowDescription id="description" />
-      </Panel>
-      <Panel id="panel-seasons">
-        <TVSeasonRow id="seasons" />
-      </Panel>
-    </PanelSet>
+    <LayoutGroup id="toplevel" layoutDirection="vert" itemSpacings="[-10]" >
+      <LayoutGroup id="main_group" layoutDirection="horiz" itemSpacings="[15]" >
+        <Poster id="tvshowPoster" width="300" height="450" />
+        <LayoutGroup layoutDirection="vert" itemSpacings="[15]">
+          <LayoutGroup layoutDirection="horiz" itemSpacings="[150]">
+            <Label id="releaseYear" />
+            <Label id="officialRating" />
+            <Label id="communityRating" />
+          </LayoutGroup>
+          <Label id="genres" />
+          <Label id="tagline" />
+          <Label id="overview" wrap="true" width="1420" maxLines="4" />
+          <Label id="history" />
+        </LayoutGroup>
+      </LayoutGroup>
+      <TVSeasonRow id="seasons" />
+    </LayoutGroup>
   </children>
   <interface>
-    <field id="itemData" type="node" alias="description.itemContent" />
+    <field id="itemContent" type="node" onChange="itemContentChanged" />
     <field id="seasonData" type="associativearray" alias="seasons.TVSeasonData" />
-    <field id="panelFocused" alias="panelset.leftPanelIndex" type="integer" onChange="panelFocusChanged" />
+    <field id="seasonSelected" alias="seasons.rowItemSelected" />
   </interface>
+  <script type="text/brightscript" uri="pkg:/source/utils/misc.brs" />
   <script type="text/brightscript" uri="details.brs" />
 </component>

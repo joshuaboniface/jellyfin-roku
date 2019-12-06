@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<component name="TVShows" extends="Scene">
+<component name="TVShows" extends="JFGroup">
   <children>
     <ItemGrid id="picker" visible="true" itemsPerRow="10" />
-    <Overhang
-      id="overhang"
-      title="TV Shows"
-      />
-    <Rectangle id="footerBackdrop" />
-    <Pager id="pager" />
     <OptionsSlider id="options" />
+    <Rectangle translation="[0,981]" width="1920" height="100" color="#101010" />
   </children>
+  <interface>
+    <field id="seriesSelected" alias="picker.itemSelected" />
+    <field id="objects" alias="picker.objects" />
+    <field id="pageNumber" type="integer" />
+    <field id="library" type="node" />
+  </interface>
   <script type="text/brightscript" uri="scene.brs" />
 </component>

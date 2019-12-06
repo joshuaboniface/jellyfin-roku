@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="TVSeasonRow" extends="RowList">
   <interface>
-    <field id="rowSize" type="int" />
     <field id="TVSeasonData" type="associativearray" onChange="getData" />
   </interface>
   <script type="text/brightscript" uri="rowlist-season.brs" />

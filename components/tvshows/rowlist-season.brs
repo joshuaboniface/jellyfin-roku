@@ -2,11 +2,12 @@ sub init()
     m.top.itemComponentName = "ListPoster"
     m.top.content = getData()
 
-    'm.top.rowFocusAnimationStyle = "floatingFocus"
+    m.top.rowFocusAnimationStyle = "floatingFocus"
     'm.top.vertFocusAnimationStyle = "floatingFocus"
 
-    m.top.showRowLabel = [true]
-    m.top.rowLabelOffset = [0, 20]
+    m.top.showRowLabel = [false]
+    m.top.showRowCounter = [true]
+    m.top.rowLabelOffset = [0, 5]
 
     updateSize()
 
@@ -14,25 +15,16 @@ sub init()
 end sub
 
 sub updateSize()
-    ' Infinite scroll, rowsize is just how many show on screen at once
-    m.top.rowSize = 5
-
-    dimensions = m.top.getScene().currentDesignResolution
-
-    border = 50
-    m.top.translation = [border, border]
-
     textHeight = 80
-    ' Do we decide width by rowSize, or rowSize by width...
-    itemWidth = (dimensions["width"] - border*2) / m.top.rowSize
-    itemHeight = itemWidth * 1.5 + textHeight
+    itemWidth = 200
+    itemHeight = 380  ' width * 1.5 + text
 
     m.top.visible = true
 
     ' size of the whole row
-    m.top.itemSize = [dimensions["width"] - border*2, itemHeight]
+    m.top.itemSize = [1720, itemHeight]
     ' spacing between rows
-    m.top.itemSpacing = [ 0, 10 ]
+    m.top.itemSpacing = [ 0, 0 ]
 
     ' size of the item in the row
     m.top.rowItemSize = [ itemWidth, itemHeight ]

@@ -3,7 +3,7 @@
   <interface>
     <field id="id" type="string" />
     <field id="title" type="string" />
-    <field id="description" type="string" />
+    <field id="overview" type="string" />
     <field id="seasons" type="associativearray" />
     <field id="nextup" type="associativearray" />
     <field id="image" type="node" onChange="setPoster" />

@@ -5,7 +5,7 @@
     <field id="title" type="string" />
     <field id="image" type="node" onChange="setPoster" />
     <field id="posterURL" type="string" />
-    <field id="description" type="string" />
+    <field id="overview" type="string" />
     <field id="json" type="associativearray" onChange="setFields" />
     <function name="getPoster" />
   </interface>

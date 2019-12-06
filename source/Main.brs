@@ -77,6 +77,14 @@ sub Main()
         group = CreateMovieListGroup(node)
         m.overhang.title = group.overhangTitle
         m.scene.appendChild(group)
+      else if node.type = "tvshows"
+        group.lastFocus = group.focusedChild
+        group.setFocus(false)
+        group.visible = false
+
+        group = CreateSeriesListGroup(node)
+        m.overhang.title = group.overhangTitle
+        m.scene.appendChild(group)
       else if node.type = "boxsets"
         group.lastFocus = group.focusedChild
         group.setFocus(false)
@@ -110,6 +118,45 @@ sub Main()
       group = CreateMovieDetailsGroup(node)
       m.scene.appendChild(group)
       m.overhang.title = group.overhangTitle
+    else if isNodeEvent(msg, "seriesSelected")
+      ' If you select a TV Series from ANYWHERE, follow this flow
+      node = getMsgPicker(msg, "picker")
+
+      group.lastFocus = group.focusedChild
+      group.setFocus(false)
+      group.visible = false
+
+      group = CreateSeriesDetailsGroup(node)
+      m.scene.appendChild(group)
+      m.overhang.title = group.overhangTitle
+    else if isNodeEvent(msg, "seasonSelected")
+      ' If you select a TV Season from ANYWHERE, follow this flow
+      ptr = msg.getData()
+      ' ptr is for [row, col] of selected item... but we only have 1 row
+      series = msg.getRoSGNode()
+      node = series.seasonData.items[ptr[1]]
+
+      group.lastFocus = group.focusedChild.focusedChild
+      group.setFocus(false)
+      group.visible = false
+
+      group = CreateSeasonDetailsGroup(series.itemContent, node)
+      m.scene.appendChild(group)
+      m.overhang.title = group.overhangTitle
+    else if isNodeEvent(msg, "episodeSelected")
+      ' If you select a TV Episode from ANYWHERE, follow this flow
+      node = getMsgPicker(msg, "picker")
+
+      group.lastFocus = group.focusedChild
+      group.setFocus(false)
+      group.visible = false
+      video_id = node.id
+
+      group = CreateVideoPlayerGroup(video_id)
+      m.scene.appendChild(group)
+      group.setFocus(true)
+      group.control = "play"
+      m.overhang.visible = false
     else if isNodeEvent(msg, "search_value")
       query = msg.getRoSGNode().search_value
       group.findNode("SearchBox").visible = false
