@@ -16,7 +16,7 @@ sub itemContentChanged()
   m.top.overhangTitle = itemData.name
   setFieldText("releaseYear", itemData.productionYear)
   setFieldText("officialRating", itemData.officialRating)
-  setFieldText("communityRating", str(itemData.communityRating))
+  setFieldText("communityRating", itemData.communityRating)
   setFieldText("overview", itemData.overview)
 
 
@@ -48,6 +48,8 @@ sub setFieldText(field, value)
 
   ' Handle non strings... Which _shouldn't_ happen, but hey
   if type(value) = "roInt" or type(value) = "Integer" then
+    value = str(value)
+  else if type(value) = "roFloat" or type(value) = "Float" then
     value = str(value)
   else if type(value) <> "roString" and type(value) <> "String" then
     value = ""
