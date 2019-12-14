@@ -36,7 +36,7 @@ end function
 
 function buildURL(path as String, params={} as Object) as string
   
-  full_url = get_base_url() + "/" + path
+  full_url = get_base_url() + "/jellyfin/" + path
   if params.count() > 0
     full_url = full_url + "?" + buildParams(params)
   end if
