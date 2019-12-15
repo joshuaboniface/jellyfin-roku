@@ -6,9 +6,8 @@ sub init()
 
   m.top.observeField("itemSelected", "onItemSelected")
 
-  m.top.itemSize = [1000, 80]
-  m.top.itemSpacing = [0, 20]
-  m.top.vertAlign = "middle"
+  m.top.itemSize = [750, 75]
+  m.top.itemSpacing = [0, 25]
 
   m.top.setfocus(true)
 

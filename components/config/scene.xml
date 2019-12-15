@@ -7,7 +7,7 @@
       translation="[150, 150]" />
     <ConfigList
       id="configOptions"
-      translation="[150, 250]" />
+      translation="[150, 240]" />
     <Button
       id="submit"
       text="Submit"
@@ -16,7 +16,7 @@
     <label text=""
       id="alert"
       font="font:MediumSystemFont"
-      translation="[150, 550]" />
+      translation="[150, 555]" />
   </children>
   <script type="text/brightscript" uri="scene.brs"/>
 </component>
