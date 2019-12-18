@@ -2,7 +2,8 @@ function get_token(user as String, password as String)
   url = "Users/AuthenticateByName?format=json"
   req = APIRequest(url)
 
-  json = postJson(req, "Username=" + user + "&Pw=" + Escape(password))
+  encPass = CreateObject("roUrlTransfer")
+  json = postJson(req, "Username=" + user + "&Pw=" + encPass.Escape(password) )
 
   if json = invalid then return invalid
 
