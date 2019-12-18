@@ -2,7 +2,7 @@ function get_token(user as String, password as String)
   url = "Users/AuthenticateByName?format=json"
   req = APIRequest(url)
 
-  json = postJson(req, "Username=" + user + "&Pw=" + password.replace("&", "%26"))
+  json = postJson(req, "Username=" + user + "&Pw=" + Escape(password))
 
   if json = invalid then return invalid
 
