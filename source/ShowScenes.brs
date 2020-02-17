@@ -348,6 +348,7 @@ function CreateVideoPlayerGroup(video_id)
 
   video.observeField("backPressed", m.port)
   video.observeField("state", m.port)
+  video.observeField("position", m.port)
   timer.control = "start"
   timer.observeField("fire", m.port)
 

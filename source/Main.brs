@@ -267,14 +267,20 @@ sub Main()
         wipe_groups()
         goto app_start
       end if
+    else if isNodeEvent(msg, "position")
+      video = msg.getRoSGNode()
+      if video.position >= video.duration then
+        video.control = "stop"
+        video.state = "finished"
+      end if
     else if isNodeEvent(msg, "fire")
-      ReportPlayback(group, "update")
+      ReportPlayback(group)
     else if isNodeEvent(msg, "state")
       node = msg.getRoSGNode()
       if node.state = "finished" then
         node.backPressed = "true"
       else if node.state = "playing" or node.state = "paused" then
-        ReportPlayback(group, "update")
+        ReportPlayback(group)
       end if
     else
       print type(msg)
