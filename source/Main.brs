@@ -274,13 +274,13 @@ sub Main()
         video.state = "finished"
       end if
     else if isNodeEvent(msg, "fire")
-      ReportPlayback(group)
+      ReportPlayback(group, "update")
     else if isNodeEvent(msg, "state")
       node = msg.getRoSGNode()
       if node.state = "finished" then
         node.backPressed = "true"
       else if node.state = "playing" or node.state = "paused" then
-        ReportPlayback(group)
+        ReportPlayback(group, "update")
       end if
     else
       print type(msg)
