@@ -16,19 +16,20 @@ function ItemImages(id = "" as string, params = {} as object)
 end function
 
 
-function PosterImage(id as string, params = {} as object)
+function PosterImage(id as string, params = {} as object, priority = ["Primary", "Logo", "Thumb"] )
   images = ItemImages(id, params)
   if images = invalid then return invalid
   primary_image = invalid
 
   for each image in images
-    if image.imagetype = "Primary"
+    if image.imagetype = priority[0] then 
       primary_image = image
-    else if image.imagetype = "Logo" and primary_image = invalid
-      primary_image = image
-    else if image.imagetype = "Thumb" and primary_image = invalid
-      primary_image = image
-      ' maybe find more fallback images
+    else
+      for i = 1 to priority.count() - 1
+        if image.imagetype = priority[i] and primary_image = invalid
+          primary_image = image
+        end if
+      end for
     end if
   end for
 
