@@ -174,8 +174,19 @@ function HomeItemList(row = "" as string, params = {})
     imgParams.Append(param)
 
     if item.type = "Movie"
-      'ImageTags for movies does't return Backdrop
-      tmp.imageURL = PosterImage(item.id, imgParams , ["Backdrop", "Thumb", "Primary"]).url
+      if item.ImageTags.Thumb <> invalid then
+        param = { "Tag" : item.ImageTags.Thumb }
+        imgParams.Append(param)
+        tmp.imageURL = ImageURL(item.id, "Thumb", imgParams)
+      else if item.BackdropImageTags[0] <> invalid then
+        param = { "Tag" : item.BackdropImageTags[0] }
+        imgParams.Append(param)
+        tmp.imageURL = ImageURL(item.id, "Backdrop", imgParams)
+      else
+        param = { "Tag" : item.ImageTags.Primary }
+        imgParams.Append(param)
+        tmp.imageURL = ImageURL(item.id, "Primary", imgParams)
+      end if
     else if item.type = "Episode"
       if item.ImageTags.Primary <> invalid then
         param = { "Tag" : item.ImageTags.Primary }
