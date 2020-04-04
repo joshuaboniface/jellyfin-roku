@@ -50,6 +50,23 @@ function updateUser()
   end if
   user = m.top.findNode("overlayCurrentUser")
   user.text = m.top.currentUser
+  if m.top.currentUser = "" then m.top.currentUserImage = ""
+end function
+
+function updateImage()
+  img = m.top.findNode("overlayCurrentUserImage")
+  if m.top.currentUserImage <> "" then
+    if img = invalid then
+      img = CreateObject("roSGNode", "Poster")
+      img.id = "overlayCurrentUserImage"
+    end if
+    img.height = 64
+    img.width = 64
+    img.uri = m.top.currentUserImage
+    m.top.findNode("overlayCurrentUserGroup").appendChild(img)
+  else
+    if img <> invalid then m.top.findNode("overlayCurrentUserGroup").removeChild(img)
+  end if
 end function
 
 function updateTime()

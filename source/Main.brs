@@ -25,6 +25,12 @@ sub Main()
   ' load home page
   m.overhang.title = "Home"
   m.overhang.currentUser = m.user.Name
+  if m.user.PrimaryImageTag <> invalid then
+    userImage = UserImageURL(m.user.id, { "tag": m.user.PrimaryImageTag })
+  else
+    userImage = ""
+  end if
+  m.overhang.currentUserImage = userImage
   group = CreateHomeGroup()
   m.scene.appendChild(group)
 

@@ -22,7 +22,9 @@
       <Label id="overlayTitle" font="font:LargeSystemFont" vertAlign="center" height="64" width="1100" />
     </LayoutGroup>
     <LayoutGroup id="overlayRightGroup" layoutDirection="horiz" itemSpacings="30" translation="[1900, 18]" horizAlignment="right" >
-      <Label id="overlayCurrentUser" font="font:MediumSystemFont" width="300" horizAlign="right" vertAlign="center" height="64" />
+      <LayoutGroup layoutDirection="horiz" itemSpacings="[30]" id="overlayCurrentUserGroup">
+        <Label id="overlayCurrentUser" font="font:MediumSystemFont" width="300" horizAlign="right" vertAlign="center" height="64" />
+      </LayoutGroup>
       <Rectangle
         id="overlayRightSeperator"
         color="#666666"
@@ -46,6 +48,7 @@
   <interface>
     <field id="id" type="string" />
     <field id="currentUser" type="string" onChange="updateUser" />
+    <field id="currentUserImage" type="string" onChange="updateImage" />
     <field id="title" type="string" onChange="updateTitle" />
     <field id="showOptions" value="true" type="boolean" onChange="updateOptions" />
   </interface>
