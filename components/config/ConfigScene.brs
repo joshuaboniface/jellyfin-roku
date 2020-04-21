@@ -1,5 +1,4 @@
 sub init()
-    m.tracker=m.top.createChild("TrackerTask")
     m.top.setFocus(true)
 end sub
 
