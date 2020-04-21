@@ -37,7 +37,7 @@ function VideoContent(video) as object
       position = 0
     end if
   end if
-  video.content.BookmarkPosition = int(position/10000000)
+  video.content.PlayStart = int(position/10000000)
 
   video.PlaySessionId = ItemGetSession(video.id, position)
   transcodeParams = getTranscodeParameters(meta)

@@ -43,7 +43,7 @@ sub changeSubtitleDuringPlayback(newid)
   video.SelectedSubtitle = newid
 
   if newTrack.IsTextSubtitleStream then
-    if video.content.BookmarkPosition > video.position
+    if video.content.PlayStart > video.position
       'User has rewinded to before playback was initiated. The Roku never loaded this portion of the text subtitle
       'Changing the track will cause plaback to jump to initial bookmark position.
       video.suppressCaptions = true
@@ -159,6 +159,6 @@ sub rebuildURL(captions as boolean)
   end if
 
   video.content.url = buildURL(base, params)
-  video.content.BookmarkPosition = int(video.position + playBackBuffer)
+  video.content.PlayStart = int(video.position + playBackBuffer)
   video.control = "play"
 end sub
