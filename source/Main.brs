@@ -32,9 +32,6 @@ sub Main()
   m.scene.observeField("optionsPressed", m.port)
   m.scene.observeField("mutePressed", m.port)
 
-  m.device = CreateObject("roDeviceInfo")
-  m.device.SetMessagePort(m.port)
-
   ' Handle input messages
   input = CreateObject("roInput")
   input.SetMessagePort(m.port)
@@ -48,11 +45,6 @@ sub Main()
     if type(msg) = "roSGScreenEvent" and msg.isScreenClosed() then
       print "CLOSING SCREEN"
       return
-    else if type(msg) = "roInputEvent"
-      if msg.IsInput()
-        info = msg.GetInfo()
-        print "Received input:", FormatJSON(info)
-      end if
     else if isNodeEvent(msg, "backPressed")
       n = m.scene.getChildCount() - 1
       if msg.getRoSGNode().focusedChild <> invalid and msg.getRoSGNode().focusedChild.isSubtype("JFVideo")
