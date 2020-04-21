@@ -181,8 +181,8 @@ get_images:
 
 	echo "Creating image files"
 	@convert -background "#000b25" -gravity center -scale 535x400 -extent 540x405 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_fhd.png
-	@convert -background "#000b25" -gravity center -scale 275x205 -extent 280x210 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_hd.png
-	@convert -background "#000b25" -gravity center -scale 182x135 -extent 187x140 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_sd.png
+	@convert -background "#000b25" -gravity center -scale 275x205 -extent 336x210 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_hd.png
+	@convert -background "#000b25" -gravity center -scale 182x135 -extent 246x140 $(BANNER_SOURCE) $(OUTPUT_DIR)/channel-poster_sd.png
 
 	@convert -background none -gravity center -scale 1000x48 -extent 180x48 $(BANNER_SOURCE) $(OUTPUT_DIR)/logo.png
 
