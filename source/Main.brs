@@ -387,7 +387,9 @@ function LoginFlow(startOver = false as boolean)
   start_login:
   if get_setting("server") = invalid or ServerInfo() = invalid or startOver = true then
     print "Get server details"
+    m.scene.signalBeacon("AppDialogInitiate")  ' Roku Performance monitoring - Dialog Starting
     serverSelection = CreateServerGroup()
+    m.scene.signalBeacon("AppDialogComplete") ' Roku Performance monitoring - Dialog Closed
     if serverSelection = "backPressed" then
       print "backPressed"
       wipe_groups()
@@ -396,6 +398,7 @@ function LoginFlow(startOver = false as boolean)
   end if
 
   if get_setting("active_user") = invalid then
+    m.scene.signalBeacon("AppDialogInitiate")  ' Roku Performance monitoring - Dialog Starting
     publicUsers = GetPublicUsers()
     if publicUsers.count() then
       publicUsersNodes = []
@@ -411,12 +414,14 @@ function LoginFlow(startOver = false as boolean)
       userSelected = CreateUserSelectGroup(publicUsersNodes)
       m.scene.focusedChild.visible = false
       if userSelected = "backPressed" then
+        m.scene.signalBeacon("AppDialogComplete") ' Roku Performance monitoring - Dialog Closed
         return LoginFlow(true)
       else
         'Try to login without password. If the token is valid, we're done
         get_token(userSelected, "")
         if get_setting("active_user") <> invalid then
           m.user = AboutMe()
+          m.scene.signalBeacon("AppDialogComplete") ' Roku Performance monitoring - Dialog Closed
           return true
         end if
       end if
@@ -424,6 +429,7 @@ function LoginFlow(startOver = false as boolean)
       userSelected = ""
     end if
     passwordEntry = CreateSigninGroup(userSelected)
+    m.scene.signalBeacon("AppDialogComplete") ' Roku Performance monitoring - Dialog Closed
     if passwordEntry = "backPressed" then
       m.scene.focusedChild.visible = false
       return LoginFlow(true)

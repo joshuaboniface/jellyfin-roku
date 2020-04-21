@@ -10,6 +10,9 @@ sub init()
   m.top.rowLabelOffset = [0, 20]
   m.top.showRowCounter = [true]
 
+  m.libariesToLoad = 0
+  m.libariesLoaded = 0
+
   updateSize()
 
   m.top.setfocus(true)
@@ -168,6 +171,7 @@ function updateNextUpItems()
 
       loadLatest.observeField("content", "updateLatestItems")
       loadLatest.control = "RUN"
+      m.libariesToLoad += 1
     end if
   end for
 end function
@@ -220,6 +224,11 @@ function updateLatestItems(msg)
       ' replace the old row
       homeRows.replaceChild(row, rowIndex)
     end if
+  end if
+
+  m.libariesToLoad -= 1
+  if m.libariesToLoad = 0 then
+    m.top.signalBeacon("AppLaunchComplete") ' Roku Performance monitoring
   end if
 end function
 
