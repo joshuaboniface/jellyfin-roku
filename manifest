@@ -21,4 +21,4 @@ ui_resolutions=fhd
 screensaver_private=0
 screensaver_title=Jellyfin
 
-supports_input_launch = 1
+supports_input_launch=1

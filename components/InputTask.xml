@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="InputTask" extends="Task">
+    <interface>
+            <field id="inputData" type="assocarray" />
+    </interface>
+
+    <script type="text/brightscript" uri="InputTask.brs" />
+</component>
