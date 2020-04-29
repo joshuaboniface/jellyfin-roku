@@ -227,8 +227,9 @@ function updateLatestItems(msg)
   end if
 
   m.libariesToLoad -= 1
-  if m.libariesToLoad = 0 then
+  if m.libariesToLoad = 0 and m.global.app_loaded = false then
     m.top.signalBeacon("AppLaunchComplete") ' Roku Performance monitoring
+    m.global.app_loaded = true
   end if
 end function
 
