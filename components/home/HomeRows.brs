@@ -11,7 +11,6 @@ sub init()
   m.top.showRowCounter = [true]
 
   m.libariesToLoad = 0
-  m.libariesLoaded = 0
 
   updateSize()
 

@@ -394,9 +394,7 @@ function LoginFlow(startOver = false as boolean)
   end if
 
   if get_setting("active_user") = invalid then
-    if m.global.app_loaded = false then 
-      
-    end if
+    SendPerformanceBeacon("AppDialogInitiate")  ' Roku Performance monitoring - Dialog Starting
     publicUsers = GetPublicUsers()
     if publicUsers.count() then
       publicUsersNodes = []
