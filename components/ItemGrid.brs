@@ -15,15 +15,26 @@ sub updateSize()
     m.top.itemsPerRow = 5
   end if
 
+  ' Default this to two rows per page unless otherwise configured
+  if m.top.rowsPerPage = invalid or m.top.rowsPerPage < 1 then
+    m.top.rowsPerPage = 2
+  end if
+
   dimensions = m.top.getScene().currentDesignResolution
 
   border = 75
-  m.top.translation = [border, border + 115]
+  topSpace = border + 105
+  m.top.translation = [border, topSpace]
 
   textHeight = 80
-  itemWidth = (dimensions["width"] - border*2) / m.top.itemsPerRow
+  itemWidth = (dimensions["width"] - border*2) / m.top.itemsPerRow -20
   itemHeight = itemWidth * 1.5 + textHeight
 
+  if itemHeight*m.top.rowsPerPage > (dimensions["height"] - border - 115) then
+    ratio = (itemHeight*m.top.rowsPerPage) / (981 - topSpace - 15)
+    itemHeight = itemHeight / ratio
+    itemWidth = itemWidth / ratio
+  end if
   m.top.visible = true
 
   ' Size of the individual rows
@@ -34,7 +45,8 @@ sub updateSize()
   ' Size of items in the row
   m.top.rowItemSize = [ itemWidth, itemHeight ]
   ' Spacing between items in the row
-  m.top.rowItemSpacing = [ 0, 0 ]
+  itemSpace = (dimensions["width"] - border*2 - itemWidth*m.top.itemsPerRow) / (m.top.itemsPerRow-1)
+  m.top.rowItemSpacing = [ itemSpace-1, 0 ]
 end sub
 
 function setupRows()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="TVShows" extends="JFGroup">
   <children>
-    <ItemGrid id="picker" visible="true" itemsPerRow="10" />
+    <ItemGrid id="picker" visible="true" itemsPerRow="6" />
     <OptionsSlider id="options" />
     <Rectangle translation="[0,981]" width="1920" height="100" color="#101010" />
   </children>

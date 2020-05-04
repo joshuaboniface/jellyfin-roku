@@ -54,6 +54,7 @@ sub updateSize()
 
     m.poster.translation = [2, (posterVertSpace - m.poster.height) / 2]
 
+    m.backdrop.translation = [2, (posterVertSpace - m.poster.height) / 2]
     m.backdrop.width = m.poster.width
     m.backdrop.height = m.poster.height
 
