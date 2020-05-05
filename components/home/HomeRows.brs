@@ -1,3 +1,7 @@
+' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+'
+' SPDX-License-Identifier: GPL-2.0-or-later
+
 sub init()
   m.top.itemComponentName = "HomeItem"
   ' how many rows are visible on the screen
@@ -59,7 +63,7 @@ sub onLibrariesLoaded()
     'Add the Libraries Row
     m.data = CreateObject("roSGNode", "ContentNode")
     row = m.data.CreateChild("HomeRow")
-    row.title = "My Media"
+    row.title = tr("My Media")
 
     for each item in m.libraryData
       row.appendChild(item)
@@ -97,7 +101,7 @@ function updateContinueItems()
   else
     ' remake row using the new data
     row = CreateObject("roSGNode", "HomeRow")
-    row.title = "Continue Watching"
+    row.title = tr("Continue Watching")
     itemSize = [464, 331]
     for each item in itemData
       row.appendChild(item)
@@ -135,7 +139,7 @@ function updateNextUpItems()
   else
     ' remake row using the new data
     row = CreateObject("roSGNode", "HomeRow")
-    row.title = "Next Up >"
+    row.title = tr("Next Up") + " >"
     itemSize = [464, 331]
     for each item in itemData
       row.appendChild(item)
@@ -144,7 +148,7 @@ function updateNextUpItems()
     if nextUpRowIndex = invalid then
       ' insert new row under "Continue Watching if it exists"
       tmpRow = homeRows.getChild(1)
-      if tmpRow <> invalid and tmpRow.title = "Continue Watching" then
+      if tmpRow <> invalid and tmpRow.title = tr("Continue Watching") then
         updateSizeArray(itemSize, 2)
         homeRows.insertChild(row, 2)
       else
@@ -185,7 +189,7 @@ function updateLatestItems(msg)
   if itemData = invalid then return false
 
   homeRows = m.top.content
-  rowIndex = getRowIndex("Latest in " + node.metadata.title + " >")
+  rowIndex = getRowIndex(tr("Latest in") + " " + node.metadata.title + " >")
 
   if itemData.count() < 1 then
     ' remove row
@@ -196,7 +200,7 @@ function updateLatestItems(msg)
   else
     ' remake row using new data
     row = CreateObject("roSGNode", "HomeRow")
-    row.title = "Latest in " + node.metadata.title + " >"
+    row.title = tr("Latest in") + " " + node.metadata.title + " >"
     row.usePoster = true
     ' Handle specific types with different item widths
     if node.metadata.contentType = "movies" then

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+
+SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en-US" target-language="en-US" >
+    <body>
+        <trans-unit id="0">
+            <source>192.168.1.100:8096 or https://example.com/jellyfin</source>
+            <target>192.168.1.100:8096 or https://example.com/jellyfin</target>
+        </trans-unit>
+
+        <trans-unit id="1">
+            <source>Cancel</source>
+            <target>Cancel</target>
+        </trans-unit>
+
+        <trans-unit id="2">
+            <source>Connect to Server</source>
+            <target>Connect to Server</target>
+        </trans-unit>
+
+        <trans-unit id="3">
+            <source>Ends at </source>
+            <target>Ends at </target>
+        </trans-unit>
+
+        <trans-unit id="4">
+            <source>Enter Configuration</source>
+            <target>Enter Configuration</target>
+        </trans-unit>
+
+        <trans-unit id="5">
+            <source>Favorite</source>
+            <target>Favorite</target>
+        </trans-unit>
+
+        <trans-unit id="6">
+            <source>Loading...</source>
+            <target>Loading...</target>
+        </trans-unit>
+
+        <trans-unit id="7">
+            <source>Login attempt failed.</source>
+            <target>Login attempt failed.</target>
+        </trans-unit>
+
+        <trans-unit id="8">
+            <source>OK</source>
+            <target>OK</target>
+        </trans-unit>
+
+        <trans-unit id="9">
+            <source>Options</source>
+            <target>Options</target>
+        </trans-unit>
+
+        <trans-unit id="10">
+            <source>Play</source>
+            <target>Play</target>
+        </trans-unit>
+
+        <trans-unit id="11">
+            <source>Please sign in</source>
+            <target>Please sign in</target>
+        </trans-unit>
+
+        <trans-unit id="12">
+            <source>Search</source>
+            <target>Search</target>
+        </trans-unit>
+
+        <trans-unit id="13">
+            <source>Server not found, is it online?</source>
+            <target>Server not found, is it online?</target>
+        </trans-unit>
+
+        <trans-unit id="14">
+            <source>Shuffle</source>
+            <target>Shuffle</target>
+        </trans-unit>
+
+        <trans-unit id="15">
+            <source>Sign In</source>
+            <target>Sign In</target>
+        </trans-unit>
+
+        <trans-unit id="16">
+            <source>Submit</source>
+            <target>Submit</target>
+        </trans-unit>
+
+        <trans-unit id="17">
+            <source>Watched</source>
+            <target>Watched</target>
+        </trans-unit>
+
+        <trans-unit id="18">
+            <source>Change Server</source>
+            <target>Change Server</target>
+        </trans-unit>
+
+        <trans-unit id="19">
+            <source>Sign Out</source>
+            <target>Sign Out</target>
+        </trans-unit>
+
+        <trans-unit id="20">
+            <source>Add User</source>
+            <target>Add User</target>
+        </trans-unit>
+
+        <trans-unit id="21">
+            <source>Profile</source>
+            <target>Profile</target>
+        </trans-unit>
+
+        <trans-unit id="22">
+            <source>My Media</source>
+            <target>My Media</target>
+        </trans-unit>
+
+        <trans-unit id="23">
+            <source>Continue Watching</source>
+            <target>Continue Watching</target>
+        </trans-unit>
+
+        <trans-unit id="24">
+            <source>Next Up</source>
+            <target>Next Up</target>
+        </trans-unit>
+
+        <trans-unit id="25">
+            <source>Latest in</source>
+            <target>Latest in</target>
+        </trans-unit>
+
+        <trans-unit id="26">
+            <source>Home</source>
+            <target>Home</target>
+        </trans-unit>
+
+        <trans-unit id="27">
+            <source>Enter a value...</source>
+            <target>Enter a value...</target>
+        </trans-unit>
+
+        <trans-unit id="28">
+            <source>Sort Field</source>
+            <target>Sort By</target>
+        </trans-unit>
+
+        <trans-unit id="29">
+            <source>Date Added</source>
+            <target>Date Added</target>
+        </trans-unit>
+
+        <trans-unit id="30">
+            <source>Release Date</source>
+            <target>Release Date</target>
+        </trans-unit>
+
+        <trans-unit id="31">
+            <source>Name</source>
+            <target>Name</target>
+        </trans-unit>
+
+        <trans-unit id="32">
+            <source>Sort Order</source>
+            <target>Sort Order</target>
+        </trans-unit>
+
+        <trans-unit id="33">
+            <source>Descending</source>
+            <target>Descending</target>
+        </trans-unit>
+
+        <trans-unit id="34">
+            <source>Ascending</source>
+            <target>Ascending</target>
+        </trans-unit>
+
+        <trans-unit id="35">
+            <source>Password</source>
+            <target>Password</target>
+        </trans-unit>
+
+        <trans-unit id="36">
+            <source>Username</source>
+            <target>Username</target>
+        </trans-unit>
+
+        <trans-unit id="37">
+            <source>Genres</source>
+            <target>Genres</target>
+        </trans-unit>
+
+        <trans-unit id="38">
+            <source>Director</source>
+            <target>Director</target>
+        </trans-unit>
+
+        <trans-unit id="39">
+            <source>Video</source>
+            <target>Video</target>
+        </trans-unit>
+
+        <trans-unit id="40">
+            <source>Audio</source>
+            <target>Audio</target>
+        </trans-unit>
+
+        <trans-unit id="41">
+            <source>Server</source>
+            <target>Server</target>
+        </trans-unit>
+    </body>
+    </file>
+</xliff>

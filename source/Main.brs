@@ -1,3 +1,7 @@
+' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+'
+' SPDX-License-Identifier: GPL-2.0-or-later
+
 sub Main()
 
   ' If the Rooibos files are included in deployment, run tests
@@ -11,12 +15,12 @@ sub Main()
   m.screen.show()
 
   ' Set any initial Global Variables
-  m.global = m.screen.getGlobalNode()  
-  m.global.addFields( {app_loaded: false} ) 
+  m.global = m.screen.getGlobalNode()
+  m.global.addFields( {app_loaded: false} )
 
   m.overhang = CreateObject("roSGNode", "JFOverhang")
   m.scene.insertChild(m.overhang, 0)
-  
+
   m.page_size = 50
 
   app_start:
@@ -27,7 +31,7 @@ sub Main()
   wipe_groups()
 
   ' load home page
-  m.overhang.title = "Home"
+  m.overhang.title = tr("Home")
   m.overhang.currentUser = m.user.Name
   group = CreateHomeGroup()
   m.scene.appendChild(group)
@@ -434,7 +438,7 @@ function LoginFlow(startOver = false as boolean)
           return true
         end if
       end if
-    else 
+    else
       userSelected = ""
     end if
     passwordEntry = CreateSigninGroup(userSelected)
@@ -516,9 +520,9 @@ sub RemoveCurrentGroup()
   group.visible = true
 end sub
 
-' Roku Performance monitoring 
+' Roku Performance monitoring
 sub SendPerformanceBeacon(signalName as string)
-  if m.global.app_loaded = false then 
-    m.scene.signalBeacon(signalName)  
+  if m.global.app_loaded = false then
+    m.scene.signalBeacon(signalName)
   end if
 end sub

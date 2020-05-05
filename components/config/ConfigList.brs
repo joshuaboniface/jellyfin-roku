@@ -1,3 +1,7 @@
+' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+'
+' SPDX-License-Identifier: GPL-2.0-or-later
+
 sub init()
   m.top.itemComponentName = "ConfigItem"
 
@@ -34,11 +38,11 @@ function onDialogButton()
   d = m.dialog
   button_text = d.buttons[d.buttonSelected]
 
-  if button_text = "OK"
+  if button_text = tr("OK")
     m.configField.value = d.text
     dismiss_dialog()
     return true
-  else if button_text = "Cancel"
+  else if button_text = tr("Cancel")
     dismiss_dialog()
     return true
   end if
@@ -49,7 +53,7 @@ sub show_dialog(configField)
   dialog = createObject("roSGNode", "KeyboardDialog")
   m.configField = configField
   dialog.title = "Enter the " + configField.label
-  dialog.buttons = ["OK", "Cancel"]
+  dialog.buttons = [tr("OK"), tr("Cancel")]
 
   if configField.type = "password"
     dialog.keyboard.textEditBox.secureMode = true

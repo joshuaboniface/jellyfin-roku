@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+
+SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en-US" target-language="fr-CA" >
+    <body>
+        <trans-unit id="0">
+            <source>192.168.1.100:8096 or https://example.com/jellyfin</source>
+            <target>192.168.1.100:8096 ou https://example.com/jellyfin</target>
+        </trans-unit>
+
+        <trans-unit id="1">
+            <source>Cancel</source>
+            <target>Annuler</target>
+        </trans-unit>
+
+        <trans-unit id="2">
+            <source>Connect to Server</source>
+            <target>Se connecter au serveur</target>
+        </trans-unit>
+
+        <trans-unit id="3">
+            <source>Ends at </source>
+            <target>Se termine à </target>
+        </trans-unit>
+
+        <trans-unit id="4">
+            <source>Enter Configuration</source>
+            <target>Entrer la configuration</target>
+        </trans-unit>
+
+        <trans-unit id="5">
+            <source>Favorite</source>
+            <target>Favoris</target>
+        </trans-unit>
+
+        <trans-unit id="6">
+            <source>Loading...</source>
+            <target>Chargement...</target>
+        </trans-unit>
+
+        <trans-unit id="7">
+            <source>Login attempt failed.</source>
+            <target>La tentative de connexion a échoué.</target>
+        </trans-unit>
+
+        <trans-unit id="8">
+            <source>OK</source>
+            <target>OK</target>
+        </trans-unit>
+
+        <trans-unit id="9">
+            <source>Options</source>
+            <target>Options</target>
+        </trans-unit>
+
+        <trans-unit id="10">
+            <source>Play</source>
+            <target>Reproduzir</target>
+        </trans-unit>
+
+        <trans-unit id="11">
+            <source>Please sign in</source>
+            <target>Veuillez vous connecter</target>
+        </trans-unit>
+
+        <trans-unit id="12">
+            <source>Search</source>
+            <target>Rechercher</target>
+        </trans-unit>
+
+        <trans-unit id="13">
+            <source>Server not found, is it online?</source>
+            <target>Serveur non trouvé, est-il en ligne?</target>
+        </trans-unit>
+
+        <trans-unit id="14">
+            <source>Shuffle</source>
+            <target>Aléatoire</target>
+        </trans-unit>
+
+        <trans-unit id="15">
+            <source>Sign In</source>
+            <target>Se connecter</target>
+        </trans-unit>
+
+        <trans-unit id="16">
+            <source>Submit</source>
+            <target>Soumettre</target>
+        </trans-unit>
+
+        <trans-unit id="17">
+            <source>Watched</source>
+            <target>Lu</target>
+        </trans-unit>
+
+        <trans-unit id="18">
+            <source>Change server</source>
+            <target>Changer de serveur</target>
+        </trans-unit>
+
+        <trans-unit id="19">
+            <source>Sign out</source>
+            <target>Se déconnecter</target>
+        </trans-unit>
+
+        <trans-unit id="20">
+            <source>Add User</source>
+            <target>Ajouter un utilisateur</target>
+        </trans-unit>
+
+        <trans-unit id="21">
+            <source>Profile</source>
+            <target>Profil</target>
+        </trans-unit>
+
+        <trans-unit id="22">
+            <source>My Media</source>
+            <target>Mes Médias</target>
+        </trans-unit>
+
+        <trans-unit id="23">
+            <source>Continue Watching</source>
+            <target>Continuez à regarder</target>
+        </trans-unit>
+
+        <trans-unit id="24">
+            <source>Next Up</source>
+            <target>A Suivre</target>
+        </trans-unit>
+
+        <trans-unit id="25">
+            <source>Latest in</source>
+            <target>Latest in</target>
+        </trans-unit>
+
+        <trans-unit id="26">
+            <source>Home</source>
+            <target>Accueil</target>
+        </trans-unit>
+
+        <trans-unit id="27">
+            <source>Enter a value...</source>
+            <target>Entrez une valeur...</target>
+        </trans-unit>
+
+        <trans-unit id="28">
+            <source>Sort Field</source>
+            <target>Trier par</target>
+        </trans-unit>
+
+        <trans-unit id="29">
+            <source>Date Added</source>
+            <target>Date d'ajout</target>
+        </trans-unit>
+
+        <trans-unit id="30">
+            <source>Release Date</source>
+            <target>Date de sortie</target>
+        </trans-unit>
+
+        <trans-unit id="31">
+            <source>Name</source>
+            <target>Nom</target>
+        </trans-unit>
+
+        <trans-unit id="32">
+            <source>Sort Order</source>
+            <target>Ordre de tri</target>
+        </trans-unit>
+
+        <trans-unit id="33">
+            <source>Descending</source>
+            <target>Décroissant</target>
+        </trans-unit>
+
+        <trans-unit id="34">
+            <source>Ascending</source>
+            <target>Croissant</target>
+        </trans-unit>
+
+        <trans-unit id="35">
+            <source>Password</source>
+            <target>Mot de passe</target>
+        </trans-unit>
+
+        <trans-unit id="36">
+            <source>Username</source>
+            <target>Nom d'utilisateur</target>
+        </trans-unit>
+
+        <trans-unit id="37">
+            <source>Genres</source>
+            <target>Genres</target>
+        </trans-unit>
+
+        <trans-unit id="38">
+            <source>Director</source>
+            <target>Réalisateur(trice)</target>
+        </trans-unit>
+
+        <trans-unit id="39">
+            <source>Video</source>
+            <target>Vidéo</target>
+        </trans-unit>
+
+        <trans-unit id="40">
+            <source>Audio</source>
+            <target>Audio</target>
+        </trans-unit>
+
+        <trans-unit id="41">
+            <source>Server</source>
+            <target>Serveur</target>
+        </trans-unit>
+     </body>
+    </file>
+</xliff>

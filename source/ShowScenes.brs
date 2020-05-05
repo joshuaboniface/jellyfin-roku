@@ -1,20 +1,24 @@
+' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+'
+' SPDX-License-Identifier: GPL-2.0-or-later
+
 function CreateServerGroup()
   ' Get and Save Jellyfin Server Information
   group = CreateObject("roSGNode", "ConfigScene")
   m.scene.appendChild(group)
   port =  CreateObject("roMessagePort")
-  group.findNode("prompt").text = "Connect to Server"
+  group.findNode("prompt").text = tr("Connect to Server")
 
 
   config = group.findNode("configOptions")
   server_field = CreateObject("roSGNode", "ConfigData")
-  server_field.label = "Server"
+  server_field.label = tr("Server")
   server_field.field = "server"
   server_field.type = "string"
   if get_setting("server") <> invalid
     server_field.value = get_setting("server")
   end if
-  group.findNode("example").text = "192.168.1.100:8096 or https://example.com/jellyfin"
+  group.findNode("example").text = tr("192.168.1.100:8096 or https://example.com/jellyfin")
   items = [ server_field ]
   config.configItems = items
 
@@ -36,7 +40,7 @@ function CreateServerGroup()
         maxSlashes = 0
         if left(server_hostname.value,8) = "https://" or left(server_hostname.value,7) = "http://" then maxSlashes = 2
         'Check to make sure entry has no extra slashes before adding default ports.
-        if Instr(0, server_hostname.value, "/") = maxSlashes then 
+        if Instr(0, server_hostname.value, "/") = maxSlashes then
           if server_hostname.value.len() > 5 and mid(server_hostname.value, server_hostname.value.len()-4,1) <> ":" and mid(server_hostname.value, server_hostname.value.len()-5,1) <> ":" then
             if left(server_hostname.value ,5) = "https" then
               server_hostname.value = server_hostname.value + ":8920"
@@ -52,7 +56,7 @@ function CreateServerGroup()
           ' Maybe don't unset setting, but offer as a prompt
           ' Server not found, is it online? New values / Retry
           print "Server not found, is it online? New values / Retry"
-          group.findNode("alert").text = "Server not found, is it online?"
+          group.findNode("alert").text = tr("Server not found, is it online?")
           SignOut()
         else
           group.visible = false
@@ -104,16 +108,16 @@ function CreateSigninGroup(user = "")
   m.scene.appendChild(group)
   port =  CreateObject("roMessagePort")
 
-  group.findNode("prompt").text = "Sign In"
+  group.findNode("prompt").text = tr("Sign In")
 
   config = group.findNode("configOptions")
   username_field = CreateObject("roSGNode", "ConfigData")
-  username_field.label = "Username"
+  username_field.label = tr("Username")
   username_field.field = "username"
   username_field.type = "string"
   username_field.value = user
   password_field = CreateObject("roSGNode", "ConfigData")
-  password_field.label = "Password"
+  password_field.label = tr("Password")
   password_field.field = "password"
   password_field.type = "password"
   items = [ username_field, password_field ]
@@ -145,7 +149,7 @@ function CreateSigninGroup(user = "")
         get_token(username.value, password.value)
         if get_setting("active_user") <> invalid then return "true"
         print "Login attempt failed..."
-        group.findNode("alert").text = "Login attempt failed."
+        group.findNode("alert").text = tr("Login attempt failed.")
       end if
     end if
   end while
@@ -171,7 +175,7 @@ function CreateHomeGroup()
   ]
   for each opt in options_buttons
     o = CreateObject("roSGNode", "OptionsButton")
-    o.title = opt.title
+    o.title = tr(opt.title)
     o.id = opt.id
     o.observeField("optionSelected", m.port)
     new_options.push(o)
@@ -180,8 +184,8 @@ function CreateHomeGroup()
   ' And a profile button
   user_node = CreateObject("roSGNode", "OptionsData")
   user_node.id = "active_user"
-  user_node.title = "Profile"
-  user_node.base_title = "Profile"
+  user_node.title = tr("Profile")
+  user_node.base_title = tr("Profile")
   user_options = []
   for each user in AvailableUsers()
     user_options.push({display: user.username + "@" + user.server, value: user.id})
@@ -198,7 +202,7 @@ end function
 function CreateMovieListGroup(libraryId)
   group = CreateObject("roSGNode", "Movies")
   group.id = libraryId
- 
+
   group.observeField("movieSelected", m.port)
 
   sidepanel = group.findNode("options")
@@ -208,25 +212,25 @@ function CreateMovieListGroup(libraryId)
      "key": "movie_sort_field",
      "default": "DateCreated",
      "values": [
-       {display: "Date Added", value: "DateCreated"},
-       {display: "Release Date", value: "PremiereDate"},
-       {display: "Name", value: "SortName"}
+       {display: tr("Date Added"), value: "DateCreated"},
+       {display: tr("Release Date"), value: "PremiereDate"},
+       {display: tr("Name"), value: "SortName"}
      ]},
     {"title": "Sort Order",
      "base_title": "Sort Order",
      "key": "movie_sort_order",
      "default": "Ascending",
      "values": [
-       {display: "Descending", value: "Descending"},
-       {display: "Ascending", value: "Ascending"}
+       {display: tr("Descending"), value: "Descending"},
+       {display: tr("Ascending"), value: "Ascending"}
      ]}
   ]
   new_options = []
   for each opt in movie_options
     o = CreateObject("roSGNode", "OptionsData")
-    o.title = opt.title
+    o.title = tr(opt.title)
     o.choices = opt.values
-    o.base_title = opt.base_title
+    o.base_title = tr(opt.base_title)
     o.config_key = opt.key
     o.value = get_user_setting(opt.key, opt.default)
     new_options.append([o])
@@ -309,22 +313,22 @@ function CreateCollectionsList(libraryId)
 
   sidepanel = group.findNode("options")
   panel_options = [
-    {"title": "Sort Field",
-     "base_title": "Sort Field",
+    {"title": tr("Sort Field"),
+     "base_title": tr("Sort Field"),
      "key": "movie_sort_field",
      "default": "SortName",
      "values": [
-       {display: "Date Added", value: "DateCreated"},
-       {display: "Release Date", value: "PremiereDate"},
-       {display: "Name", value: "SortName"}
+       {display: tr("Date Added"), value: "DateCreated"},
+       {display: tr("Release Date"), value: "PremiereDate"},
+       {display: tr("Name"), value: "SortName"}
      ]},
-    {"title": "Sort Order",
-     "base_title": "Sort Order",
+    {"title": tr("Sort Order"),
+     "base_title": tr("Sort Order"),
      "key": "movie_sort_order",
      "default": "Ascending",
      "values": [
-       {display: "Descending", value: "Descending"},
-       {display: "Ascending", value: "Ascending"}
+       {display: tr("Descending"), value: "Descending"},
+       {display: tr("Ascending"), value: "Ascending"}
      ]}
   ]
   new_options = []

@@ -1,6 +1,10 @@
+' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+'
+' SPDX-License-Identifier: GPL-2.0-or-later
+
 sub Init()
   m.title = m.top.findNode("title")
-  m.title.text = "Loading..."
+  m.title.text = tr("Loading...")
 end sub
 
 function itemContentChanged() as void

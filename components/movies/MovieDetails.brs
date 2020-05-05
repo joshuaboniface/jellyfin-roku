@@ -43,7 +43,7 @@ sub itemContentChanged()
   end if
 
   if itemData.genres.count() > 0
-    setFieldText("genres", "Genres: " + itemData.genres.join(", "))
+    setFieldText("genres", tr("Genres") + ": " + itemData.genres.join(", "))
   end if
   director = invalid
   for each person in itemData.people
@@ -53,10 +53,10 @@ sub itemContentChanged()
     end if
   end for
   if director <> invalid
-    setFieldText("director", "Director: " + director)
+    setFieldText("director", tr("Director") + ": " + director)
   end if
-  setFieldText("video_codec", "Video: " + itemData.mediaStreams[0].displayTitle)
-  setFieldText("audio_codec", "Audio: " + itemData.mediaStreams[1].displayTitle)
+  setFieldText("video_codec", tr("Video") + ": " + itemData.mediaStreams[0].displayTitle)
+  setFieldText("audio_codec", tr("Audio") + ": " + itemData.mediaStreams[1].displayTitle)
   ' TODO - cmon now. these are buttons, not words
   if itemData.taglines.count() > 0
     setFieldText("tagline", itemData.taglines[0])

@@ -26,6 +26,10 @@
 # 3) Set the variable ROKU_DEV_PASSWORD in your environment for the password
 #    associated with the rokudev account.
 ##########################################################################
+# SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 DISTREL = $(shell pwd)/out
 COMMONREL ?= $(shell pwd)/common
 SOURCEREL = $(shell pwd)
@@ -101,6 +105,7 @@ prep_staging:
 	cp -r $(SOURCEREL)/source $(STAGINGREL)
 	cp -r $(SOURCEREL)/components $(STAGINGREL)
 	cp -r $(SOURCEREL)/images $(STAGINGREL)
+	cp -r $(SOURCEREL)/locale $(STAGINGREL)
 	cp $(SOURCEREL)/manifest $(STAGINGREL)/manifest
 
 package: prep_staging
