@@ -17,7 +17,7 @@ function itemContentChanged() as void
 
   if type(itemData.RunTimeTicks) = "LongInteger"
     m.top.findNode("runtime").text = stri(getRuntime()).trim() + " mins"
-    m.top.findNode("ends-at", tr("Ends at %1").Replace("%1", getEndTime()))
+    m.top.findNode("endtime").text = tr("Ends at %1").Replace("%1", getEndTime())
   end if
   if itemData.communityRating <> invalid then
     m.top.findNode("star").visible = true
