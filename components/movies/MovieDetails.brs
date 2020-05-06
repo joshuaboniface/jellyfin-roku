@@ -39,7 +39,7 @@ sub itemContentChanged()
 
   if type(itemData.RunTimeTicks) = "LongInteger"
     setFieldText("runtime", stri(getRuntime()) + " mins")
-    setFieldText("ends-at", "Ends at " + getEndTime())
+    setFieldText("ends-at", tr("Ends at %1").Replace("%1", getEndTime()))
   end if
 
   if itemData.genres.count() > 0

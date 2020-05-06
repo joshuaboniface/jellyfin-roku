@@ -1,7 +1,3 @@
-' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
-'
-' SPDX-License-Identifier: GPL-2.0-or-later
-
 sub init()
     m.top.layoutDirection = "vert"
     m.top.horizAlignment = "center"

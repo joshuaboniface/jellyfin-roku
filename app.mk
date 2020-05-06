@@ -26,9 +26,6 @@
 # 3) Set the variable ROKU_DEV_PASSWORD in your environment for the password
 #    associated with the rokudev account.
 ##########################################################################
-# SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
-#
-# SPDX-License-Identifier: GPL-2.0-or-later
 
 DISTREL = $(shell pwd)/out
 COMMONREL ?= $(shell pwd)/common

@@ -1,7 +1,3 @@
-' SPDX-FileCopyrightText: 2020 The Jellyfin Project https://github.com/jellyfin
-'
-' SPDX-License-Identifier: GPL-2.0-or-later
-
 sub init()
     m.title = m.top.findNode("title")
     m.title.text = tr("Loading...")
@@ -21,7 +17,7 @@ function itemContentChanged() as void
 
   if type(itemData.RunTimeTicks) = "LongInteger"
     m.top.findNode("runtime").text = stri(getRuntime()).trim() + " mins"
-    m.top.findNode("endtime").text = tr("Ends at ") + getEndTime()
+    m.top.findNode("ends-at", tr("Ends at %1").Replace("%1", getEndTime()))
   end if
   if itemData.communityRating <> invalid then
     m.top.findNode("star").visible = true

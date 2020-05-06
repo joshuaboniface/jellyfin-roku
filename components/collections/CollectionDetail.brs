@@ -22,7 +22,7 @@ sub itemContentChanged()
   setFieldText("overview", itemData.overview)
 
   setFieldText("runtime", stri(getRuntime()) + " mins")
-  setFieldText("ends-at", "Ends at " + getEndTime())
+  setFieldText("ends-at", tr("Ends at %1").Replace("%1", getEndTime()))
 
   if itemData.genres.count() > 0
     setFieldText("genres", itemData.genres.join(", "))
