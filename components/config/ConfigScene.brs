@@ -1,5 +1,6 @@
 sub init()
     m.top.setFocus(true)
+    m.top.optionsAvailable = false
 end sub
 
 function onKeyEvent(key as String, press as Boolean) as Boolean

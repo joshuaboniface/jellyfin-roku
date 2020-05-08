@@ -28,6 +28,8 @@ function SignOut()
   end if
   unset_setting("active_user")
   m.overhang.currentUser = ""
+  m.overhang.showOptions = false
+  m.scene.unobserveField("optionsPressed")
 end function
 
 function AvailableUsers()

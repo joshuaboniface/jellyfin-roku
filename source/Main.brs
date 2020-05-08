@@ -29,6 +29,7 @@ sub Main()
   ' load home page
   m.overhang.title = tr("Home")
   m.overhang.currentUser = m.user.Name
+  m.overhang.showOptions = true
   group = CreateHomeGroup()
   m.scene.appendChild(group)
 
@@ -40,9 +41,9 @@ sub Main()
   input = CreateObject("roInput")
   input.SetMessagePort(m.port)
 
-  di = CreateObject("roDeviceInfo")
-  di.setMessagePort(m.port)
-  di.EnableScreensaverExitedEvent(true)
+  m.device = CreateObject("roDeviceInfo")
+  m.device.setMessagePort(m.port)
+  m.device.EnableScreensaverExitedEvent(true)
 
   ' This is the core logic loop. Mostly for transitioning between scenes
   ' This now only references m. fields so could be placed anywhere, in theory
