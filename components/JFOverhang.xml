@@ -36,8 +36,10 @@
       </LayoutGroup>
     </LayoutGroup>
 
-    <Label id="overlayOptionsStar" font="font:LargeSystemFont" text="*" translation="[1780, 96]" />
-    <Label id="overlayOptionsText" font="font:SmallSystemFont" text="Options" translation="[1810, 103]" />
+    <LayoutGroup layoutDirection="horiz" horizAlignment="right" translation="[1900, 96]" vertAlignment="custom">
+        <Label id="overlayOptionsStar" font="font:LargeSystemFont" text="*"   />
+        <Label id="overlayOptionsText" font="font:SmallSystemFont" text="Options" translation="[0,6]" />
+    </LayoutGroup>
     <Timer
       id="currentTimeTimer"
       repeat="true"
