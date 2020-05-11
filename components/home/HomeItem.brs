@@ -4,7 +4,7 @@ sub itemContentChanged()
 
   m.itemText = m.top.findNode("itemText")
   itemPoster = m.top.findNode("itemPoster")
-  itemTextExtra = m.top.findNode("itemTextExtra")
+  m.itemTextExtra = m.top.findNode("itemTextExtra")
 
   ' Desired Image Width
   imageWidth = 464
@@ -14,7 +14,7 @@ sub itemContentChanged()
 
   itemPoster.width = imageWidth
   m.itemText.maxWidth = imageWidth
-  itemTextExtra.width = imageWidth
+  m.itemTextExtra.maxWidth = imageWidth
 
   ' Whether to use WidePoster or Thumbnail in this row
   usePoster = m.top.GetParent().content.usePoster
@@ -42,8 +42,8 @@ sub itemContentChanged()
   m.itemText.font.size = 25
   m.itemText.horizAlign = "left"
   m.itemText.vertAlign = "bottom"
-  itemTextExtra.visible = true
-  itemTextExtra.font.size = 22
+  m.itemTextExtra.visible = true
+  m.itemTextExtra.font.size = 22
 
 
   if itemData.type = "Episode" then
@@ -67,7 +67,7 @@ sub itemContentChanged()
       extraPrefix = extraPrefix + " - "
     end if
 
-    itemTextExtra.text = extraPrefix + itemData.name
+    m.itemTextExtra.text = extraPrefix + itemData.name
     return
   end if
 
@@ -92,7 +92,7 @@ sub itemContentChanged()
         textExtra = itemData.json.OfficialRating
       end if
     end if
-    itemTextExtra.text = textExtra
+    m.itemTextExtra.text = textExtra
 
     return
   end if
@@ -118,14 +118,14 @@ sub itemContentChanged()
     else if itemData.json.Status = "Ended" and itemData.json.EndDate <> invalid
       textExtra = textExtra + " - " + LEFT(itemData.json.EndDate, 4)
     end if
-    itemTextExtra.text = textExtra
+    m.itemTextExtra.text = textExtra
 
     return
   end if
 
   if itemData.type = "MusicAlbum" then
     m.itemText.text = itemData.name
-    itemTextExtra.text = itemData.json.AlbumArtist
+    m.itemTextExtra.text = itemData.json.AlbumArtist
     itemPoster.uri = itemData.posterURL
     return
   end if
@@ -140,8 +140,10 @@ sub focusChanged()
 
   if m.top.itemHasFocus = true then
     m.itemText.repeatCount = -1
+    m.itemTextExtra.repeatCount = -1
   else
     m.itemText.repeatCount = 0
+    m.itemTextExtra.repeatCount = 0
   end if
 
 end sub
