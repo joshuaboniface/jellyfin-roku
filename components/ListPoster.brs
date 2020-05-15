@@ -32,9 +32,7 @@ sub updateSize()
     maxSize = m.top.getParent().itemSize
 
     ' Always reserve the bottom for the Poster Title
-    m.title.wrap = true
-    m.title.maxLines = 2
-    m.title.width = maxSize[0]
+    m.title.maxWidth = maxSize[0]
     m.title.height = 80
     m.title.translation = [0, int(maxSize[1]) - m.title.height]
 
@@ -72,3 +70,15 @@ function itemContentChanged() as void
 
     updateSize()
 end function
+
+'
+' Enable title scrolling based on item Focus
+sub focusChanged()
+
+  if m.top.itemHasFocus = true then
+    m.title.repeatCount = -1
+  else
+    m.title.repeatCount = 0
+  end if
+
+end sub

@@ -3,14 +3,16 @@
   <children>
     <Rectangle id="backdrop" />
     <Poster id="poster" />
-    <Label id="title"
+    <ScrollingLabel id="title"
       horizAlign="center"
       font="font:SmallSystemFont"
+      repeatCount="0"
       />
   </children>
   <interface>
     <field id="itemContent" type="node" onChange="itemContentChanged"/>
     <field id="itemWidth" type="integer" />
+    <field id="itemHasFocus" type="boolean" onChange="focusChanged" />
     <!-- mediatype -->
   </interface>
 
