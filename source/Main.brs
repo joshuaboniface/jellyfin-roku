@@ -17,7 +17,7 @@ sub Main()
   m.overhang = CreateObject("roSGNode", "JFOverhang")
   m.scene.insertChild(m.overhang, 0)
   
-  m.page_size = 50
+  m.page_size = 48
 
   app_start:
   m.overhang.title = ""

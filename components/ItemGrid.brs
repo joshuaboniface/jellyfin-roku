@@ -12,12 +12,7 @@ end sub
 sub updateSize()
   m.top.numRows = 1
   if m.top.itemsPerRow = invalid or m.top.itemsPerRow = 0 then
-    m.top.itemsPerRow = 5
-  end if
-
-  ' Default this to two rows per page unless otherwise configured
-  if m.top.rowsPerPage = invalid or m.top.rowsPerPage < 1 then
-    m.top.rowsPerPage = 2
+    m.top.itemsPerRow = 6
   end if
 
   dimensions = m.top.getScene().currentDesignResolution
@@ -26,7 +21,7 @@ sub updateSize()
   topSpace = border + 105
   m.top.translation = [border, topSpace]
 
-  textHeight = 80
+  textHeight = 100
   itemWidth = (dimensions["width"] - border*2) / m.top.itemsPerRow -20
   itemHeight = itemWidth * 1.5 + textHeight
 

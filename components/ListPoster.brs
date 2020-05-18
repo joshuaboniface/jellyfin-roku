@@ -46,7 +46,7 @@ sub updateSize()
     m.poster.width = int(maxSize[0]) - 4
     m.poster.height = m.poster.width * ratio
 
-    posterVertSpace = int(maxSize[1]) - m.title.height
+    posterVertSpace = int(maxSize[1]) - m.title.height - 20
 
     if m.poster.height > posterVertSpace
       ' Do a thing to shrink the image if it is too tall

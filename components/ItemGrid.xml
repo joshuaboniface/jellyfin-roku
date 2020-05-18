@@ -2,7 +2,7 @@
 <component name="ItemGrid" extends="RowList">
   <interface>
     <field id="itemsPerRow" type="int" />
-    <field id="rowsPerPage" type="int" />
+    <field id="rowsPerPage" type="int" value="2" />
     <field id="objects" type="associativearray" onChange="setupRows" />
     <field id="escapeButton" type="string" alwaysNotify="true" />
   </interface>
