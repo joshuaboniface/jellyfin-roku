@@ -11,8 +11,8 @@ sub Main()
   m.screen.show()
 
   ' Set any initial Global Variables
-  m.global = m.screen.getGlobalNode()  
-  m.global.addFields( {app_loaded: false} ) 
+  m.global = m.screen.getGlobalNode()
+  m.global.addFields( {app_loaded: false} )
 
   m.overhang = CreateObject("roSGNode", "JFOverhang")
   m.scene.insertChild(m.overhang, 0)
@@ -27,8 +27,9 @@ sub Main()
   wipe_groups()
 
   ' load home page
-  m.overhang.title = "Home"
+  m.overhang.title = tr("Home")
   m.overhang.currentUser = m.user.Name
+  m.overhang.showOptions = true
   group = CreateHomeGroup()
   m.scene.appendChild(group)
 
@@ -40,9 +41,9 @@ sub Main()
   input = CreateObject("roInput")
   input.SetMessagePort(m.port)
 
-  di = CreateObject("roDeviceInfo")
-  di.setMessagePort(m.port)
-  di.EnableScreensaverExitedEvent(true)
+  m.device = CreateObject("roDeviceInfo")
+  m.device.setMessagePort(m.port)
+  m.device.EnableScreensaverExitedEvent(true)
 
   ' This is the core logic loop. Mostly for transitioning between scenes
   ' This now only references m. fields so could be placed anywhere, in theory
@@ -434,7 +435,7 @@ function LoginFlow(startOver = false as boolean)
           return true
         end if
       end if
-    else 
+    else
       userSelected = ""
     end if
     passwordEntry = CreateSigninGroup(userSelected)
@@ -516,9 +517,9 @@ sub RemoveCurrentGroup()
   group.visible = true
 end sub
 
-' Roku Performance monitoring 
+' Roku Performance monitoring
 sub SendPerformanceBeacon(signalName as string)
-  if m.global.app_loaded = false then 
-    m.scene.signalBeacon(signalName)  
+  if m.global.app_loaded = false then
+    m.scene.signalBeacon(signalName)
   end if
 end sub

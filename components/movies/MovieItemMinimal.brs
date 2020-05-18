@@ -1,6 +1,6 @@
 sub Init()
     m.title = m.top.findNode("title")
-    m.title.text = "Loading..."
+    m.title.text = tr("Loading...")
 end sub
 
 function itemContentChanged() as void

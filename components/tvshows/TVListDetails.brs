@@ -1,6 +1,6 @@
 sub init()
     m.title = m.top.findNode("title")
-    m.title.text = "Loading..."
+    m.title.text = tr("Loading...")
 end sub
 
 function itemContentChanged() as void
@@ -8,7 +8,7 @@ function itemContentChanged() as void
   itemData = item.json
   if itemData.indexNumber <> invalid then
     indexNumber = itemData.indexNumber.toStr() + ". "
-  else 
+  else
     indexNumber = ""
   end if
   m.top.findNode("title").text = indexNumber + item.title
@@ -17,7 +17,7 @@ function itemContentChanged() as void
 
   if type(itemData.RunTimeTicks) = "LongInteger"
     m.top.findNode("runtime").text = stri(getRuntime()).trim() + " mins"
-    m.top.findNode("endtime").text = "Ends at " + getEndTime()
+    m.top.findNode("endtime").text = tr("Ends at %1").Replace("%1", getEndTime())
   end if
   if itemData.communityRating <> invalid then
     m.top.findNode("star").visible = true

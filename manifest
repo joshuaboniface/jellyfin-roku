@@ -1,7 +1,7 @@
 ##   Channel Details
 title=Jellyfin
 major_version=1
-minor_version=1
+minor_version=2
 build_version=0
 
 ###  Main Menu Icons / Channel Poster Artwork
@@ -18,7 +18,7 @@ splash_min_time=1500
 
 ui_resolutions=fhd
 
-screensaver_private=0
+screensaver_private=1
 screensaver_title=Jellyfin
 
 supports_input_launch=1

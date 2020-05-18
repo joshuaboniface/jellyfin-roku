@@ -1,4 +1,5 @@
 sub init()
+  m.top.optionsAvailable = false
 end sub
 
 sub itemContentChanged()

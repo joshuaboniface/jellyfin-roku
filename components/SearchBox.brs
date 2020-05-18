@@ -23,11 +23,11 @@ function onDialogButton()
     d = m.top.getScene().dialog
     button_text = d.buttons[d.buttonSelected]
 
-    if button_text = "Search"
+    if button_text = tr("Search")
         m.top.search_value = d.text
         dismiss_dialog()
         return true
-    else if button_text = "Cancel"
+    else if button_text = tr("Cancel")
         dismiss_dialog()
         return true
     end if
@@ -37,8 +37,8 @@ end function
 
 sub show_dialog()
     dialog = CreateObject("roSGNode", "KeyboardDialog")
-    dialog.title = "Search"
-    dialog.buttons = ["Search", "Cancel"]
+    dialog.title = tr("Search")
+    dialog.buttons = [tr("Search"), tr("Cancel")]
 
     m.top.getScene().dialog = dialog
 

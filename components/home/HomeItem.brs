@@ -2,7 +2,7 @@ sub itemContentChanged()
   itemData = m.top.itemContent
   if itemData = invalid then return
 
-  itemText = m.top.findNode("itemText")
+  m.itemText = m.top.findNode("itemText")
   itemPoster = m.top.findNode("itemPoster")
   itemTextExtra = m.top.findNode("itemTextExtra")
 
@@ -13,7 +13,7 @@ sub itemContentChanged()
   end if
 
   itemPoster.width = imageWidth
-  itemText.width = imageWidth
+  m.itemText.maxWidth = imageWidth
   itemTextExtra.width = imageWidth
 
   ' Whether to use WidePoster or Thumbnail in this row
@@ -23,7 +23,7 @@ sub itemContentChanged()
   ' Format the Data based on the type of Home Data
 
   if itemData.type = "CollectionFolder" OR itemData.type = "UserView" then
-    itemText.text = itemData.name
+    m.itemText.text = itemData.name
     itemPoster.uri = itemData.widePosterURL
     return
   end if
@@ -32,22 +32,22 @@ sub itemContentChanged()
     itemPoster.width = "96"
     itemPoster.height = "96"
     itemPoster.translation = "[192, 88]"
-    itemText.text = itemData.name
+    m.itemText.text = itemData.name
     itemPoster.uri = itemData.widePosterURL
     return
   end if
 
 
-  itemText.height = 34
-  itemText.font.size = 25
-  itemText.horizAlign = "left"
-  itemText.vertAlign = "bottom"
+  m.itemText.height = 34
+  m.itemText.font.size = 25
+  m.itemText.horizAlign = "left"
+  m.itemText.vertAlign = "bottom"
   itemTextExtra.visible = true
   itemTextExtra.font.size = 22
 
 
   if itemData.type = "Episode" then
-    itemText.text = itemData.json.SeriesName
+    m.itemText.text = itemData.json.SeriesName
 
     if usePoster = true then
       itemPoster.uri = itemData.widePosterURL
@@ -72,7 +72,7 @@ sub itemContentChanged()
   end if
 
   if itemData.type = "Movie" then
-    itemText.text = itemData.name
+    m.itemText.text = itemData.name
 
     if imageWidth = 180
       itemPoster.uri = itemData.posterURL
@@ -99,7 +99,7 @@ sub itemContentChanged()
 
   if itemData.type = "Series" then
 
-    itemText.text = itemData.name
+    m.itemText.text = itemData.name
 
     if usePoster = true then
       itemPoster.uri = itemData.widePosterURL
@@ -124,12 +124,24 @@ sub itemContentChanged()
   end if
 
   if itemData.type = "MusicAlbum" then
-    itemText.text = itemData.name
+    m.itemText.text = itemData.name
     itemTextExtra.text = itemData.json.AlbumArtist
     itemPoster.uri = itemData.posterURL
     return
   end if
 
   print "Unhandled Item Type: " + itemData.type
+
+end sub
+
+'
+' Enable title scrolling based on item Focus
+sub focusChanged()
+
+  if m.top.itemHasFocus = true then
+    m.itemText.repeatCount = -1
+  else
+    m.itemText.repeatCount = 0
+  end if
 
 end sub

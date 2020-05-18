@@ -8,7 +8,7 @@ sub init()
   m.name.vertAlign = "center"
   m.name.horizAlign = "center"
 
-  m.value.hintText = "Enter a value..."
+  m.value.hintText = tr("Enter a value...")
   m.value.maxTextLength = 120
 end sub
 

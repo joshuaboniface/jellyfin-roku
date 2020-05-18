@@ -35,9 +35,11 @@
         <Label id="overlayMeridian" font="font:SmallSystemFont" vertAlign="bottom" height="48" />
       </LayoutGroup>
     </LayoutGroup>
-    
-    <Label id="overlayOptionsStar" font="font:LargeSystemFont" text="*" translation="[1791, 96]" />
-    <Label id="overlayOptionsText" font="font:SmallSystemFont" text="Options" translation="[1821, 103]" />
+
+    <LayoutGroup layoutDirection="horiz" horizAlignment="right" translation="[1900, 96]" vertAlignment="custom">
+        <Label id="overlayOptionsStar" font="font:LargeSystemFont" text="*"   />
+        <Label id="overlayOptionsText" font="font:SmallSystemFont" text="Options" translation="[0,6]" />
+    </LayoutGroup>
     <Timer
       id="currentTimeTimer"
       repeat="true"
