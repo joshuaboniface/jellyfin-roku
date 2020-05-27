@@ -31,11 +31,12 @@ end sub
 
 sub updateSize()
   sideborder = 100
-  m.top.translation = [111, 155]
+  m.top.translation = [111, 180]
 
   itemWidth = 480
   itemHeight = 330
 
+  m.top.rowCounterRightOffset = 80
   m.top.itemSize = [1920 - 111 - 27, itemHeight]
   ' spacing between rows
   m.top.itemSpacing = [0, 105]

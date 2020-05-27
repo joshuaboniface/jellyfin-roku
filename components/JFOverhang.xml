@@ -6,14 +6,14 @@
         id="overlayBackground"
         color="#000000"
         width="1920"
-        height="96"
+        height="150"
         translation="[0,0]" />
     </LayoutGroup>
     <Poster id="overlayLogo"
       uri="pkg:/images/logo.png"
-      translation="[0, 12]"
+      translation="[96, 53]"
       width="270" height="72" />
-    <LayoutGroup id="overlayLeftGroup" layoutDirection="horiz" translation="[275, 18]" itemSpacings="30" >
+    <LayoutGroup id="overlayLeftGroup" layoutDirection="horiz" translation="[375, 53]" itemSpacings="30" >
       <Rectangle
         id="overlayLeftSeperator"
         color="#666666"
@@ -21,7 +21,7 @@
         height="64"/>
       <Label id="overlayTitle" font="font:LargeSystemFont" vertAlign="center" height="64" width="1100" />
     </LayoutGroup>
-    <LayoutGroup id="overlayRightGroup" layoutDirection="horiz" itemSpacings="30" translation="[1900, 18]" horizAlignment="right" >
+    <LayoutGroup id="overlayRightGroup" layoutDirection="horiz" itemSpacings="30" translation="[1820, 53]" horizAlignment="right" >
       <Label id="overlayCurrentUser" font="font:MediumSystemFont" width="300" horizAlign="right" vertAlign="center" height="64" />
       <Rectangle
         id="overlayRightSeperator"
@@ -36,7 +36,7 @@
       </LayoutGroup>
     </LayoutGroup>
 
-    <LayoutGroup layoutDirection="horiz" horizAlignment="right" translation="[1900, 96]" vertAlignment="custom">
+    <LayoutGroup layoutDirection="horiz" horizAlignment="right" translation="[1820, 120]" vertAlignment="custom">
         <Label id="overlayOptionsStar" font="font:LargeSystemFont" text="*"   />
         <Label id="overlayOptionsText" font="font:SmallSystemFont" text="Options" translation="[0,6]" />
     </LayoutGroup>
