@@ -11,7 +11,7 @@
     </LayoutGroup>
     <Poster id="overlayLogo"
       uri="pkg:/images/logo.png"
-      translation="[96, 53]"
+      translation="[70, 53]"
       width="270" height="72" />
     <LayoutGroup id="overlayLeftGroup" layoutDirection="horiz" translation="[375, 53]" itemSpacings="30" >
       <Rectangle
