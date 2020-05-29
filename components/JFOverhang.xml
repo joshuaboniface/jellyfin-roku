@@ -19,7 +19,7 @@
         color="#666666"
         width="2"
         height="64"/>
-      <Label id="overlayTitle" font="font:LargeSystemFont" vertAlign="center" height="64" width="1100" />
+      <ScrollingLabel id="overlayTitle" font="font:LargeSystemFont" vertAlign="center" height="64" maxWidth="1100" repeatCount="0" />
     </LayoutGroup>
     <LayoutGroup id="overlayRightGroup" layoutDirection="horiz" itemSpacings="30" translation="[1820, 53]" horizAlignment="right" >
       <Label id="overlayCurrentUser" font="font:MediumSystemFont" width="300" horizAlign="right" vertAlign="center" height="64" />
