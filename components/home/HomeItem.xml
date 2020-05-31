@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <component name="HomeItem" extends="Group">
   <children>
+    <Rectangle id="backdrop" width="464" height="261" translation="[8,5]" />
     <Poster id="itemPoster" width="464" height="261" translation="[8,5]" />
     <ScrollingLabel id="itemText" horizAlign="center" vertAlign="center" font="font:SmallBoldSystemFont" height="64" maxWidth="456" translation="[8,267]" repeatCount="0" />
     <Label id="itemTextExtra" horizAlign="left" vertAlign="center" font="font:SmallBoldSystemFont" height="32" width="456" translation="[8,300]" visible="false" color="#777777FF" />

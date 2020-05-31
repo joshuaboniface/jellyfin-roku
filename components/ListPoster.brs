@@ -2,8 +2,13 @@ sub init()
     m.title = m.top.findNode("title")
     m.staticTitle = m.top.findNode("staticTitle")
     m.poster = m.top.findNode("poster")
+    
     m.backdrop = m.top.findNode("backdrop")
-    m.backdrop.color = "#404040FF"
+    
+    ' Randmomise the background colors
+    posterBackgrounds = [ "#5ccea9", "#d2b019", "#dd452b", "#338abb", "#6b689d" ]
+    m.backdrop.color = posterBackgrounds[rnd(posterBackgrounds.count()) - 1]
+
     updateSize()
 end sub
 

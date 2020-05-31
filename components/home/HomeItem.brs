@@ -16,6 +16,12 @@ sub itemContentChanged()
   m.itemText.maxWidth = imageWidth
   itemTextExtra.width = imageWidth
 
+  ' Randmomise the background colors
+  m.backdrop = m.top.findNode("backdrop")
+  posterBackgrounds = [ "#5ccea9", "#d2b019", "#dd452b", "#338abb", "#6b689d" ]
+  m.backdrop.color = posterBackgrounds[rnd(posterBackgrounds.count()) - 1]
+  m.backdrop.width = imageWidth
+
   ' Whether to use WidePoster or Thumbnail in this row
   usePoster = m.top.GetParent().content.usePoster
 
