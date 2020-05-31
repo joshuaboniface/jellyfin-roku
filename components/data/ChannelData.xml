@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="ChannelData" extends="ContentNode">
+  <interface>
+    <field id="id" type="string" />
+    <field id="title" type="string" />
+    <field id="image" type="node" onChange="setPoster" />
+    <field id="posterURL" type="string" />
+    <field id="json" type="associativearray" onChange="setFields" />
+  </interface>
+  <script type="text/brightscript" uri="ChannelData.brs" />
+</component>

@@ -21,8 +21,6 @@ function VideoContent(video) as object
 
   meta = ItemMetaData(video.id)
   video.content.title = meta.Name
-  container = getContainerType(meta)
-  video.container = container
   
   ' If there is a last playback positon, ask user if they want to resume
   position = meta.json.UserData.PlaybackPositionTicks
@@ -39,9 +37,36 @@ function VideoContent(video) as object
   end if
   video.content.PlayStart = int(position/10000000)
 
-  video.PlaySessionId = ItemGetSession(video.id, position)
+  playbackInfo = ItemPostPlaybackInfo(video.id, position)
+  video.PlaySessionId = playbackInfo.PlaySessionId
+
+  if meta.live then
+    video.content.live = true
+    video.content.StreamFormat = "hls"
+
+    'Original MediaSource seems to be a placeholder and real stream data is avaiable
+    'after POSTing to PlaybackInfo
+    json = meta.json
+    json.AddReplace("MediaSources", playbackInfo.MediaSources)
+    json.AddReplace("MediaStreams", playbackInfo.MediaSources[0].MediaStreams)
+    meta.json = json
+  end if
+
+  container = getContainerType(meta)
+  video.container = container
+
   transcodeParams = getTranscodeParameters(meta)
   transcodeParams.append({"PlaySessionId": video.PlaySessionId})
+
+  if meta.live then
+    _livestream_params = {
+      "MediaSourceId": playbackInfo.MediaSources[0].Id,
+      "LiveStreamId": playbackInfo.MediaSources[0].LiveStreamId,
+      "MinSegments": 2  'This is a guess about initial buffer size, segments are 3s each
+    }
+    params.append(_livestream_params)
+    transcodeParams.append(_livestream_params)
+  end if
 
   subtitles =  sortSubtitles(meta.id,meta.json.MediaStreams)
   video.Subtitles = subtitles["all"]
@@ -229,6 +254,12 @@ function ReportPlayback(video, state = "update" as string)
     "PositionTicks": str(int(video.position)) + "0000000",
     "IsPaused": (video.state = "paused"),
   }
+  if video.content.live then
+    params.append({
+      "MediaSourceId": video.transcodeParams.MediaSourceId,
+      "LiveStreamId": video.transcodeParams.LiveStreamId
+    })
+  end if
   PlaystateUpdate(video.id, state, params)
 end function
 

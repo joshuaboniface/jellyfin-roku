@@ -352,6 +352,57 @@ function CreateCollectionsList(libraryId)
   return group
 end function
 
+
+function CreateChannelList(libraryId)
+  group = CreateObject("roSGNode", "Channels")
+  group.id = libraryId
+
+  group.observeField("channelSelected", m.port)
+
+
+  sidepanel = group.findNode("options")
+  channel_options = [
+    {"title": "Sort Field",
+     "base_title": "Sort Field",
+     "key": "channel_sort_field",
+     "default": "Name",
+     "values": [
+       {display: tr("Name"), value: "SortName"}
+     ]},
+    {"title": "Sort Order",
+     "base_title": "Sort Order",
+     "key": "channel_sort_order",
+     "default": "Ascending",
+     "values": [
+       {display: tr("Descending"), value: "Descending"},
+       {display: tr("Ascending"), value: "Ascending"}
+     ]}
+  ]
+  new_options = []
+  for each opt in channel_options
+    o = CreateObject("roSGNode", "OptionsData")
+    o.title = tr(opt.title)
+    o.choices = opt.values
+    o.base_title = tr(opt.base_title)
+    o.config_key = opt.key
+    o.value = get_user_setting(opt.key, opt.default)
+    new_options.append([o])
+  end for
+
+  sidepanel.options = new_options
+  sidepanel.observeField("closeSidePanel", m.port)
+
+  p = CreatePaginator()
+  group.appendChild(p)
+
+  group.pageNumber = 1
+  p.currentPage = group.pageNumber
+
+  ChannelLister(group, m.page_size)
+
+  return group
+end function
+
 function CreateSearchPage()
   ' Search + Results Page
   group = CreateObject("roSGNode", "SearchResults")
@@ -440,6 +491,18 @@ function CollectionLister(group, page_size)
   })
   group.objects = item_list
 
+  p = group.findNode("paginator")
+  p.maxPages = div_ceiling(group.objects.TotalRecordCount, page_size)
+end function
+
+function ChannelLister(group, page_size)
+  sort_order = get_user_setting("channel_sort_order", "Ascending")
+  sort_field = get_user_setting("channel_sort_field", "SortName")
+  group.objects = Channels({"limit": page_size,
+    "StartIndex": page_size * (group.pageNumber - 1),
+    "SortBy": sort_field,
+    "SortOrder": sort_order,
+  })
   p = group.findNode("paginator")
   p.maxPages = div_ceiling(group.objects.TotalRecordCount, page_size)
 end function

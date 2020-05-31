@@ -22,17 +22,32 @@ function UserItemsResume(params = {} as object)
   return data
 end function
 
-function ItemGetSession(id as string, StartTimeTicks = 0 as longinteger)
+function ItemGetPlaybackInfo(id as string, StartTimeTicks = 0 as longinteger)
   params = {
-    UserId: get_setting("active_user"),
-    StartTimeTicks: StartTimeTicks,
-    IsPlayback: "true",
-    AutoOpenLiveStream: "true",
-    MaxStreamingBitrate: "140000000"
+    "UserId": get_setting("active_user"),
+    "StartTimeTicks": StartTimeTicks,
+    "IsPlayback": true,
+    "AutoOpenLiveStream": true,
+    "MaxStreamingBitrate": "140000000"
   }
   resp = APIRequest(Substitute("Items/{0}/PlaybackInfo", id), params)
-  data = getJson(resp)
-  return data.PlaySessionId
+  return getJson(resp)
+end function
+
+function ItemPostPlaybackInfo(id as string, StartTimeTicks = 0 as longinteger)
+  body = {
+    "DeviceProfile": getDeviceProfile()
+  }
+  params = {
+    "UserId": get_setting("active_user"),
+    "StartTimeTicks": StartTimeTicks,
+    "IsPlayback": true,
+    "AutoOpenLiveStream": true,
+    "MaxStreamingBitrate": "140000000"
+  }
+  req = APIRequest(Substitute("Items/{0}/PlaybackInfo", id), params)
+  req.SetRequest("POST")
+  return postJson(req, FormatJson(body))
 end function
 
 ' Search across all libraries
@@ -162,6 +177,11 @@ function ItemMetaData(id as string)
     tmp.image = PosterImage(data.id)
     tmp.json = data
     return tmp
+  else if data.type = "TvChannel"
+    tmp = CreateObject("roSGNode", "ChannelData")
+    tmp.image = PosterImage(data.id)
+    tmp.json = data
+    return tmp
   else
     print "Items.brs::ItemMetaData processed unhandled type: " data.type
     ' Return json if we don't know what it is
@@ -226,5 +246,32 @@ function TVNext(id as string)
   for each item in data.Items
     item.image = PosterImage(item.id)
   end for
+  return data
+end function
+
+function Channels(params = {})
+  if params["limit"] = invalid
+    params["limit"] = 30
+  end if
+  if params["page"] = invalid
+    params["page"] = 1
+  end if
+  params["recursive"] = true
+
+  resp = APIRequest("LiveTv/Channels", params)
+
+  data = getJson(resp)
+  results = []
+  for each item in data.Items
+    imgParams = { "maxWidth": 712, "maxheight": 400 }
+    tmp = CreateObject("roSGNode", "ChannelData")
+    tmp.image = PosterImage(item.id, imgParams)
+    if tmp.image <> invalid
+      tmp.image.posterDisplayMode = "scaleToFit"
+    end if
+    tmp.json = item
+    results.push(tmp)
+  end for
+  data.Items = results
   return data
 end function

@@ -136,7 +136,7 @@ sub rebuildURL(captions as boolean)
   if video.isTranscoded then
     deleteTranscode(video.PlaySessionId)
   end if
-  video.PlaySessionId = ItemGetSession(video.id, int(video.position) + playBackBuffer)
+  video.PlaySessionId = ItemGetPlaybackInfo(video.id, int(video.position) + playBackBuffer).PlaySessionId
   tmpParams.PlaySessionId  = video.PlaySessionId
   video.transcodeParams = tmpParams
 
