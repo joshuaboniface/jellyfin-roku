@@ -38,6 +38,11 @@ function VideoContent(video) as object
   video.content.PlayStart = int(position/10000000)
 
   playbackInfo = ItemPostPlaybackInfo(video.id, position)
+
+  if playbackInfo = invalid then
+    return invalid
+  end if
+
   video.PlaySessionId = playbackInfo.PlaySessionId
 
   if meta.live then

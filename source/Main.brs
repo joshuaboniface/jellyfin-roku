@@ -235,7 +235,15 @@ sub Main()
       ' If you select a Channel from ANYWHERE, follow this flow
       node = getMsgPicker(msg, "picker")
       video_id = node.id
+      
+      ' Show Channel Loading spinner
+      dialog = createObject("roSGNode", "ProgressDialog")
+      dialog.title = tr("Loading Channel Data")
+      m.scene.dialog = dialog
+
       video = CreateVideoPlayerGroup(video_id)
+      dialog.close = true
+
       if video <> invalid then
         group.lastFocus = group.focusedChild
         group.setFocus(false)
@@ -246,7 +254,14 @@ sub Main()
         group.control = "play"
         ReportPlayback(group, "start")
         m.overhang.visible = false
+      else 
+        dialog = createObject("roSGNode", "Dialog")
+        dialog.title = tr("Error loading Channel Data")
+        dialog.message = tr("Unable to load Channel Data from the server")
+        dialog.buttons = [tr("OK")]
+        m.scene.dialog = dialog
       end if
+    
     else if isNodeEvent(msg, "search_value")
       query = msg.getRoSGNode().search_value
       group.findNode("SearchBox").visible = false
