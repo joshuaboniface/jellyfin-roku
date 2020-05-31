@@ -454,6 +454,12 @@ function LoginFlow(startOver = false as boolean)
   end if
 
   wipe_groups()
+
+  'Send Device Profile information to server
+  body = getDeviceCapabilities()
+  req = APIRequest("/Sessions/Capabilities/Full")
+  req.SetRequest("POST")
+  postJson(req, FormatJson(body))
   return true
 end function
 
