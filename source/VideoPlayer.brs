@@ -177,6 +177,9 @@ end function
 
 function directPlaySupported(meta as object) as boolean
   devinfo = CreateObject("roDeviceInfo")
+  if meta.json.MediaSources[0] <> invalid or meta.json.MediaSources[0].SupportsDirectPlay = false then
+    return false
+  end if
   return devinfo.CanDecodeVideo({ Codec: meta.json.MediaStreams[0].codec }).result
 end function
 
