@@ -269,7 +269,7 @@ function decodeAudioSupported(meta as object, audio_stream_idx = 1) as boolean
 
   'Check for missing audio and allow playing
   if meta.json.MediaStreams[audio_stream_idx] = invalid or meta.json.MediaStreams[audio_stream_idx].Type <> "Audio" then return true
-
+  if meta.json.MediaStreams[audio_stream_idx]["Codec"] = "opus" return false
   devinfo = CreateObject("roDeviceInfo")
   codec = meta.json.MediaStreams[audio_stream_idx].codec
   streamInfo = { Codec: codec, ChCnt: meta.json.MediaStreams[audio_stream_idx].channels }
