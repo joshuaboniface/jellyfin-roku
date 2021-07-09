@@ -1,6 +1,6 @@
 sub init()
     m.top.functionName = "loadProgramDetails"
-    
+
 end sub
 
 sub loadProgramDetails()

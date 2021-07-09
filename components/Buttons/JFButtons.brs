@@ -5,7 +5,7 @@ sub init()
     m.menubg = m.top.findNode("menubg")
 
     m.focusRing = m.top.findNode("focus")
-    m.buttonGroup  = m.top.findNode("buttonGroup")
+    m.buttonGroup = m.top.findNode("buttonGroup")
     m.focusAnim = m.top.findNode("moveFocusAnimation")
     m.focusAnimTranslation = m.top.findNode("focusLocation")
     m.focusAnimWidth = m.top.findNode("focusWidth")
@@ -23,7 +23,7 @@ sub init()
     m.top.enableRenderTracking = true
     m.top.observeField("renderTracking", "renderChanged")
 
-end sub 
+end sub
 
 '
 ' When Selected Index set, ensure it is the one Focused
@@ -43,7 +43,7 @@ end sub
 
 sub updateButtons()
     m.textSizeTask.fontsize = 40
-    m.textSizeTask.text= m.top.buttons
+    m.textSizeTask.text = m.top.buttons
     m.textSizeTask.name = m.buttonCount
     m.textSizeTask.observeField("width", "showButtons")
     m.textSizeTask.control = "RUN"
@@ -51,18 +51,18 @@ end sub
 
 sub showButtons()
 
-    totalWidth = 110  ' track for menu background width - start with side padding
+    totalWidth = 110 ' track for menu background width - start with side padding
 
     for i = 0 to m.top.buttons.count() - 1
         m.buttonCount = m.buttonCount + 1
         l = m.buttonGroup.createChild("Label")
         l.text = m.top.buttons[i]
         l.font.size = 40
-        l.translation=[0,10]
+        l.translation = [0, 10]
         l.height = m.textSizeTask.height
         l.width = m.textSizeTask.width[i] + 50
         l.horizAlign = "center"
-        l.vertAlign="center"
+        l.vertAlign = "center"
         totalWidth = totalWidth + l.width + 45
     end for
 
@@ -92,7 +92,7 @@ end sub
 
 ' Change opacity of the highlighted menu item based on focus
 sub focusChanged()
-     if m.top.isInFocusChain()
+    if m.top.isInFocusChain()
         m.focusRing.opacity = 1
     else
         m.focusRing.opacity = 0.6
@@ -101,10 +101,10 @@ end sub
 
 
 function onKeyEvent(key as string, press as boolean) as boolean
-    
-	if not press then return false
 
-	if key = "left"
+    if not press then return false
+
+    if key = "left"
         if m.selectedFocusedIndex > 0 then m.selectedFocusedIndex = m.selectedFocusedIndex - 1
         highlightSelected(m.selectedFocusedIndex)
         m.top.focusedIndex = m.selectedFocusedIndex
@@ -117,6 +117,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
     else if key = "OK"
         m.top.selectedIndex = m.selectedFocusedIndex
         return true
-	end if
+    end if
     return false
 end function

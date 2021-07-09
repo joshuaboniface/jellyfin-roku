@@ -65,11 +65,11 @@ sub onScheduleLoaded()
     for each item in m.LoadScheduleTask.schedule
 
         channel = m.scheduleGrid.content.GetChild(m.channelIndex[item.ChannelId])
-        
-        if channel.PosterUrl <> "" 
+
+        if channel.PosterUrl <> ""
             item.channelLogoUri = channel.PosterUrl
         end if
-        if channel.Title <> "" 
+        if channel.Title <> ""
             item.channelName = channel.Title
         end if
 
@@ -107,7 +107,7 @@ end sub
 
 ' Update the Program Details with full information
 sub onProgramDetailsLoaded()
-    if m.LoadProgramDetailsTask.programDetails = invalid then return 
+    if m.LoadProgramDetailsTask.programDetails = invalid then return
     channel = m.scheduleGrid.content.GetChild(m.LoadProgramDetailsTask.programDetails.channelIndex)
 
     ' If TV Show does not have its own image, use the channel logo
@@ -132,20 +132,20 @@ sub onProgramSelected()
 end sub
 
 ' Move the TV Guide Grid down or up depending whether details are selected
-sub focusProgramDetails(setFocused) 
+sub focusProgramDetails(setFocused)
 
     h = m.detailsPane.height
     if h < 400 then h = 400
     h = h + 160 + 80
 
     if setFocused = true
-        m.gridMoveAnimationPosition.keyValue = [ [0,600], [0, h] ]
+        m.gridMoveAnimationPosition.keyValue = [[0, 600], [0, h]]
         m.detailsPane.setFocus(true)
         m.detailsPane.hasFocus = true
         m.top.lastFocus = m.detailsPane
     else
         m.detailsPane.hasFocus = false
-        m.gridMoveAnimationPosition.keyValue = [ [0, h], [0,600] ]
+        m.gridMoveAnimationPosition.keyValue = [[0, h], [0, 600]]
         m.scheduleGrid.setFocus(true)
         m.top.lastFocus = m.scheduleGrid
     end if
@@ -159,7 +159,7 @@ sub onWatchChannelSelected()
     if m.detailsPane.watchSelectedChannel = false then return
 
     ' Set focus back to grid before showing channel, to ensure grid has focus when we return
-    focusProgramDetails(false) 
+    focusProgramDetails(false)
 
     m.top.watchChannel = m.detailsPane.channel
 end sub
@@ -170,8 +170,8 @@ sub onGridScrolled()
     ' If we're within 12 hours of end of grid, load next 24hrs of data
     if m.scheduleGrid.leftEdgeTargetTime + (12 * 60 * 60) > m.gridEndDate.AsSeconds()
 
-        ' Ensure the task is not already (still) running, 
-        if  m.LoadScheduleTask.state <> "run" 
+        ' Ensure the task is not already (still) running,
+        if m.LoadScheduleTask.state <> "run"
             m.LoadScheduleTask.startTime = m.gridEndDate.ToISOString()
             m.gridEndDate.FromSeconds(m.gridEndDate.AsSeconds() + (24 * 60 * 60))
             m.LoadScheduleTask.endTime = m.gridEndDate.ToISOString()

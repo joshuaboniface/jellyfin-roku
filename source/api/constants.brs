@@ -8,7 +8,7 @@ sub setConstants()
         constants: {
 
             poster_bg_pallet: ["#00455c", "#44bae1", "#00a4db", "#1c4c5c", "#007ea8"],
-        
+
             colors: {
                 button: "#006fab"
             },
@@ -21,8 +21,8 @@ sub setConstants()
                 check_black: "pkg:/images/icons/check_black.png",
                 check_white: "pkg:/images/icons/check_white.png"
             }
-        
-        
+
+
         }
     })
 

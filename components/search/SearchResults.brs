@@ -1,3 +1,3 @@
 sub init()
-  m.top.optionsAvailable = false
+    m.top.optionsAvailable = false
 end sub

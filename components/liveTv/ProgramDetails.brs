@@ -54,13 +54,13 @@ sub setupLabels()
 end sub
 
 sub channelUpdated()
-    if m.top.channel = invalid 
+    if m.top.channel = invalid
         m.top.findNode("noInfoChannelName").text = ""
         m.channelName.text = ""
-     else
+    else
         m.top.findNode("noInfoChannelName").text = m.top.channel.Title
-        m.channelName.text= m.top.channel.Title
-        if m.top.programDetails = invalid 
+        m.channelName.text = m.top.channel.Title
+        if m.top.programDetails = invalid
             m.image.uri = m.top.channel.posterURL
         end if
     end if
@@ -200,7 +200,7 @@ end function
 '
 ' Show view channel button when item has Focus
 sub focusChanged()
-    if m.top.hasFocus = true 
+    if m.top.hasFocus = true
         m.overview.maxLines = m.maxDetailLines
         m.focusAnimationOpacity.keyValue = [0, 1]
     else
@@ -212,7 +212,7 @@ sub focusChanged()
 
 end sub
 
-sub onAnimationComplete() 
+sub onAnimationComplete()
     if m.focusAnimation.state = "stopped" and m.top.hasFocus = false
         m.overview.maxLines = m.maxPreviewLines
     end if
