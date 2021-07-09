@@ -1,0 +1,6 @@
+{
+    "files": [
+        "source/**/*.brs",
+        "components/**/*.brs"
+    ]
+}
