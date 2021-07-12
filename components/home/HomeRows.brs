@@ -24,14 +24,19 @@ sub init()
   m.LoadContinueTask.itemsToLoad = "continue"
   m.LoadNextUpTask = createObject("roSGNode", "LoadItemsTask")
   m.LoadNextUpTask.itemsToLoad = "nextUp"
+  m.LoadFavTask = createObject("roSGNode", "LoadItemsTask")
+  m.LoadFavTask.itemsToLoad = "Favorites"
 end sub
 
-sub loadLibraries()
+function loadLibraries()
   m.LoadLibrariesTask.control = "RUN"
-end sub
+end function
 
 sub updateSize()
+  sideborder = 100
   m.top.translation = [111, 180]
+
+  itemWidth = 480
   itemHeight = 330
 
   'Set width of Rows to cut off at edge of Safe Zone
@@ -55,17 +60,20 @@ sub onLibrariesLoaded()
   content = CreateObject("roSGNode", "ContentNode")
   mediaRow = content.CreateChild("HomeRow")
   mediaRow.title = tr("My Media")
+  favRow = content.CreateChild("HomeRow")
+  favRow.title = tr("My Favorites")
   continueRow = content.CreateChild("HomeRow")
   continueRow.title = tr("Continue Watching")
   nextUpRow = content.CreateChild("HomeRow")
   nextUpRow.title = tr("Next Up >")
   sizeArray = [
     [464, 311], ' My Media
+    [464, 311], ' My Favorites
     [464, 331], ' Continue Watching
     [464, 331]  ' Next Up
   ]
   ' validate library data
-  if m.libraryData <> invalid and m.libraryData.count() > 0
+  if (m.libraryData <> invalid and m.libraryData.count() > 0) then
     userConfig = m.top.userConfig
     ' populate My Media row
     filteredMedia = filterNodeArray(m.libraryData, "id", userConfig.MyMediaExcludes)
@@ -75,7 +83,7 @@ sub onLibrariesLoaded()
     ' create a "Latest In" row for each library
     filteredLatest = filterNodeArray(m.libraryData, "id", userConfig.LatestItemsExcludes)
     for each lib in filteredLatest
-      if lib.collectionType <> "boxsets" and lib.collectionType <> "livetv"
+      if lib.collectionType <> "boxsets" and lib.collectionType <> "livetv" then
         latestInRow = content.CreateChild("HomeRow")
         latestInRow.title = tr("Latest in") + " " + lib.name + " >"
         sizeArray.Push([464, 331])
@@ -91,23 +99,23 @@ sub onLibrariesLoaded()
   m.LoadContinueTask.control = "RUN"
 end sub
 
-sub updateHomeRows()
+function updateHomeRows()
   m.LoadContinueTask.observeField("content", "updateContinueItems")
   m.LoadContinueTask.control = "RUN"
-end sub
+end function
 
-sub updateContinueItems()
+function updateContinueItems()
   itemData = m.LoadContinueTask.content
   m.LoadContinueTask.unobserveField("content")
   m.LoadContinueTask.content = []
 
-  if itemData = invalid then return
+  if itemData = invalid then return false
 
   homeRows = m.top.content
   continueRowIndex = getRowIndex("Continue Watching")
 
-  if itemData.count() < 1
-    if continueRowIndex <> invalid
+  if itemData.count() < 1 then
+    if continueRowIndex <> invalid then
       ' remove the row
       deleteFromSizeArray(continueRowIndex)
       homeRows.removeChildIndex(continueRowIndex)
@@ -123,7 +131,7 @@ sub updateContinueItems()
       row.appendChild(item)
     end for
 
-    if continueRowIndex = invalid
+    if continueRowIndex = invalid then
       ' insert new row under "My Media"
       updateSizeArray(itemSize, 1)
       homeRows.insertChild(row, 1)
@@ -133,22 +141,71 @@ sub updateContinueItems()
     end if
   end if
 
+  
+   ' Load the Favorites Data
+   m.LoadFavTask.observeField("content", "updateFavItems")
+   m.LoadFavTask.control = "RUN"
+end function
+
+' get Favorites
+function updateFavRows()
+  m.LoadFavTask.observeField("content", "updateFavItems")
+  m.LoadFavTask.control = "RUN"
+end function
+
+function updateFavItems()
+  itemData = m.LoadFavTask.content
+  m.LoadFavTask.unobserveField("content")
+  m.LoadFavTask.content = []
+
+  if itemData = invalid then return false
+
+  homeRows = m.top.content
+  favRowIndex = getRowIndex("My Favorites")
+
+  if itemData.count() < 1 then
+    if favRowIndex <> invalid then
+      ' remove the row
+      deleteFromSizeArray(favRowIndex)
+      homeRows.removeChildIndex(favRowIndex)
+    end if
+  else
+    ' remake row using the new data
+    row = CreateObject("roSGNode", "HomeRow")
+    row.title = tr("My Favorites")
+    itemSize = [464, 331]
+    for each item in itemData
+      item.usePoster = row.usePoster
+      item.imageWidth = row.imageWidth
+      row.appendChild(item)
+    end for
+
+    if favRowIndex = invalid then
+      ' insert new row under "Continue Watching"
+      updateSizeArray(itemSize, 1)
+      homeRows.insertChild(row, 1)
+    else
+      ' replace the old row
+      homeRows.replaceChild(row, favRowIndex)
+    end if
+  end if
+
   m.LoadNextUpTask.observeField("content", "updateNextUpItems")
   m.LoadNextUpTask.control = "RUN"
-end sub
+end function
 
-sub updateNextUpItems()
+function updateNextUpItems()
   itemData = m.LoadNextUpTask.content
   m.LoadNextUpTask.unobserveField("content")
   m.LoadNextUpTask.content = []
 
-  if itemData = invalid then return
+  if itemData = invalid then return false
 
   homeRows = m.top.content
   nextUpRowIndex = getRowIndex("Next Up >")
 
-  if itemData.count() < 1
-    if nextUpRowIndex <> invalid
+  if itemData.count() < 1 then
+    if nextUpRowIndex <> invalid then
       ' remove the row
       deleteFromSizeArray(nextUpRowIndex)
       homeRows.removeChildIndex(nextUpRowIndex)
@@ -164,16 +221,16 @@ sub updateNextUpItems()
       row.appendChild(item)
     end for
 
-    if nextUpRowIndex = invalid
+    if nextUpRowIndex = invalid then
       ' insert new row under "Continue Watching"
       continueRowIndex = getRowIndex("Continue Watching")
-      if continueRowIndex <> invalid
-        updateSizeArray(itemSize, continueRowIndex + 1)
-        homeRows.insertChild(row, continueRowIndex + 1)
+      if continueRowIndex <> invalid then
+        updateSizeArray(itemSize, continueRowIndex + 2)
+        homeRows.insertChild(row, continueRowIndex + 2)
       else
-        ' insert it under My Media
-        updateSizeArray(itemSize, 1)
-        homeRows.insertChild(row, 1)
+        ' insert it under My Favorites
+        updateSizeArray(itemSize, 2)
+        homeRows.insertChild(row, 2)
       end if
     else
       ' replace the old row
@@ -182,7 +239,7 @@ sub updateNextUpItems()
   end if
 
   ' consider home screen loaded when above rows are loaded
-  if m.global.app_loaded = false
+  if m.global.app_loaded = false then
     m.top.signalBeacon("AppLaunchComplete") ' Roku Performance monitoring
     m.global.app_loaded = true
   end if
@@ -192,7 +249,7 @@ sub updateNextUpItems()
   userConfig = m.top.userConfig
   filteredLatest = filterNodeArray(m.libraryData, "id", userConfig.LatestItemsExcludes)
   for each lib in filteredLatest
-    if lib.collectionType <> "livetv" and lib.collectionType <> "boxsets"
+    if lib.collectionType <> "livetv" and lib.collectionType <> "boxsets" then
       loadLatest = createObject("roSGNode", "LoadItemsTask")
       loadLatest.itemsToLoad = "latest"
       loadLatest.itemId = lib.id
@@ -205,23 +262,24 @@ sub updateNextUpItems()
       loadLatest.control = "RUN"
     end if
   end for
-end sub
+end function
 
-sub updateLatestItems(msg)
+function updateLatestItems(msg)
   itemData = msg.GetData()
 
+  data = msg.getField()
   node = msg.getRoSGNode()
   node.unobserveField("content")
   node.content = []
 
-  if itemData = invalid then return
+  if itemData = invalid then return false
 
   homeRows = m.top.content
   rowIndex = getRowIndex(tr("Latest in") + " " + node.metadata.title + " >")
 
-  if itemData.count() < 1
+  if itemData.count() < 1 then
     ' remove row
-    if rowIndex <> invalid
+    if rowIndex <> invalid then
       deleteFromSizeArray(rowIndex)
       homeRows.removeChildIndex(rowIndex)
     end if
@@ -231,10 +289,10 @@ sub updateLatestItems(msg)
     row.title = tr("Latest in") + " " + node.metadata.title + " >"
     row.usePoster = true
     ' Handle specific types with different item widths
-    if node.metadata.contentType = "movies"
+    if node.metadata.contentType = "movies" then
       row.imageWidth = 180
       itemSize = [188, 331]
-    else if node.metadata.contentType = "music"
+    else if node.metadata.contentType = "music" then
       row.imageWidth = 261
       itemSize = [261, 331]
     else
@@ -248,7 +306,7 @@ sub updateLatestItems(msg)
       row.appendChild(item)
     end for
 
-    if rowIndex = invalid
+    if rowIndex = invalid then
       ' append new row
       updateSizeArray(itemSize)
       homeRows.appendChild(row)
@@ -258,14 +316,14 @@ sub updateLatestItems(msg)
       homeRows.replaceChild(row, rowIndex)
     end if
   end if
-end sub
+end function
 
 function getRowIndex(rowTitle as string)
   rowIndex = invalid
   for i = 1 to m.top.content.getChildCount() - 1
     ' skip row 0 since it's always "My Media"
     tmpRow = m.top.content.getChild(i)
-    if tmpRow.title = rowTitle
+    if tmpRow.title = rowTitle then
       rowIndex = i
       exit for
     end if
@@ -276,22 +334,22 @@ end function
 sub updateSizeArray(rowItemSize, rowIndex = invalid, action = "insert")
   sizeArray = m.top.rowItemSize
   ' append by default
-  if rowIndex = invalid
+  if rowIndex = invalid then
     rowIndex = sizeArray.count()
   end if
 
   newSizeArray = []
   for i = 0 to sizeArray.count()
-    if rowIndex = i
-      if action = "replace"
+    if rowIndex = i then
+      if action = "replace" then
         newSizeArray.Push(rowItemSize)
-      else if action = "insert"
+      else if action = "insert" then
         newSizeArray.Push(rowItemSize)
-        if sizeArray[i] <> invalid
+        if sizeArray[i] <> invalid then
           newSizeArray.Push(sizeArray[i])
         end if
       end if
-    else if sizeArray[i] <> invalid
+    else if sizeArray[i] <> invalid then
       newSizeArray.Push(sizeArray[i])
     end if
   end for
@@ -302,16 +360,16 @@ sub deleteFromSizeArray(rowIndex)
   updateSizeArray([0, 0], rowIndex, "delete")
 end sub
 
-sub itemSelected()
+function itemSelected()
   m.top.selectedItem = m.top.content.getChild(m.top.rowItemSelected[0]).getChild(m.top.rowItemSelected[1])
-end sub
+end function
 
 function onKeyEvent(key as string, press as boolean) as boolean
   handled = false
-  if press
-    if key = "play"
+  if press then
+    if key = "play" then
       itemToPlay = m.top.content.getChild(m.top.rowItemFocused[0]).getChild(m.top.rowItemFocused[1])
-      if itemToPlay <> invalid and (itemToPlay.type = "Movie" or itemToPlay.type = "Episode")
+      if itemToPlay <> invalid and (itemToPlay.type = "Movie" or itemToPlay.type = "Episode") then
         m.top.quickPlayNode = itemToPlay
       end if
       handled = true
@@ -327,11 +385,11 @@ function filterNodeArray(nodeArray as object, nodeKey as string, excludeArray as
   for each node in nodeArray
     excludeThisNode = false
     for each exclude in excludeArray
-      if node[nodeKey] = exclude
+      if node[nodeKey] = exclude then
         excludeThisNode = true
       end if
     end for
-    if excludeThisNode = false
+    if excludeThisNode = false then
       newNodeArray.Push(node)
     end if
   end for
