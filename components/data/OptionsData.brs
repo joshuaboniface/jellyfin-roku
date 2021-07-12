@@ -8,7 +8,7 @@ sub update_title()
         return
     end if
 
-    for i=0 to m.top.choices.count() - 1
+    for i = 0 to m.top.choices.count() - 1
         if m.top.choices[i].value = m.top.value
             m.top.value_index = i
             exit for

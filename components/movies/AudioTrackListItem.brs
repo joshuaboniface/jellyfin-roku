@@ -25,9 +25,9 @@ end sub
 sub focusChanged()
 
     if m.top.itemHasFocus = true
-      m.description.repeatCount = -1
+        m.description.repeatCount = -1
     else
-      m.description.repeatCount = 0
+        m.description.repeatCount = 0
     end if
-  
+
 end sub

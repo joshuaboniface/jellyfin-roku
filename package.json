@@ -9,12 +9,15 @@
   "devDependencies": {
     "@rokucommunity/bslint": "^0.4.0",
     "brighterscript": "^0.30.9",
+    "brighterscript-formatter": "^1.6.1",
     "rooibos-cli": "^1.0.1"
   },
   "scripts": {
     "validate": "npx bsc --copy-to-staging=false --create-package=false",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "bslint"
+    "lint": "bslint",
+    "check-formatting": "npx bsfmt --check",
+    "format": "npx bsfmt --write"
   },
   "repository": {
     "type": "git",

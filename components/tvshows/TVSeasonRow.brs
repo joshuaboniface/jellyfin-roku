@@ -15,19 +15,19 @@ end sub
 
 sub updateSize()
     itemWidth = 200
-    itemHeight = 380  ' width * 1.5 + text
+    itemHeight = 380 ' width * 1.5 + text
 
     m.top.visible = true
 
     ' size of the whole row
     m.top.itemSize = [1700, itemHeight]
     ' spacing between rows
-    m.top.itemSpacing = [ 0, 0 ]
+    m.top.itemSpacing = [0, 0]
 
     ' size of the item in the row
-    m.top.rowItemSize = [ itemWidth, itemHeight ]
+    m.top.rowItemSize = [itemWidth, itemHeight]
     ' spacing between items in a row
-    m.top.rowItemSpacing = [ 0, 0 ]
+    m.top.rowItemSpacing = [0, 0]
 end sub
 
 function getData()

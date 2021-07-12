@@ -15,8 +15,8 @@ sub setData()
 
     ' Set appropriate Images for Wide and Tall based on type
 
-    if datum.type = "CollectionFolder" OR datum.type = "UserView"
-        params = { "Tag" : datum.ImageTags.Primary, "maxHeight" : 261, "maxWidth" : 464 }
+    if datum.type = "CollectionFolder" or datum.type = "UserView"
+        params = { "Tag": datum.ImageTags.Primary, "maxHeight": 261, "maxWidth": 464 }
         m.top.thumbnailURL = ImageURL(datum.id, "Primary", params)
         m.top.widePosterUrl = m.top.thumbnailURL
 
@@ -38,7 +38,7 @@ sub setData()
         imgParams.Append({ "maxWidth": 464 })
 
         if datum.ImageTags.Primary <> invalid
-            param = { "Tag" : datum.ImageTags.Primary }
+            param = { "Tag": datum.ImageTags.Primary }
             imgParams.Append(param)
         end if
 
@@ -61,11 +61,11 @@ sub setData()
         imgParams.Append({ "maxWidth": 464 })
 
         if datum.UserData.UnplayedItemCount > 0
-          imgParams["UnplayedCount"] = datum.UserData.UnplayedItemCount
+            imgParams["UnplayedCount"] = datum.UserData.UnplayedItemCount
         end if
 
         if datum.ImageTags.Primary <> invalid
-          imgParams["Tag"] = datum.ImageTags.Primary
+            imgParams["Tag"] = datum.ImageTags.Primary
         end if
 
         m.top.posterURL = ImageURL(datum.id, "Primary", imgParams)
@@ -90,7 +90,7 @@ sub setData()
         imgParams.Append({ "maxWidth": 175 })
 
         if datum.ImageTags.Primary <> invalid
-            param = { "Tag" : datum.ImageTags.Primary }
+            param = { "Tag": datum.ImageTags.Primary }
             imgParams.Append(param)
         end if
 
@@ -118,7 +118,7 @@ sub setData()
         imgParams.Append({ "maxWidth": 175 })
 
         if datum.ImageTags.Primary <> invalid
-            param = { "Tag" : datum.ImageTags.Primary }
+            param = { "Tag": datum.ImageTags.Primary }
             imgParams.Append(param)
         end if
 
@@ -135,13 +135,13 @@ sub setData()
             m.top.thumbnailUrl = ImageURL(datum.id, "Backdrop", imgParams)
         end if
     else if datum.type = "MusicAlbum"
-        params = { "Tag" : datum.ImageTags.Primary, "maxHeight" : 261, "maxWidth" : 261 }
+        params = { "Tag": datum.ImageTags.Primary, "maxHeight": 261, "maxWidth": 261 }
         m.top.thumbnailURL = ImageURL(datum.id, "Primary", params)
         m.top.widePosterUrl = m.top.thumbnailURL
         m.top.posterUrl = m.top.thumbnailURL
 
-    else if datum.type = "TvChannel" OR datum.type = "Channel"
-        params = { "Tag" : datum.ImageTags.Primary, "maxHeight" : 261, "maxWidth" : 464 }
+    else if datum.type = "TvChannel" or datum.type = "Channel"
+        params = { "Tag": datum.ImageTags.Primary, "maxHeight": 261, "maxWidth": 464 }
         m.top.thumbnailURL = ImageURL(datum.id, "Primary", params)
         m.top.widePosterUrl = m.top.thumbnailURL
         m.top.iconUrl = "pkg:/images/media_type_icons/live_tv_white.png"
