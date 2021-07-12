@@ -22,7 +22,7 @@
     </message>
     <message>
         <source>Enter Configuration</source>
-        <translation>Konfiguration Eingeben</translation>
+        <translation>Konfiguration eingeben</translation>
     </message>
     <message>
         <source>Favorite</source>
@@ -30,7 +30,7 @@
     </message>
     <message>
         <source>Loading...</source>
-        <translation>Laden von...</translation>
+        <translation>Lädt...</translation>
     </message>
     <message>
         <source>Login attempt failed.</source>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>Please sign in</source>
-        <translation>Bitte melden Sie sich an</translation>
+        <translation>Bitte melde dich an</translation>
     </message>
     <message>
         <source>Search</source>
@@ -70,7 +70,7 @@
     </message>
     <message>
         <source>Submit</source>
-        <translation>Bestätigen</translation>
+        <translation>Absenden</translation>
     </message>
     <message>
         <source>Watched</source>
@@ -114,7 +114,7 @@
     </message>
     <message>
         <source>Enter a value...</source>
-        <translation>Geben Sie einen Wert ein...</translation>
+        <translation>Wert eingeben...</translation>
     </message>
     <message>
         <source>Sort Field</source>
@@ -1000,6 +1000,11 @@
     <message>
         <source>Change Server</source>
         <translation>Server wechseln</translation>
+    </message>
+    <message>
+        <source>Ends at</source>
+        <translation>Endet um</translation>
+        <extracomment>(Past Tense) For defining a day and time when a program ended  (e.g.  Ended Wednesday, 08:00) </extracomment>
     </message>
 </context>
 </TS>
