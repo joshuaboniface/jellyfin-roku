@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="JFServer" extends="Group">
+
+  <interface>
+    <field id="itemContent" type="node" onchange="itemContentChanged" />
+    <field id="focusPercent" type="float" onchange="onFocusPercentChange" />
+  </interface>
+
+  <script type="text/brightscript" uri="JFServer.brs" />
+
+  <children>
+    <Poster id="poster" translation="[0,5]" width="90" height="90" />
+    <Group id="labels" translation="[100,0]">
+      <Label text="Name:" horizAlign="left" font="font:MediumBoldSystemFont" width="130" height="65" translation="[0,5]" />
+      <Label text="URL:" horizAlign="left" font="font:MediumBoldSystemFont" width="130" height="65" translation="[0,55]" />
+
+      <Label id="name" horizAlign="left" font="font:MediumSystemFont" height="65" translation="[125,5]" />
+      <Label id="baseUrl" horizAlign="left" font="font:MediumSystemFont" height="65" translation="[125,55]" />
+    </Group>
+  </children>
+
+</component>

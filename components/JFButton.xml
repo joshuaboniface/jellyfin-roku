@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<component name="JFButton" extends="Button">
+  <interface>
+    <field id="minChars" type="int" />
+  </interface>
+  <script type="text/brightscript" uri="JFButton.brs" />
+</component>

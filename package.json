@@ -8,7 +8,7 @@
   },
   "devDependencies": {
     "@rokucommunity/bslint": "^0.4.0",
-    "brighterscript": "^0.30.9",
+    "brighterscript": "^0.39.4",
     "rooibos-cli": "^1.0.1"
   },
   "scripts": {

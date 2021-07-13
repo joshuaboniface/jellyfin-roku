@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="SetServerScreen" extends="JFGroup">
+  <interface>
+    <field id="serverUrl" type="string" alias="serverUrlTextbox.text" />
+    <field id="serverWidth" alias="serverUrlOutline.width,serverUrlTextbox.width,serverUrlContainer.width,submitSizer.width" value="1620" />
+    <field id="serverHeight" alias="serverUrlOutline.height,serverUrlTextbox.height,serverUrlContainer.height" value="60" />
+  </interface>
+
+  <children>
+    <LayoutGroup translation="[150,150]" itemSpacings="44">
+      <LayoutGroup>
+        <label text="Connect to Server" id="prompt" font="font:LargeBoldSystemFont" />
+        <label text="Pick a Jellyfin server from the local network" />
+      </LayoutGroup>
+      <!--background for server picker-->
+      <Rectangle color="0x00000020" width="1620" height="400">
+        <Spinner id="spinner" translation="[717, 136]" />
+        <MarkupList id="serverPicker" translation="[50, 20]" itemComponentName="JFServer" itemSpacing="[0, 10]" itemSize="[1520, 100]" numRows="3" vertFocusAnimationStyle="floatingFocus" />
+      </Rectangle>
+
+      <label text="...or enter server URL manually:" translation="[0, 690]" />
+
+      <Rectangle id="serverUrlContainer" color="0x00000000">
+        <TextEditBox id="serverUrlTextbox" hintText="e.g. 192.168.1.100:8096 or https://example.com/jellyfin"></TextEditBox>
+        <Poster id="serverUrlOutline" visible="false" uri="pkg:/images/hd_focus.9.png" />
+      </Rectangle>
+
+      <!-- <label text="" id="alert" font="font:MediumSystemFont" /> -->
+      <LayoutGroup horizAlignment="center">
+        <JFButton id="submit" minChars="30" text="Submit"></JFButton>
+        <!--add a known width invisibile element to allow the button to be centered-->
+        <Rectangle id="submitSizer" width="1620" height="0" color="#00000000" />
+      </LayoutGroup>
+    </LayoutGroup>
+
+  </children>
+
+  <script type="text/brightscript" uri="SetServerScreen.brs" />
+
+</component>

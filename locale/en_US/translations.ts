@@ -414,5 +414,20 @@
             <translation>The requested content does not exist on the server</translation>
             <extracomment>Content of message box when the requested content is not found on the server</extracomment>
         </message>
+        <message>
+            <source>Enter the server name or ip address</source>
+            <translation>Enter the server name or ip address</translation>
+            <extracomment>Title of KeyboardDialog when manually entering a server URL</extracomment>
+        </message>
+        <message>
+            <source>Pick a Jellyfin server from the local network</source>
+            <translation>Pick a Jellyfin server from the local network</translation>
+            <extracomment>Instructions on initial app launch when the user is asked to pick a server from a list</extracomment>
+        </message>
+        <message>
+            <source>...or enter server URL manually:</source>
+            <translation>...or enter server URL manually:</translation>
+            <extracomment>Instructions on initial app launch when the user is asked to manually enter a server URL</extracomment>
+        </message>
     </context>
 </TS>

@@ -1,5 +1,5 @@
 sub Main (args as Dynamic) as Void
-  
+
   ' If the Rooibos files are included in deployment, run tests
   'bs:disable-next-line
   if type(Rooibos__Init) = "Function" then Rooibos__Init()
@@ -21,7 +21,7 @@ sub Main (args as Dynamic) as Void
 
   m.overhang = CreateObject("roSGNode", "JFOverhang")
   m.scene.insertChild(m.overhang, 0)
-  
+
   app_start:
   m.overhang.title = ""
   ' First thing to do is validate the ability to use the API
@@ -64,7 +64,7 @@ sub Main (args as Dynamic) as Void
       group.control = "play"
       ReportPlayback(group, "start")
       m.overhang.visible = false
-    else 
+    else
       dialog = createObject("roSGNode", "Dialog")
       dialog.id = "OKDialog"
       dialog.title = tr("Not found")
@@ -197,7 +197,7 @@ sub Main (args as Dynamic) as Void
           group.control = "play"
           ReportPlayback(group, "start")
           m.overhang.visible = false
-        else 
+        else
           dialog = createObject("roSGNode", "Dialog")
           dialog.id = "OKDialog"
           dialog.title = tr("Error loading Channel Data")
@@ -344,7 +344,7 @@ sub Main (args as Dynamic) as Void
         movie.favorite = not movie.favorite
       else
         ' If there are no other button matches, check if this is a simple "OK" Dialog & Close if so
-        dialog = msg.getRoSGNode() 
+        dialog = msg.getRoSGNode()
         if dialog.id = "OKDialog"
           dialog.unobserveField("buttonSelected")
           dialog.close = true
@@ -433,7 +433,7 @@ sub Main (args as Dynamic) as Void
               group.control = "play"
               ReportPlayback(group, "start")
               m.overhang.visible = false
-            else 
+            else
               dialog = createObject("roSGNode", "Dialog")
               dialog.id = "OKDialog"
               dialog.title = tr("Not found")
@@ -607,4 +607,3 @@ sub SendPerformanceBeacon(signalName as string)
     m.scene.signalBeacon(signalName)
   end if
 end sub
-
