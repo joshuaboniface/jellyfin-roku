@@ -18,6 +18,26 @@ sub loadItems()
       results.push(tmp)
     end for
 
+    'Load Favorites Row
+  else if m.top.itemsToLoad = "Favorites"
+
+    url = "Items"
+    params = {}
+    params["recursive"] = true
+    params["SortBy"] = "DatePlayed"
+    params["SortOrder"] = "Descending"
+    params["ImageTypeLimit"] = 1
+    params["isFavorite"] = true
+    params["UserId"] = get_setting("active_user")
+
+    resp = APIRequest(url, params)
+    data = getJson(resp)
+    for each item in data.Items
+      tmp = CreateObject("roSGNode", "HomeData")
+      tmp.json = item
+      results.push(tmp)
+    end for
+
     ' Load Latest Additions to Libraries
   else if m.top.itemsToLoad = "latest"
 

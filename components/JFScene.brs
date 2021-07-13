@@ -1,5 +1,5 @@
 sub init()
-  m.top.backgroundColor = "#262626" '"#101010"
+  m.top.backgroundColor = "#000000" '"#101010"
   m.top.backgroundURI = ""
 end sub
 
